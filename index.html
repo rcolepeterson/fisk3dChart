@@ -98,7 +98,7 @@
         const light2 = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light2);
 
-        camera.position.set(0, 0, 5); // Adjust camera position to better view the chart
+        camera.position.set(-2, -2, 3); // Adjust camera position to better view the chart
 
         const animate = function () {
           requestAnimationFrame(animate);
@@ -113,9 +113,6 @@
       const data = [
         { height: 2.5 }, // Height of the first bar
         { height: 1.5 }, // Height of the second bar
-        { height: 3.0 },
-        { height: 3.0 },
-        { height: 3.0 },
         { height: 3.0 }, // Height of the third bar
         // Add more items here as needed
       ];
