@@ -21,9 +21,13 @@
 
     <script>
       // Function to create a single cube
-      function createCube(x, y, z, width, height, depth, color) {
+      function createCube(x, y, z, width, height, depth, color, opacity) {
         const geometry = new THREE.BoxGeometry(width, height, depth);
-        const material = new THREE.MeshPhongMaterial({ color });
+        const material = new THREE.MeshPhongMaterial({
+          color,
+          transparent: true,
+          opacity,
+        });
         const cube = new THREE.Mesh(geometry, material);
         cube.position.set(x, y + height / 2, z); // Adjust the position to have the bottom of the cube touching the center
         return cube;
@@ -48,7 +52,7 @@
 
         const width = 0.6;
         const depth = 0.6;
-        const gap = 0.2; // Gap between the bars
+        const gap = 0.6; // Increase the gap for more space between the bars
 
         // Create each bar based on the data array
         data.forEach((item, index) => {
@@ -67,7 +71,8 @@
             width,
             height / 3,
             depth,
-            0xff0000
+            0xff0000,
+            0.8 // Set opacity to 0.8
           ); // Red bottom cube
           scene.add(bottomCube);
 
@@ -78,7 +83,8 @@
             width,
             height / 3,
             depth,
-            0x00ff00
+            0x00ff00,
+            0.8 // Set opacity to 0.8
           ); // Green middle cube
           scene.add(middleCube);
 
@@ -89,7 +95,8 @@
             width,
             height / 3,
             depth,
-            0x0000ff
+            0x0000ff,
+            0.8 // Set opacity to 0.8
           ); // Blue top cube
           scene.add(topCube);
         });
@@ -118,13 +125,13 @@
         { height: 1.0 },
         { height: 1.25 },
         { height: 3.0 },
-        { height: 2.5 },
+        { height: 2.5 }, // Height of the first bar
+        { height: 1.5 }, // Height of the second bar
+        { height: 3.0 }, // Height of the third bar
+        { height: 1.0 },
         { height: 1.5 },
-        { height: 3.0 },
         { height: 2.0 },
-        { height: 2.75 },
-        { height: 2.25 },
-        // Add more items here as needed to fill the 3 by 3 grid
+        // Add more items here as needed
       ];
 
       createStackedBarChart(data);
