@@ -53,13 +53,17 @@
         // Create each bar based on the data array
         data.forEach((item, index) => {
           const height = item.height * 0.6; // 40% smaller height for each bar
-          const x =
-            (width + gap) * index - ((width + gap) * (data.length - 1)) / 2;
+
+          // Calculate the position for the bar in the grid
+          const row = Math.floor(index / 2);
+          const col = index % 2;
+          const x = (width + gap) * col - (width + gap) / 2;
+          const z = (depth + gap) * row - (depth + gap) / 2;
 
           const bottomCube = createCube(
             x,
             0, // Bottom aligned on Y-axis
-            0,
+            z,
             width,
             height / 3,
             depth,
@@ -70,7 +74,7 @@
           const middleCube = createCube(
             x,
             height / 3,
-            0,
+            z,
             width,
             height / 3,
             depth,
@@ -81,7 +85,7 @@
           const topCube = createCube(
             x,
             (2 * height) / 3,
-            0,
+            z,
             width,
             height / 3,
             depth,
@@ -98,7 +102,7 @@
         const light2 = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light2);
 
-        camera.position.set(-2, -2, 3); // Adjust camera position to better view the chart
+        camera.position.set(-2, -2, 5); // Adjust camera position to better view the chart
 
         const animate = function () {
           requestAnimationFrame(animate);
@@ -111,6 +115,9 @@
 
       // Define the data array with the number of bars to render
       const data = [
+        { height: 1.0 },
+        { height: 1.25 },
+        { height: 3.0 },
         { height: 2.5 }, // Height of the first bar
         { height: 1.5 }, // Height of the second bar
         { height: 3.0 }, // Height of the third bar
