@@ -55,10 +55,10 @@
           const height = item.height * 0.6; // 40% smaller height for each bar
 
           // Calculate the position for the bar in the grid
-          const row = Math.floor(index / 2);
-          const col = index % 2;
-          const x = (width + gap) * col - (width + gap) / 2;
-          const z = (depth + gap) * row - (depth + gap) / 2;
+          const row = Math.floor(index / 3);
+          const col = index % 3;
+          const x = (width + gap) * col - ((width + gap) * 2) / 2;
+          const z = (depth + gap) * row - ((depth + gap) * 2) / 2;
 
           const bottomCube = createCube(
             x,
@@ -118,10 +118,13 @@
         { height: 1.0 },
         { height: 1.25 },
         { height: 3.0 },
-        { height: 2.5 }, // Height of the first bar
-        { height: 1.5 }, // Height of the second bar
-        { height: 3.0 }, // Height of the third bar
-        // Add more items here as needed
+        { height: 2.5 },
+        { height: 1.5 },
+        { height: 3.0 },
+        { height: 2.0 },
+        { height: 2.75 },
+        { height: 2.25 },
+        // Add more items here as needed to fill the 3 by 3 grid
       ];
 
       createStackedBarChart(data);
