@@ -30,7 +30,7 @@
       }
 
       // Function to create the 3D stacked bar chart
-      function createStackedBarChart() {
+      function createStackedBarChart(data) {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(
           75,
@@ -47,78 +47,48 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         const width = 0.6;
-        const height1 = 2.5 * 0.6; // 40% smaller height for the first bar
-        const height2 = 1.5 * 0.6; // 40% smaller height for the second bar
         const depth = 0.6;
-        const gap = 0.2; // Gap between the two bars
+        const gap = 0.2; // Gap between the bars
 
-        // Create the first bar
-        const bottomCube1 = createCube(
-          -width / 2,
-          0, // Bottom aligned on Y-axis
-          0,
-          width,
-          height1 / 3,
-          depth,
-          0xff0000
-        ); // Red bottom cube
-        scene.add(bottomCube1);
+        // Create each bar based on the data array
+        data.forEach((item, index) => {
+          const height = item.height * 0.6; // 40% smaller height for each bar
+          const x =
+            (width + gap) * index - ((width + gap) * (data.length - 1)) / 2;
 
-        const middleCube1 = createCube(
-          -width / 2,
-          height1 / 3,
-          0,
-          width,
-          height1 / 3,
-          depth,
-          0x00ff00
-        ); // Green middle cube
-        scene.add(middleCube1);
+          const bottomCube = createCube(
+            x,
+            0, // Bottom aligned on Y-axis
+            0,
+            width,
+            height / 3,
+            depth,
+            0xff0000
+          ); // Red bottom cube
+          scene.add(bottomCube);
 
-        const topCube1 = createCube(
-          -width / 2,
-          (2 * height1) / 3,
-          0,
-          width,
-          height1 / 3,
-          depth,
-          0x0000ff
-        ); // Blue top cube
-        scene.add(topCube1);
+          const middleCube = createCube(
+            x,
+            height / 3,
+            0,
+            width,
+            height / 3,
+            depth,
+            0x00ff00
+          ); // Green middle cube
+          scene.add(middleCube);
 
-        // Create the second bar
-        const bottomCube2 = createCube(
-          width / 2 + gap,
-          0, // Bottom aligned on Y-axis
-          0,
-          width,
-          height2 / 3,
-          depth,
-          0xff0000
-        ); // Red bottom cube
-        scene.add(bottomCube2);
-
-        const middleCube2 = createCube(
-          width / 2 + gap,
-          height2 / 3,
-          0,
-          width,
-          height2 / 3,
-          depth,
-          0x00ff00
-        ); // Green middle cube
-        scene.add(middleCube2);
-
-        const topCube2 = createCube(
-          width / 2 + gap,
-          (2 * height2) / 3,
-          0,
-          width,
-          height2 / 3,
-          depth,
-          0x0000ff
-        ); // Blue top cube
-        scene.add(topCube2);
+          const topCube = createCube(
+            x,
+            (2 * height) / 3,
+            0,
+            width,
+            height / 3,
+            depth,
+            0x0000ff
+          ); // Blue top cube
+          scene.add(topCube);
+        });
 
         // Lights
         const light1 = new THREE.DirectionalLight(0xffffff, 1);
@@ -139,7 +109,18 @@
         animate();
       }
 
-      createStackedBarChart();
+      // Define the data array with the number of bars to render
+      const data = [
+        { height: 2.5 }, // Height of the first bar
+        { height: 1.5 }, // Height of the second bar
+        { height: 3.0 },
+        { height: 3.0 },
+        { height: 3.0 },
+        { height: 3.0 }, // Height of the third bar
+        // Add more items here as needed
+      ];
+
+      createStackedBarChart(data);
     </script>
   </body>
 </html>
