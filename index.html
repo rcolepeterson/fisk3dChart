@@ -47,41 +47,78 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         const width = 0.6;
-        const height = 2.0;
+        const height1 = 2.5; // Height of the first bar
+        const height2 = 1.5; // Height of the second bar
         const depth = 0.6;
+        const gap = 0.2; // Gap between the two bars
 
-        const bottomCube = createCube(
-          0,
-          -height / 2,
+        // Create the first bar
+        const bottomCube1 = createCube(
+          -width / 2,
+          0, // Bottom aligned on Y-axis
           0,
           width,
-          height / 3,
+          height1 / 3,
           depth,
           0xff0000
         ); // Red bottom cube
-        scene.add(bottomCube);
+        scene.add(bottomCube1);
 
-        const middleCube = createCube(
-          0,
-          -height / 6,
+        const middleCube1 = createCube(
+          -width / 2,
+          height1 / 3,
           0,
           width,
-          height / 3,
+          height1 / 3,
           depth,
           0x00ff00
         ); // Green middle cube
-        scene.add(middleCube);
+        scene.add(middleCube1);
 
-        const topCube = createCube(
-          0,
-          height / 6,
+        const topCube1 = createCube(
+          -width / 2,
+          (2 * height1) / 3,
           0,
           width,
-          height / 3,
+          height1 / 3,
           depth,
           0x0000ff
         ); // Blue top cube
-        scene.add(topCube);
+        scene.add(topCube1);
+
+        // Create the second bar
+        const bottomCube2 = createCube(
+          width / 2 + gap,
+          0, // Bottom aligned on Y-axis
+          0,
+          width,
+          height2 / 3,
+          depth,
+          0xff0000
+        ); // Red bottom cube
+        scene.add(bottomCube2);
+
+        const middleCube2 = createCube(
+          width / 2 + gap,
+          height2 / 3,
+          0,
+          width,
+          height2 / 3,
+          depth,
+          0x00ff00
+        ); // Green middle cube
+        scene.add(middleCube2);
+
+        const topCube2 = createCube(
+          width / 2 + gap,
+          (2 * height2) / 3,
+          0,
+          width,
+          height2 / 3,
+          depth,
+          0x0000ff
+        ); // Blue top cube
+        scene.add(topCube2);
 
         // Lights
         const light1 = new THREE.DirectionalLight(0xffffff, 1);
