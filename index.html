@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3D Stacked Bar Chart</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #chartContainer {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+      // Function to create a single cube
+      function createCube(x, y, z, width, height, depth, color) {
+        const geometry = new THREE.BoxGeometry(width, height, depth);
+        const material = new THREE.MeshPhongMaterial({ color });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(x, y + height / 2, z); // Adjust the position to have the bottom of the cube touching the center
+        return cube;
+      }
+
+      // Function to create the 3D stacked bar chart
+      function createStackedBarChart() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document
+          .getElementById("chartContainer")
+          .appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        const width = 0.6;
+        const height = 2.0;
+        const depth = 0.6;
+
+        const bottomCube = createCube(
+          0,
+          -height / 2,
+          0,
+          width,
+          height / 3,
+          depth,
+          0xff0000
+        ); // Red bottom cube
+        scene.add(bottomCube);
+
+        const middleCube = createCube(
+          0,
+          -height / 6,
+          0,
+          width,
+          height / 3,
+          depth,
+          0x00ff00
+        ); // Green middle cube
+        scene.add(middleCube);
+
+        const topCube = createCube(
+          0,
+          height / 6,
+          0,
+          width,
+          height / 3,
+          depth,
+          0x0000ff
+        ); // Blue top cube
+        scene.add(topCube);
+
+        // Lights
+        const light1 = new THREE.DirectionalLight(0xffffff, 1);
+        light1.position.set(1, 1, 1);
+        scene.add(light1);
+
+        const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light2);
+
+        camera.position.set(0, 0, 5); // Adjust camera position to better view the chart
+
+        const animate = function () {
+          requestAnimationFrame(animate);
+          renderer.render(scene, camera);
+          controls.update(); // Update the OrbitControls in the animation loop
+        };
+
+        animate();
+      }
+
+      createStackedBarChart();
+    </script>
+  </body>
+</html>
