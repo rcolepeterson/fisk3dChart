@@ -24,12 +24,23 @@
         top: 80px;
         left: 10px;
       }
+      #toggleBarBtns {
+        position: absolute;
+        top: 110px;
+        left: 10px;
+      }
     </style>
   </head>
   <body>
     <div id="chartContainer"></div>
     <div id="cameraPosition"></div>
     <button id="addBarBtn">Add Bar</button>
+    <div id="toggleBarBtns">
+      <button class="toggleButton" data-target="bar_0">Toggle Bar 1</button>
+      <button class="toggleButton" data-target="bar_1">Toggle Bar 2</button>
+      <button class="toggleButton" data-target="bar_2">Toggle Bar 3</button>
+      <!-- Add more buttons for other bars as needed -->
+    </div>
     <!-- Add the div to display camera position -->
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
@@ -49,8 +60,41 @@
         // Recreate the scene with the updated data array
         createStackedBarChart(data);
       }
-      document.getElementById("addBarBtn").addEventListener("click", addBar);
+
       ////
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("addBarBtn").addEventListener("click", addBar);
+        // Get all the toggle buttons
+        const toggleButtons = document.querySelectorAll(".toggleButton");
+
+        // Add click event listeners to toggle buttons
+        toggleButtons.forEach((button) => {
+          button.addEventListener("click", toggleBarById);
+        });
+
+        // Function to toggle the visibility of a specific bar by its ID
+        function toggleBarById(event) {
+          // const targetId = event.currentTarget.getAttribute("data-target");
+          // const targetBar = scene.getObjectByProperty("userData.id", targetId);
+          // console.log("we are toggeling", targetId);
+          // console.log({ targetBar });
+          // if (targetBar) {
+          //   targetBar.visible = !targetBar.visible;
+          // }
+          const targetId = event.currentTarget.getAttribute("data-target");
+          const targetBar = scene.children.find((object) => {
+            return object.userData && object.userData.id === targetId;
+          });
+
+          console.log("we are toggeling", targetId);
+          console.log({ targetBar });
+
+          if (targetBar) {
+            targetBar.visible = !targetBar.visible;
+          }
+        }
+      });
+      /////
 
       // Function to create a single cube
       function createCube(x, y, z, width, height, depth, color, opacity) {
@@ -128,6 +172,8 @@
             0xff0000,
             0.8 // Set opacity to 0.8
           ); // Red bottom cube
+
+          bottomCube.userData = { id: `bar_${index}` };
           scene.add(bottomCube);
 
           const middleCube = createCube(
