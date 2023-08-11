@@ -19,17 +19,39 @@
         left: 10px;
         color: white;
       }
+      #addBarBtn {
+        position: absolute;
+        top: 80px;
+        left: 10px;
+      }
     </style>
   </head>
   <body>
     <div id="chartContainer"></div>
     <div id="cameraPosition"></div>
+    <button id="addBarBtn">Add Bar</button>
     <!-- Add the div to display camera position -->
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
 
     <script>
+      // Declare global variables
+      let scene, camera, data;
+      function addBar() {
+        console.log("Add bar button clicked");
+        // Create a new data object with the desired height for the new bar
+        const newBarData = { height: 1 };
+
+        // Add the new data object to the existing data array
+        data.push(newBarData);
+
+        // Recreate the scene with the updated data array
+        createStackedBarChart(data);
+      }
+      document.getElementById("addBarBtn").addEventListener("click", addBar);
+      ////
+
       // Function to create a single cube
       function createCube(x, y, z, width, height, depth, color, opacity) {
         const geometry = new THREE.BoxGeometry(width, height, depth);
@@ -59,15 +81,15 @@
 
         // Update the HTML element
         cameraPositionElement.innerHTML = `
-          Camera Position:<br>
-          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
-          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
-        `;
+                Camera Position:<br>
+                X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+                Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+              `;
       }
 
       // Function to create the 3D stacked bar chart
       function createStackedBarChart(data) {
-        const scene = new THREE.Scene();
+        scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(
           75,
           window.innerWidth / window.innerHeight,
@@ -155,7 +177,7 @@
       }
 
       // Define the data array with the number of bars to render
-      const data = [
+      data = [
         { height: 1.0 },
         { height: 1.25 },
         { height: 4.0 },
