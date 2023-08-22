@@ -122,7 +122,7 @@
         for (let i = 0; i < letters.length; i++) {
           const letterGeometry = new THREE.TextGeometry(letters[i], {
             font: font,
-            size: 0.1, // Adjust the size as needed
+            size: 0.05, // Adjust the size as needed
             height: 0.01, // Adjust the height as needed
           });
 
@@ -255,7 +255,7 @@
           });
 
           const labelMaterial = new THREE.MeshBasicMaterial({
-            color: 0x000000,
+            color: 0xcccccc,
           });
           const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
           labelMesh.position.set(x, height + 0.2, z); // Position above the bar
