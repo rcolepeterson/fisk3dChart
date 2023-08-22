@@ -65,8 +65,25 @@
       }
       ///
       function createFloor() {
-        const floorGeometry = new THREE.PlaneGeometry(6, 6); // Adjust the size as needed
-        const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x808080 });
+        // Define the size of the floor and the number of divisions (lines)
+        const floorSize = 4;
+        const numDivisions = 3; // Adjust the number of lines as needed
+
+        // Create a grid texture
+        const gridTexture = new THREE.TextureLoader().load(
+          "https://threejs.org/examples/textures/grid.png"
+        );
+        gridTexture.wrapS = THREE.RepeatWrapping;
+        gridTexture.wrapT = THREE.RepeatWrapping;
+        gridTexture.repeat.set(numDivisions, numDivisions);
+
+        const floorGeometry = new THREE.PlaneGeometry(
+          floorSize,
+          floorSize,
+          numDivisions,
+          numDivisions
+        );
+        const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2; // Rotate it to be horizontal
         floor.position.y = -0.01; // Slightly below the stacked cubes to prevent z-fighting
