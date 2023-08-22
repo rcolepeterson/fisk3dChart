@@ -64,10 +64,43 @@
         createStackedBarChart(data);
       }
       ///
+      // Function to create letter labels on the X-axis
+      function createLetterLabels() {
+        const letters = ["A", "B", "C"]; // Add more letters as needed
+
+        const letterMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const letterLoader = new THREE.FontLoader();
+
+        // Load a font (you can use a different font if needed)
+        letterLoader.load(
+          "https://cdn.rawgit.com/mrdoob/three.js/r125/examples/fonts/helvetiker_bold.typeface.json",
+          function (font) {
+            for (let i = 0; i < letters.length; i++) {
+              const letterGeometry = new THREE.TextGeometry(letters[i], {
+                font: font,
+                size: 0.2, // Adjust the size as needed
+                height: 0.05, // Adjust the height as needed
+              });
+
+              const letterMesh = new THREE.Mesh(letterGeometry, letterMaterial);
+              // Position the letters on the X-axis with padding based on the grid size
+              letterMesh.position.set(
+                i * (floorSize / (4 - 1)) - floorSize / (4 - 1),
+                0.01,
+                1.5
+              );
+              scene.add(letterMesh);
+            }
+          }
+        );
+      }
+      //
+      ///
+      const floorSize = 4;
+      const numDivisions = 3;
       function createFloor() {
         // Define the size of the floor and the number of divisions (lines)
-        const floorSize = 4;
-        const numDivisions = 3; // Adjust the number of lines as needed
+        // Adjust the number of lines as needed
 
         // Create a grid texture
         const gridTexture = new THREE.TextureLoader().load(
@@ -228,6 +261,7 @@
 
         // Create the floor
         createFloor();
+        createLetterLabels();
 
         // Lights
         const light1 = new THREE.DirectionalLight(0xffffff, 1);
