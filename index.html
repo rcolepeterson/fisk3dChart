@@ -78,8 +78,8 @@
             for (let i = 0; i < letters.length; i++) {
               const letterGeometry = new THREE.TextGeometry(letters[i], {
                 font: font,
-                size: 0.2, // Adjust the size as needed
-                height: 0.05, // Adjust the height as needed
+                size: 0.1, // Adjust the size as needed
+                height: 0.01, // Adjust the height as needed
               });
 
               const letterMesh = new THREE.Mesh(letterGeometry, letterMaterial);
@@ -87,7 +87,7 @@
               letterMesh.position.set(
                 i * (floorSize / (4 - 1)) - floorSize / (4 - 1),
                 0.01,
-                1.5
+                2.0
               );
               scene.add(letterMesh);
             }
