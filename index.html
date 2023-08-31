@@ -30,6 +30,16 @@
         left: 10px;
         display: none;
       }
+      #zoomOutBtn {
+        position: absolute;
+        top: 180px;
+        left: 10px;
+      }
+      #zoomInBtn {
+        position: absolute;
+        top: 200px;
+        left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -42,14 +52,16 @@
       <button class="toggleButton" data-target="bar_2">Toggle Bar 3</button>
       <!-- Add more buttons for other bars as needed -->
     </div>
+    <button id="zoomOutBtn">Zoom Out</button>
+    <button id="zoomInBtn">Zoom In</button>
     <!-- Add the div to display camera position -->
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/17.4.0/Tween.min.js"></script>
     <script>
       // Declare global variables
-      let scene, camera, data, font;
+      let scene, camera, data, font, controls;
       const floorSize = 4;
       const mouse = new THREE.Vector2();
       const raycaster = new THREE.Raycaster();
@@ -163,8 +175,74 @@
         }
       }
 
+      function zoomOut() {
+        zoomOutSmoothly(controls, 1000);
+      }
+      function zoomOutSmoothly(controls, duration) {
+        const initialDistance = camera.position.distanceTo(controls.target);
+        const zoomFactor = 2.0; // Adjust this factor for the desired zoom out level
+
+        const newDistance = initialDistance * zoomFactor;
+        const direction = new THREE.Vector3()
+          .subVectors(camera.position, controls.target)
+          .normalize();
+        const newCameraPosition = new THREE.Vector3().addVectors(
+          controls.target,
+          direction.multiplyScalar(newDistance)
+        );
+
+        const tween = new TWEEN.Tween(camera.position)
+          .to(newCameraPosition, duration)
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .onUpdate(function () {
+            controls.update();
+          })
+          .start();
+
+        function animate(time) {
+          requestAnimationFrame(animate);
+          TWEEN.update(time);
+        }
+
+        animate();
+      }
+
+      function zoomIn() {
+        zoomInSmoothly(controls, 1000);
+      }
+      function zoomInSmoothly(controls, duration) {
+        const initialDistance = camera.position.distanceTo(controls.target);
+        const zoomFactor = 0.5; // Adjust this factor for the desired zoom level
+
+        const newDistance = initialDistance * zoomFactor;
+        const direction = new THREE.Vector3()
+          .subVectors(camera.position, controls.target)
+          .normalize();
+        const newCameraPosition = new THREE.Vector3().addVectors(
+          controls.target,
+          direction.multiplyScalar(newDistance)
+        );
+
+        const tween = new TWEEN.Tween(camera.position)
+          .to(newCameraPosition, duration)
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .onUpdate(function () {
+            controls.update();
+          })
+          .start();
+
+        function animate(time) {
+          requestAnimationFrame(animate);
+          TWEEN.update(time);
+        }
+
+        animate();
+      }
+
       // Event listener for adding a new bar
       document.getElementById("addBarBtn").addEventListener("click", addBar);
+      document.getElementById("zoomOutBtn").addEventListener("click", zoomOut);
+      document.getElementById("zoomInBtn").addEventListener("click", zoomIn);
 
       // Event listener for toggling bars
       document.addEventListener("DOMContentLoaded", function () {
@@ -228,7 +306,7 @@
           .getElementById("chartContainer")
           .appendChild(renderer.domElement);
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         const width = 0.6;
         const depth = 0.6;
