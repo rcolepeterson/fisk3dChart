@@ -51,6 +51,8 @@
       // Declare global variables
       let scene, camera, data, font;
       const floorSize = 4;
+      const mouse = new THREE.Vector2();
+      const raycaster = new THREE.Raycaster();
 
       // Function to create a single cube
       function createCube(x, y, z, width, height, depth, color, opacity) {
@@ -178,8 +180,41 @@
         });
       });
 
+      function onMouseDown(event) {
+        console.log("onMouseDown");
+        // Calculate the mouse position in normalized device coordinates (NDC)
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Update the picking ray with the camera and mouse position
+        raycaster.setFromCamera(mouse, camera);
+
+        // Calculate objects intersecting the picking ray
+        const intersects = raycaster.intersectObjects(scene.children);
+
+        console.log("intersects", intersects);
+
+        if (intersects.length > 0) {
+          const clickedObject = intersects[0].object;
+          const cubeUserData = clickedObject.userData;
+
+          console.log("clickedObject", clickedObject);
+          console.log("cubeUserData", cubeUserData);
+
+          if (cubeUserData && cubeUserData.url) {
+            // Open the URL in a new tab when a cube is clicked
+            window.open(cubeUserData.url, "_blank");
+          }
+        }
+      }
+
       // Function to create the 3D stacked bar chart
       function createStackedBarChart(data) {
+        // Add this code at the beginning of your createStackedBarChart function
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.domElement.addEventListener("mousedown", onMouseDown, false);
+
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(
           75,
@@ -187,7 +222,7 @@
           0.1,
           1000
         );
-        const renderer = new THREE.WebGLRenderer();
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         document
           .getElementById("chartContainer")
@@ -220,7 +255,10 @@
             0.8 // Set opacity to 0.8
           ); // Red bottom cube
 
-          bottomCube.userData = { id: `bar_${index}` };
+          bottomCube.userData = {
+            id: `bar_${index}`,
+            url: "https://example.com",
+          };
           scene.add(bottomCube);
 
           const middleCube = createCube(
