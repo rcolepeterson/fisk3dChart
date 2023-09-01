@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3D Scatter Plot</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #chartContainer {
+        width: 100%;
+        height: 100vh;
+      }
+
+      #cameraPosition {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chartContainer"></div>
+    <div id="cameraPosition"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+      // Declare global variables
+      let scene, camera;
+      const gridSize = 50;
+      const cubeSize = 0.4;
+      const gap = 0.2;
+
+      // Function to create a single cube
+      function createCube(x, y, z, size, color) {
+        const geometry = new THREE.BoxGeometry(size, size, size);
+        const material = new THREE.MeshPhongMaterial({ color });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(x, y + size / 2, z);
+        return cube;
+      }
+
+      // Function to create the grid
+      function createGrid() {
+        const gridTexture = new THREE.TextureLoader().load(
+          "https://threejs.org/examples/textures/grid.png"
+        );
+        gridTexture.wrapS = THREE.RepeatWrapping;
+        gridTexture.wrapT = THREE.RepeatWrapping;
+        gridTexture.repeat.set(gridSize - 1, gridSize - 1);
+
+        const floorGeometry = new THREE.PlaneGeometry(
+          gridSize,
+          gridSize,
+          gridSize - 1,
+          gridSize - 1
+        );
+        const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -0.01;
+        scene.add(floor);
+      }
+
+      // Function to create the scatter plot
+      function createScatterPlot() {
+        scene = new THREE.Scene();
+        scene.scale.set(0.1, 0.1, 0.1);
+        camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          1000
+        );
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document
+          .getElementById("chartContainer")
+          .appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        // Create the grid
+        createGrid();
+
+        // Create a single cube in the middle of the grid
+        const cube = createCube(0, 0, 0, cubeSize, 0x00ff00); // Adjust color as needed
+        scene.add(cube);
+
+        // Lights
+        const light1 = new THREE.DirectionalLight(0xffffff, 1);
+        light1.position.set(1, 1, 1);
+        scene.add(light1);
+
+        const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light2);
+
+        camera.position.set(-3, 2, 5);
+
+        const animate = function () {
+          requestAnimationFrame(animate);
+          renderer.render(scene, camera);
+          controls.update();
+        };
+
+        animate();
+      }
+
+      // Initialize the scene
+      createScatterPlot();
+    </script>
+  </body>
+</html>

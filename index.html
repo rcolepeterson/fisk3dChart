@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>3D Stacked Bar Chart</title>
+    <title>Scatter Plot Chart with X and Y Axes</title>
     <style>
       body {
         margin: 0;
@@ -10,422 +10,72 @@
       #chartContainer {
         width: 100%;
         height: 100vh;
+        position: relative;
       }
-
-      #cameraPosition {
+      .axis {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        color: white;
       }
-      #addBarBtn {
-        position: absolute;
-        top: 80px;
-        left: 10px;
-        display: none;
+      .x-axis {
+        width: 100%;
+        height: 2px;
+        bottom: 0;
       }
-      #toggleBarBtns {
-        position: absolute;
-        top: 110px;
-        left: 10px;
-        display: none;
+      .y-axis {
+        width: 2px;
+        height: 100%;
+        top: 0;
+        left: 0;
       }
-      #zoomOutBtn {
+      .tick {
         position: absolute;
-        top: 180px;
-        left: 10px;
+        background-color: #ccc;
+        width: 6px;
+        height: 2px;
       }
-      #zoomInBtn {
+      .tick-label {
         position: absolute;
-        top: 200px;
-        left: 10px;
+        left: 20px;
+        transform: translate(0, -50%);
+      }
+      /* Style for the square */
+      .square {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: #ff0000; /* Red color */
+        top: calc(100% - 60px); /* Adjust the top position for Y-axis */
+        left: 60px; /* Adjust the left position for X-axis */
       }
     </style>
   </head>
   <body>
-    <div id="chartContainer"></div>
-    <div id="cameraPosition"></div>
-    <button id="addBarBtn">Add Bar</button>
-    <div id="toggleBarBtns">
-      <button class="toggleButton" data-target="bar_0">Toggle Bar 1</button>
-      <button class="toggleButton" data-target="bar_1">Toggle Bar 2</button>
-      <button class="toggleButton" data-target="bar_2">Toggle Bar 3</button>
-      <!-- Add more buttons for other bars as needed -->
+    <div id="chartContainer">
+      <div class="axis x-axis"></div>
+      <div class="axis y-axis"></div>
+      <!-- Add X-axis tick marks and labels -->
+      <div class="tick" style="left: 10%; bottom: 0"></div>
+      <div class="tick" style="left: 30%; bottom: 0"></div>
+      <div class="tick" style="left: 50%; bottom: 0"></div>
+      <div class="tick" style="left: 70%; bottom: 0"></div>
+      <div class="tick" style="left: 90%; bottom: 0"></div>
+      <div class="tick-label" style="left: 10%; bottom: -15px">0</div>
+      <div class="tick-label" style="left: 30%; bottom: -15px">30</div>
+      <div class="tick-label" style="left: 50%; bottom: -15px">50</div>
+      <div class="tick-label" style="left: 70%; bottom: -15px">70</div>
+      <div class="tick-label" style="left: 90%; bottom: -15px">100</div>
+      <!-- Add Y-axis tick marks and labels -->
+      <div class="tick" style="top: 10%; left: 0"></div>
+      <div class="tick" style="top: 30%; left: 0"></div>
+      <div class="tick" style="top: 50%; left: 0"></div>
+      <div class="tick" style="top: 70%; left: 0"></div>
+      <div class="tick" style="top: 90%; left: 0"></div>
+      <div class="tick-label" style="top: 10%">0</div>
+      <div class="tick-label" style="top: 30%">30</div>
+      <div class="tick-label" style="top: 50%">50</div>
+      <div class="tick-label" style="top: 70%">70</div>
+      <div class="tick-label" style="top: 90%">100</div>
+      <!-- Square at (60, 60) -->
+      <div class="square"></div>
     </div>
-    <button id="zoomOutBtn">Zoom Out</button>
-    <button id="zoomInBtn">Zoom In</button>
-    <!-- Add the div to display camera position -->
-
-    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/17.4.0/Tween.min.js"></script>
-    <script>
-      // Declare global variables
-      let scene, camera, data, font, controls;
-      const floorSize = 4;
-      const mouse = new THREE.Vector2();
-      const raycaster = new THREE.Raycaster();
-
-      // Function to create a single cube
-      function createCube(x, y, z, width, height, depth, color, opacity) {
-        const geometry = new THREE.BoxGeometry(width, height, depth);
-        const material = new THREE.MeshPhongMaterial({
-          color,
-          transparent: true,
-          opacity,
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        cube.position.set(x, y + height / 2, z); // Adjust the position to have the bottom of the cube touching the center
-        return cube;
-      }
-
-      // Function to display camera position
-      function updateCameraPositionDisplay(camera) {
-        const cameraPositionElement = document.getElementById("cameraPosition");
-        const position = camera.position;
-        const rotation = camera.rotation;
-
-        // Round the values for display
-        const posX = position.x.toFixed(2);
-        const posY = position.y.toFixed(2);
-        const posZ = position.z.toFixed(2);
-        const rotX = THREE.MathUtils.radToDeg(rotation.x).toFixed(2);
-        const rotY = THREE.MathUtils.radToDeg(rotation.y).toFixed(2);
-        const rotZ = THREE.MathUtils.radToDeg(rotation.z).toFixed(2);
-
-        // Update the HTML element
-        cameraPositionElement.innerHTML = `
-          Camera Position:<br>
-          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
-          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
-        `;
-      }
-
-      // Function to create the floor
-      function createFloor() {
-        const floorSize = 4;
-        const numDivisions = 3;
-
-        // Create a grid texture
-        const gridTexture = new THREE.TextureLoader().load(
-          "https://threejs.org/examples/textures/grid.png"
-        );
-        gridTexture.wrapS = THREE.RepeatWrapping;
-        gridTexture.wrapT = THREE.RepeatWrapping;
-        gridTexture.repeat.set(numDivisions, numDivisions);
-
-        const floorGeometry = new THREE.PlaneGeometry(
-          floorSize,
-          floorSize,
-          numDivisions,
-          numDivisions
-        );
-        const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.rotation.x = -Math.PI / 2; // Rotate it to be horizontal
-        floor.position.y = -0.01; // Slightly below the stacked cubes to prevent z-fighting
-        scene.add(floor);
-      }
-
-      // Function to create letter labels on the X-axis
-      function createLetterLabels() {
-        const letters = ["A", "B", "C"]; // Add more letters as needed
-
-        const letterMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-
-        for (let i = 0; i < letters.length; i++) {
-          const letterGeometry = new THREE.TextGeometry(letters[i], {
-            font: font,
-            size: 0.05, // Adjust the size as needed
-            height: 0.01, // Adjust the height as needed
-          });
-
-          const letterMesh = new THREE.Mesh(letterGeometry, letterMaterial);
-          // Position the letters on the X-axis with padding based on the grid size
-          letterMesh.position.set(
-            i * (floorSize / 3) - floorSize / 3,
-            0.01,
-            2.0
-          );
-          scene.add(letterMesh);
-        }
-      }
-
-      // Function to create a new bar
-      function addBar() {
-        console.log("Add bar button clicked");
-        // Create a new data object with the desired height for the new bar
-        const newBarData = { height: 1 };
-
-        // Add the new data object to the existing data array
-        data.push(newBarData);
-
-        // Recreate the scene with the updated data array
-        createStackedBarChart(data);
-      }
-
-      // Function to toggle the visibility of a specific bar by its ID
-      function toggleBarById(targetId) {
-        const targetBar = scene.children.find((object) => {
-          return object.userData && object.userData.id === targetId;
-        });
-
-        if (targetBar) {
-          targetBar.visible = !targetBar.visible;
-        }
-      }
-
-      function zoomOut() {
-        zoomOutSmoothly(controls, 1000);
-      }
-      function zoomOutSmoothly(controls, duration) {
-        const initialDistance = camera.position.distanceTo(controls.target);
-        const zoomFactor = 2.0; // Adjust this factor for the desired zoom out level
-
-        const newDistance = initialDistance * zoomFactor;
-        const direction = new THREE.Vector3()
-          .subVectors(camera.position, controls.target)
-          .normalize();
-        const newCameraPosition = new THREE.Vector3().addVectors(
-          controls.target,
-          direction.multiplyScalar(newDistance)
-        );
-
-        const tween = new TWEEN.Tween(camera.position)
-          .to(newCameraPosition, duration)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .onUpdate(function () {
-            controls.update();
-          })
-          .start();
-
-        function animate(time) {
-          requestAnimationFrame(animate);
-          TWEEN.update(time);
-        }
-
-        animate();
-      }
-
-      function zoomIn() {
-        zoomInSmoothly(controls, 1000);
-      }
-      function zoomInSmoothly(controls, duration) {
-        const initialDistance = camera.position.distanceTo(controls.target);
-        const zoomFactor = 0.5; // Adjust this factor for the desired zoom level
-
-        const newDistance = initialDistance * zoomFactor;
-        const direction = new THREE.Vector3()
-          .subVectors(camera.position, controls.target)
-          .normalize();
-        const newCameraPosition = new THREE.Vector3().addVectors(
-          controls.target,
-          direction.multiplyScalar(newDistance)
-        );
-
-        const tween = new TWEEN.Tween(camera.position)
-          .to(newCameraPosition, duration)
-          .easing(TWEEN.Easing.Quadratic.InOut)
-          .onUpdate(function () {
-            controls.update();
-          })
-          .start();
-
-        function animate(time) {
-          requestAnimationFrame(animate);
-          TWEEN.update(time);
-        }
-
-        animate();
-      }
-
-      // Event listener for adding a new bar
-      document.getElementById("addBarBtn").addEventListener("click", addBar);
-      document.getElementById("zoomOutBtn").addEventListener("click", zoomOut);
-      document.getElementById("zoomInBtn").addEventListener("click", zoomIn);
-
-      // Event listener for toggling bars
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get all the toggle buttons
-        const toggleButtons = document.querySelectorAll(".toggleButton");
-
-        // Add click event listeners to toggle buttons
-        toggleButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            const targetId = button.getAttribute("data-target");
-            toggleBarById(targetId);
-          });
-        });
-      });
-
-      function onMouseDown(event) {
-        console.log("onMouseDown");
-        // Calculate the mouse position in normalized device coordinates (NDC)
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        // Update the picking ray with the camera and mouse position
-        raycaster.setFromCamera(mouse, camera);
-
-        // Calculate objects intersecting the picking ray
-        const intersects = raycaster.intersectObjects(scene.children);
-
-        console.log("intersects", intersects);
-
-        if (intersects.length > 0) {
-          const clickedObject = intersects[0].object;
-          const cubeUserData = clickedObject.userData;
-
-          console.log("clickedObject", clickedObject);
-          console.log("cubeUserData", cubeUserData);
-
-          if (cubeUserData && cubeUserData.url) {
-            // Open the URL in a new tab when a cube is clicked
-            window.open(cubeUserData.url, "_blank");
-          }
-        }
-      }
-
-      // Function to create the 3D stacked bar chart
-      function createStackedBarChart(data) {
-        // Add this code at the beginning of your createStackedBarChart function
-
-        const renderer = new THREE.WebGLRenderer();
-        renderer.domElement.addEventListener("mousedown", onMouseDown, false);
-
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        );
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document
-          .getElementById("chartContainer")
-          .appendChild(renderer.domElement);
-
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-        const width = 0.6;
-        const depth = 0.6;
-        const gap = 0.6; // Increase the gap for more space between the bars
-
-        // Create each bar based on the data array
-        data.forEach((item, index) => {
-          const height = item.height * 0.6; // 40% smaller height for each bar
-
-          // Calculate the position for the bar in the grid
-          const row = Math.floor(index / 3);
-          const col = index % 3;
-          const x = (width + gap) * col - ((width + gap) * 2) / 2;
-          const z = (depth + gap) * row - ((depth + gap) * 2) / 2;
-
-          const bottomCube = createCube(
-            x,
-            0, // Bottom aligned on Y-axis
-            z,
-            width,
-            height / 3,
-            depth,
-            0xff0000,
-            0.8 // Set opacity to 0.8
-          ); // Red bottom cube
-
-          bottomCube.userData = {
-            id: `bar_${index}`,
-            url: "https://example.com",
-          };
-          scene.add(bottomCube);
-
-          const middleCube = createCube(
-            x,
-            height / 3,
-            z,
-            width,
-            height / 3,
-            depth,
-            0x00ff00,
-            0.8 // Set opacity to 0.8
-          ); // Green middle cube
-          scene.add(middleCube);
-
-          const topCube = createCube(
-            x,
-            (2 * height) / 3,
-            z,
-            width,
-            height / 3,
-            depth,
-            0x0000ff,
-            0.8 // Set opacity to 0.8
-          ); // Blue top cube
-          scene.add(topCube);
-
-          // Create and add a label for the current bar
-          const labelGeometry = new THREE.TextGeometry(item.label, {
-            font: font,
-            size: 0.1, // Adjust the size as needed
-            height: 0.01, // Adjust the height as needed
-          });
-
-          const labelMaterial = new THREE.MeshBasicMaterial({
-            color: 0xcccccc,
-          });
-          const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
-          labelMesh.position.set(x, height + 0.2, z); // Position above the bar
-          scene.add(labelMesh);
-        });
-
-        // Create the floor
-        createFloor();
-        // createLetterLabels();
-
-        // Lights
-        const light1 = new THREE.DirectionalLight(0xffffff, 1);
-        light1.position.set(1, 1, 1);
-        scene.add(light1);
-
-        const light2 = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(light2);
-
-        camera.position.set(-3, 2, 5); // Adjust camera position to better view the chart
-
-        const animate = function () {
-          requestAnimationFrame(animate);
-          renderer.render(scene, camera);
-          controls.update(); // Update the OrbitControls in the animation loop
-          // Update the camera position display
-          updateCameraPositionDisplay(camera);
-        };
-
-        animate();
-      }
-
-      // Load the font and initialize the scene
-      const letterLoader = new THREE.FontLoader();
-      letterLoader.load(
-        "https://cdn.rawgit.com/mrdoob/three.js/r125/examples/fonts/helvetiker_bold.typeface.json",
-        function (loadedFont) {
-          font = loadedFont;
-          // Define the data array with the number of bars to render
-          data = [
-            { height: 1.0, label: "Cube 1" },
-            { height: 1.25, label: "Cube 2" },
-            { height: 4.0, label: "Cube 3" },
-            { height: 2.5, label: "Cube 4" }, // Height of the first bar
-            { height: 1.5, label: "Cube 5" }, // Height of the second bar
-            { height: 3.0, label: "Cube 6" }, // Height of the third bar
-            { height: 1.0, label: "Cube 7" },
-            { height: 1.5, label: "Cube 8" },
-            { height: 2.0, label: "Cube 9" },
-            // Add more items here as needed
-          ];
-
-          createStackedBarChart(data);
-        }
-      );
-    </script>
   </body>
 </html>
