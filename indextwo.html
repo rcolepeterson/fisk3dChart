@@ -30,7 +30,8 @@
     <script>
       // Declare global variables
       let scene, camera;
-      const gridSize = 7;
+      const gridSizeX = 12; // Number of columns
+      const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
       const gap = 0.2;
 
@@ -50,13 +51,15 @@
         );
         gridTexture.wrapS = THREE.RepeatWrapping;
         gridTexture.wrapT = THREE.RepeatWrapping;
-        gridTexture.repeat.set(gridSize - 1, gridSize - 1);
+
+        // Adjust the repeat values for rows and columns
+        gridTexture.repeat.set(gridSizeX - 1, gridSizeY - 1);
 
         const floorGeometry = new THREE.PlaneGeometry(
-          gridSize,
-          gridSize,
-          gridSize - 1,
-          gridSize - 1
+          gridSizeX,
+          gridSizeY,
+          gridSizeX - 1,
+          gridSizeY - 1
         );
         const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -68,7 +71,7 @@
       // Function to create the scatter plot
       function createScatterPlot(data) {
         scene = new THREE.Scene();
-        // scene.scale.set(0.1, 0.1, 0.1);
+        scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
         camera = new THREE.PerspectiveCamera(
           75,
           window.innerWidth / window.innerHeight,
@@ -88,11 +91,11 @@
 
         // Create cubes based on JSON data points
         for (const dataPoint of data) {
-          const x = (dataPoint.x - 0.5) * gridSize;
-          const y = (dataPoint.y - 0.5) * gridSize;
-          const z = (dataPoint.y - 0.5) * gridSize;
-          const cube = createCube(x, 0, y, cubeSize, 0x00ff00);
-          //   const cube = createCube(x, y, z, cubeSize, 0x00ff00); // Adjust color as needed
+          const x = (dataPoint.x - 0.5) * gridSizeX;
+          const y = 0; // You can adjust the vertical position if needed
+          const z = (dataPoint.y - 0.5) * gridSizeY;
+
+          const cube = createCube(x, y, z, cubeSize, 0x00ff00); // Adjust color as needed
           scene.add(cube);
         }
 
@@ -117,9 +120,12 @@
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 0.1, y: 0.1 },
-        { x: 0.6, y: 0.4 },
-        { x: 0.3, y: 0.2 },
+        { x: 0.05, y: 0.1 },
+        { x: 0.1, y: 0.2 },
+        { x: 0.35, y: 0.9 },
+        { x: 0.9, y: 0.4 },
+        { x: 0.8, y: 0.9 },
+
         // Add more data points as needed
       ];
       createScatterPlot(jsonData);

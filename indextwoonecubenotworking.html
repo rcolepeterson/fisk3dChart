@@ -30,7 +30,7 @@
     <script>
       // Declare global variables
       let scene, camera;
-      const gridSize = 50;
+      const gridSize = 7;
       const cubeSize = 0.4;
       const gap = 0.2;
 
@@ -68,7 +68,6 @@
       // Function to create the scatter plot
       function createScatterPlot(data) {
         scene = new THREE.Scene();
-        scene.scale.set(0.1, 0.1, 0.1);
         camera = new THREE.PerspectiveCamera(
           75,
           window.innerWidth / window.innerHeight,
@@ -89,8 +88,8 @@
         // Create cubes based on JSON data points
         for (const dataPoint of data) {
           const x = (dataPoint.x - 0.5) * gridSize;
-          const y = 0; // You can adjust the vertical position if needed
-          const z = (dataPoint.y - 0.5) * gridSize;
+          const y = -cubeSize / 2;
+          const z = 0;
 
           const cube = createCube(x, y, z, cubeSize, 0x00ff00); // Adjust color as needed
           scene.add(cube);
@@ -104,8 +103,8 @@
         const light2 = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light2);
 
-        camera.position.set(-3, 2, 5);
-
+        camera.position.set(gridSize / 2, gridSize / 2, gridSize / 2); // Adjusted camera position
+        // camera.position.set(-3, 5, 2);
         const animate = function () {
           requestAnimationFrame(animate);
           renderer.render(scene, camera);
@@ -117,7 +116,7 @@
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 0.1, y: 0.9 },
+        { x: 0, y: 0 }, // Bottom-left corner
 
         // Add more data points as needed
       ];
