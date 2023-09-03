@@ -23,6 +23,8 @@
   <body>
     <div id="chartContainer"></div>
     <div id="cameraPosition"></div>
+    <div id="xAxisLabel" class="axis-label"></div>
+    <div id="yAxisLabel" class="axis-label"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
@@ -30,7 +32,7 @@
     <script>
       // Declare global variables
       let scene, camera;
-      const gridSizeX = 12; // Number of columns
+      const gridSizeX = 16; // Number of columns
       const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
       const gap = 0.2;
