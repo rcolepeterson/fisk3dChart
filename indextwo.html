@@ -6,6 +6,7 @@
       body {
         margin: 0;
         overflow: hidden;
+        background-color: white; /* Set the background color to white */
       }
       #chartContainer {
         width: 100%;
@@ -15,9 +16,6 @@
   </head>
   <body>
     <div id="chartContainer"></div>
-    <div id="cameraPosition"></div>
-    <div id="xAxisLabel" class="axis-label"></div>
-    <div id="yAxisLabel" class="axis-label"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
@@ -28,59 +26,7 @@
       const gridSizeX = 16; // Number of columns
       const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
-      const gap = 0.2;
-      // Function to create 3D text labels for tick marks on the y-axis
-      // Function to create 3D text labels for tick marks on the y-axis
-      // Function to create 3D text labels for tick marks on the y-axis
-      function createYAxisLabels() {
-        const tickValues = [16, 34, 51, 68, 84, 100]; // Values to display as tick marks
 
-        const fontLoader = new THREE.FontLoader();
-        const fontPath =
-          "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"; // Adjust the path to the font file
-
-        fontLoader.load(fontPath, function (font) {
-          for (const value of tickValues) {
-            const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Corrected position calculation
-
-            // Create 3D text geometry
-            const textGeometry = new THREE.TextGeometry(value.toString(), {
-              font: font,
-              size: 0.1, // Adjust the size as needed
-              height: 0.01, // Adjust the height as needed
-            });
-
-            const textMaterial = new THREE.MeshBasicMaterial({
-              color: 0xffffff,
-            }); // Text color
-            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-            textMesh.position.set(-gridSizeX / 2 - 0.3, 0, yPosition); // Adjust the position
-            textMesh.rotation.x = Math.PI / 2; // Rotate by 90 degrees around the x-axis
-            scene.add(textMesh);
-          }
-        });
-      }
-
-      // Function to create tick marks and labels on the y-axis
-      function createYAxisTicks() {
-        const tickValues = [16, 34, 51, 68, 84, 100]; // Values to display as tick marks
-
-        // Create tick marks and labels
-        for (const value of tickValues) {
-          // const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Adjusted position calculation
-          const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Adjusted position calculation
-
-          // Create a line for the tick mark (shorter tick)
-          const tickGeometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(-gridSizeX / 2 - 0.2, 0, yPosition), // Adjust the positions for the left side
-            new THREE.Vector3(-gridSizeX / 2 + 0.1, 0, yPosition), // Adjust the length of the tick mark
-          ]);
-
-          const tickMaterial = new THREE.LineBasicMaterial({ color: 0xffffff }); // Tick mark color
-          const tickLine = new THREE.Line(tickGeometry, tickMaterial);
-          scene.add(tickLine);
-        }
-      }
       // Function to create a single cube
       function createCube(x, y, z, size, color) {
         const geometry = new THREE.BoxGeometry(size, size, size);
@@ -90,6 +36,7 @@
         return cube;
       }
 
+      // Function to create the grid
       // Function to create the grid
       function createGrid() {
         const gridTexture = new THREE.TextureLoader().load(
@@ -107,7 +54,11 @@
           gridSizeX - 1,
           gridSizeY - 1
         );
-        const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
+        const floorMaterial = new THREE.MeshPhongMaterial({
+          map: gridTexture,
+          wireframe: true, // Display as wireframe
+          color: 0xcccccc, // Set the floor color to grey
+        });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -0.01;
@@ -126,6 +77,7 @@
         );
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff);
         document
           .getElementById("chartContainer")
           .appendChild(renderer.domElement);
@@ -138,7 +90,7 @@
           const y = 0; // You can adjust the vertical position if needed
           const z = (dataPoint.y - 0.5) * gridSizeY;
 
-          const cube = createCube(x, y, z, cubeSize, 0x00ff00); // Adjust color as needed
+          const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
           scene.add(cube);
         }
 
@@ -157,35 +109,41 @@
           renderer.render(scene, camera);
           controls.update();
         };
-        // Call createYAxisTicks after creating the grid
+
         createGrid();
-        createYAxisTicks();
-        createYAxisLabels();
 
         animate();
       }
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        // { x: 0.0, y: 0.15 },
-        // { x: 0.0, y: 0.3 },
-        // { x: 0.0, y: 0.47 },
-        // { x: 0.0, y: 0.9 },
-        // { x: 0.0, y: 0.9 },
-        // { x: 0.0, y: 0.9 },
-        // { x: 0.0, y: 1 },
-        { x: 0.75, y: 0.1 },
-        { x: 0.29, y: 0.1 },
-        { x: 0.8, y: 0.7 },
-        { x: 0.3, y: 0.6 },
-        { x: 0.4, y: 0.1 },
-        { x: 0.1, y: 0.2 },
-        { x: 0.35, y: 0.9 },
-        { x: 0.9, y: 0.4 },
-        { x: 0.8, y: 0.9 },
+        { x: 0.75, y: 0.1, color: 0x00ff00 },
+        { x: 0.29, y: 0.1, color: 0x022e53 },
+        { x: 0.8, y: 0.7, color: 0xad934b },
+        { x: 0.3, y: 0.6, color: 0xff0000 },
+        { x: 0.1, y: 0.6, color: 0xff0000 },
+        { x: 0.38, y: 0.8, color: 0xff0000 },
+        { x: 0.37, y: 0.6, color: 0xff0000 },
+        { x: 0.23, y: 0.65, color: 0xff0000 },
+        { x: 0.53, y: 0.6, color: 0xff0000 },
+        { x: 0.8, y: 0.7, color: 0xad934b },
+        { x: 0.28, y: 0.7, color: 0xad934b },
+        { x: 0.38, y: 0.3, color: 0xad934b },
+        { x: 0.2, y: 0.4, color: 0x022e53 },
+        { x: 0.9, y: 0.7, color: 0x022e53 },
+        { x: 0.95, y: 0.31, color: 0x00ff00 },
+        { x: 0.89, y: 0.31, color: 0x022e53 },
+        { x: 0.7, y: 0.8, color: 0xad934b },
+        { x: 0.6, y: 0.3, color: 0xff0000 },
+        { x: 0.5, y: 0.5, color: 0xad934b },
+        { x: 0.48, y: 0.4, color: 0xad934b },
+        { x: 0.68, y: 0.3, color: 0xad934b },
+        { x: 0.13, y: 0.2, color: 0x022e53 },
+        { x: 0.29, y: 0.1, color: 0x022e53 },
 
         // Add more data points as needed
       ];
+
       createScatterPlot(jsonData);
     </script>
   </body>
