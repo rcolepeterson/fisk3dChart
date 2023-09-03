@@ -29,9 +29,41 @@
       const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
       const gap = 0.2;
+      // Function to create 3D text labels for tick marks on the y-axis
+      // Function to create 3D text labels for tick marks on the y-axis
+      // Function to create 3D text labels for tick marks on the y-axis
+      function createYAxisLabels() {
+        const tickValues = [16, 34, 51, 68, 84, 100]; // Values to display as tick marks
+
+        const fontLoader = new THREE.FontLoader();
+        const fontPath =
+          "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"; // Adjust the path to the font file
+
+        fontLoader.load(fontPath, function (font) {
+          for (const value of tickValues) {
+            const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Corrected position calculation
+
+            // Create 3D text geometry
+            const textGeometry = new THREE.TextGeometry(value.toString(), {
+              font: font,
+              size: 0.1, // Adjust the size as needed
+              height: 0.01, // Adjust the height as needed
+            });
+
+            const textMaterial = new THREE.MeshBasicMaterial({
+              color: 0xffffff,
+            }); // Text color
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            textMesh.position.set(-gridSizeX / 2 - 0.3, 0, yPosition); // Adjust the position
+            textMesh.rotation.x = Math.PI / 2; // Rotate by 90 degrees around the x-axis
+            scene.add(textMesh);
+          }
+        });
+      }
+
       // Function to create tick marks and labels on the y-axis
       function createYAxisTicks() {
-        const tickValues = [100, 80, 60, 40, 20, 0]; // Values to display as tick marks
+        const tickValues = [16, 34, 51, 68, 84, 100]; // Values to display as tick marks
 
         // Create tick marks and labels
         for (const value of tickValues) {
@@ -40,23 +72,13 @@
 
           // Create a line for the tick mark (shorter tick)
           const tickGeometry = new THREE.BufferGeometry().setFromPoints([
-            new THREE.Vector3(-gridSizeX / 2, 0, yPosition), // Adjust the positions for the left side
-            new THREE.Vector3(-gridSizeX / 2 + 1, 0, yPosition), // Adjust the length of the tick mark
+            new THREE.Vector3(-gridSizeX / 2 - 0.2, 0, yPosition), // Adjust the positions for the left side
+            new THREE.Vector3(-gridSizeX / 2 + 0.1, 0, yPosition), // Adjust the length of the tick mark
           ]);
 
-          const tickMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // Tick mark color
+          const tickMaterial = new THREE.LineBasicMaterial({ color: 0xffffff }); // Tick mark color
           const tickLine = new THREE.Line(tickGeometry, tickMaterial);
           scene.add(tickLine);
-          // Create text labels
-          const label = document.createElement("div");
-          label.className = "axis-label";
-          label.style.position = "absolute";
-          label.style.left = "5px"; // Adjust the left position as needed
-          label.style.top =
-            (1 - (yPosition + gridSizeY / 2) / gridSizeY) * window.innerHeight +
-            "px"; // Convert y position to pixels
-          label.textContent = value;
-          document.getElementById("yAxisLabel").appendChild(label);
         }
       }
       // Function to create a single cube
@@ -138,28 +160,29 @@
         // Call createYAxisTicks after creating the grid
         createGrid();
         createYAxisTicks();
+        createYAxisLabels();
 
         animate();
       }
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 0.0, y: 0.15 },
-        { x: 0.0, y: 0.3 },
-        { x: 0.0, y: 0.47 },
-        { x: 0.0, y: 0.9 },
-        { x: 0.0, y: 0.9 },
-        { x: 0.0, y: 0.9 },
-        { x: 0.0, y: 1 },
-        // { x: 0.0, y: 0.1 },
-        // { x: 0.0, y: 0.1 },
-        // { x: 0.0, y: 0.1 },
-        // { x: 0.0, y: 0.1 },
-        // { x: 0.0, y: 0.1 },
-        // { x: 0.1, y: 0.2 },
-        // { x: 0.35, y: 0.9 },
-        // { x: 0.9, y: 0.4 },
-        // { x: 0.8, y: 0.9 },
+        // { x: 0.0, y: 0.15 },
+        // { x: 0.0, y: 0.3 },
+        // { x: 0.0, y: 0.47 },
+        // { x: 0.0, y: 0.9 },
+        // { x: 0.0, y: 0.9 },
+        // { x: 0.0, y: 0.9 },
+        // { x: 0.0, y: 1 },
+        { x: 0.75, y: 0.1 },
+        { x: 0.29, y: 0.1 },
+        { x: 0.8, y: 0.7 },
+        { x: 0.3, y: 0.6 },
+        { x: 0.4, y: 0.1 },
+        { x: 0.1, y: 0.2 },
+        { x: 0.35, y: 0.9 },
+        { x: 0.9, y: 0.4 },
+        { x: 0.8, y: 0.9 },
 
         // Add more data points as needed
       ];
