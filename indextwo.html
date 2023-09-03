@@ -11,13 +11,6 @@
         width: 100%;
         height: 100vh;
       }
-
-      #cameraPosition {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        color: white;
-      }
     </style>
   </head>
   <body>
@@ -36,7 +29,36 @@
       const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
       const gap = 0.2;
+      // Function to create tick marks and labels on the y-axis
+      function createYAxisTicks() {
+        const tickValues = [100, 80, 60, 40, 20, 0]; // Values to display as tick marks
 
+        // Create tick marks and labels
+        for (const value of tickValues) {
+          // const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Adjusted position calculation
+          const yPosition = (value / 100) * gridSizeY - gridSizeY / 2; // Adjusted position calculation
+
+          // Create a line for the tick mark (shorter tick)
+          const tickGeometry = new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(-gridSizeX / 2, 0, yPosition), // Adjust the positions for the left side
+            new THREE.Vector3(-gridSizeX / 2 + 1, 0, yPosition), // Adjust the length of the tick mark
+          ]);
+
+          const tickMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // Tick mark color
+          const tickLine = new THREE.Line(tickGeometry, tickMaterial);
+          scene.add(tickLine);
+          // Create text labels
+          const label = document.createElement("div");
+          label.className = "axis-label";
+          label.style.position = "absolute";
+          label.style.left = "5px"; // Adjust the left position as needed
+          label.style.top =
+            (1 - (yPosition + gridSizeY / 2) / gridSizeY) * window.innerHeight +
+            "px"; // Convert y position to pixels
+          label.textContent = value;
+          document.getElementById("yAxisLabel").appendChild(label);
+        }
+      }
       // Function to create a single cube
       function createCube(x, y, z, size, color) {
         const geometry = new THREE.BoxGeometry(size, size, size);
@@ -88,9 +110,6 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        // Create the grid
-        createGrid();
-
         // Create cubes based on JSON data points
         for (const dataPoint of data) {
           const x = (dataPoint.x - 0.5) * gridSizeX;
@@ -116,17 +135,31 @@
           renderer.render(scene, camera);
           controls.update();
         };
+        // Call createYAxisTicks after creating the grid
+        createGrid();
+        createYAxisTicks();
 
         animate();
       }
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 0.05, y: 0.1 },
-        { x: 0.1, y: 0.2 },
-        { x: 0.35, y: 0.9 },
-        { x: 0.9, y: 0.4 },
-        { x: 0.8, y: 0.9 },
+        { x: 0.0, y: 0.15 },
+        { x: 0.0, y: 0.3 },
+        { x: 0.0, y: 0.47 },
+        { x: 0.0, y: 0.9 },
+        { x: 0.0, y: 0.9 },
+        { x: 0.0, y: 0.9 },
+        { x: 0.0, y: 1 },
+        // { x: 0.0, y: 0.1 },
+        // { x: 0.0, y: 0.1 },
+        // { x: 0.0, y: 0.1 },
+        // { x: 0.0, y: 0.1 },
+        // { x: 0.0, y: 0.1 },
+        // { x: 0.1, y: 0.2 },
+        // { x: 0.35, y: 0.9 },
+        // { x: 0.9, y: 0.4 },
+        // { x: 0.8, y: 0.9 },
 
         // Add more data points as needed
       ];
