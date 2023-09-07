@@ -49,33 +49,40 @@
     </style>
   </head>
   <body>
-    <div id="chartContainer">
-      <div class="axis x-axis"></div>
-      <div class="axis y-axis"></div>
-      <!-- Add X-axis tick marks and labels -->
-      <div class="tick" style="left: 10%; bottom: 0"></div>
-      <div class="tick" style="left: 30%; bottom: 0"></div>
-      <div class="tick" style="left: 50%; bottom: 0"></div>
-      <div class="tick" style="left: 70%; bottom: 0"></div>
-      <div class="tick" style="left: 90%; bottom: 0"></div>
-      <div class="tick-label" style="left: 10%; bottom: -15px">0</div>
-      <div class="tick-label" style="left: 30%; bottom: -15px">30</div>
-      <div class="tick-label" style="left: 50%; bottom: -15px">50</div>
-      <div class="tick-label" style="left: 70%; bottom: -15px">70</div>
-      <div class="tick-label" style="left: 90%; bottom: -15px">100</div>
-      <!-- Add Y-axis tick marks and labels -->
-      <div class="tick" style="top: 10%; left: 0"></div>
-      <div class="tick" style="top: 30%; left: 0"></div>
-      <div class="tick" style="top: 50%; left: 0"></div>
-      <div class="tick" style="top: 70%; left: 0"></div>
-      <div class="tick" style="top: 90%; left: 0"></div>
-      <div class="tick-label" style="top: 10%">0</div>
-      <div class="tick-label" style="top: 30%">30</div>
-      <div class="tick-label" style="top: 50%">50</div>
-      <div class="tick-label" style="top: 70%">70</div>
-      <div class="tick-label" style="top: 90%">100</div>
-      <!-- Square at (60, 60) -->
-      <div class="square"></div>
-    </div>
+    <script>
+      function mapValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the range [min2, max2]
+        var mappedValue =
+          ((value - min1) * (max2 - min2)) / (max1 - min1) + min2;
+
+        return mappedValue;
+      }
+
+      // Example usage for X (unchanged):
+      var xValueToMap = 60; // This value is in the range [0, 140]
+      var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+
+      console.log("Mapped X:", mappedXValue);
+
+      function mapYValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the inverted range [min2, max2]
+        var mappedValue = (max1 - value) / (max1 - min1);
+
+        return mappedValue;
+      }
+
+      // Example usage for Y (inverted):
+      var yValueToMap = 40; // This value is in the range [0, 120]
+      var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
+      console.log("Mapped Y:", mappedYValue);
+    </script>
+    <div id="chartContainer"></div>
   </body>
 </html>
