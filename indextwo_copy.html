@@ -6,34 +6,37 @@
       body {
         margin: 0;
         overflow: hidden;
+        background-color: white; /* Set the background color to white */
+        display: flex; /* Use flexbox for layout */
+      }
+      #textContainer {
+        width: 25%;
+        padding: 20px;
       }
       #chartContainer {
-        width: 100%;
-        height: 100vh;
-      }
-
-      #cameraPosition {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        color: white;
+        width: 75%;
       }
     </style>
   </head>
   <body>
+    <div id="textContainer">
+      <h2>HTML Text</h2>
+      <p>
+        This is the HTML text content displayed in the first 25% of the page.
+      </p>
+    </div>
+
     <div id="chartContainer"></div>
-    <div id="cameraPosition"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
 
     <script>
       // Declare global variables
-      let scene, camera, data;
-      const gridSize = 4;
-      const numDataPoints = 16; // Change this to the number of data points you want
-      const cubeSize = 0.4; // Adjusted size of the cubes
-      const gap = 0.2; // Adjusted gap between cubes
+      let scene, camera;
+      const gridSizeX = 16; // Number of columns
+      const gridSizeY = 7; // Number of rows
+      const cubeSize = 0.4;
 
       // Function to create a single cube
       function createCube(x, y, z, size, color) {
@@ -51,50 +54,82 @@
         );
         gridTexture.wrapS = THREE.RepeatWrapping;
         gridTexture.wrapT = THREE.RepeatWrapping;
-        gridTexture.repeat.set(gridSize - 1, gridSize - 1);
+
+        // Adjust the repeat values for rows and columns
+        gridTexture.repeat.set(gridSizeX - 1, gridSizeY - 1);
 
         const floorGeometry = new THREE.PlaneGeometry(
-          gridSize,
-          gridSize,
-          gridSize - 1,
-          gridSize - 1
+          gridSizeX,
+          gridSizeY,
+          gridSizeX - 1,
+          gridSizeY - 1
         );
-        const floorMaterial = new THREE.MeshBasicMaterial({ map: gridTexture });
+        const floorMaterial = new THREE.MeshPhongMaterial({
+          map: gridTexture,
+          wireframe: true, // Display as wireframe
+          color: 0xcccccc, // Set the floor color to grey
+        });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -0.01;
         scene.add(floor);
       }
 
+      function mapValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the range [min2, max2]
+        var mappedValue =
+          ((value - min1) * (max2 - min2)) / (max1 - min1) + min2;
+
+        return mappedValue;
+      }
+
+      function mapYValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the inverted range [min2, max2]
+        var mappedValue = (max1 - value) / (max1 - min1);
+
+        return mappedValue;
+      }
+
       // Function to create the scatter plot
       function createScatterPlot(data) {
         scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(
-          75,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000
-        );
+        scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
+
+        // Calculate the width for the chart container
+        const chartWidth = window.innerWidth * 0.75;
+
+        // Update the aspect ratio based on the chart width
+        const aspectRatio = chartWidth / window.innerHeight;
+
+        camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Set the size of the renderer to match the chart width
+        renderer.setSize(chartWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff);
         document
           .getElementById("chartContainer")
           .appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        // Create the grid
-        createGrid();
+        // Create cubes based on JSON data points
+        for (const dataPoint of data) {
+          var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
+          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var yValueToMap = dataPoint.y; // This value is in the range [0, 120]
+          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+          const x = (mappedXValue - 0.5) * gridSizeX;
+          const y = 0; // You can adjust the vertical position if needed
+          const z = (mappedYValue - 0.5) * gridSizeY;
 
-        // Generate random data points (cubes) within the grid
-        for (let i = 0; i < data.length; i++) {
-          const x =
-            (Math.random() * (gridSize - 1) - (gridSize - 1) / 2) *
-            (cubeSize + gap);
-          const z =
-            (Math.random() * (gridSize - 1) - (gridSize - 1) / 2) *
-            (cubeSize + gap);
-          const cube = createCube(x, 0, z, cubeSize, 0x00ff00); // Adjust color as needed
+          const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
           scene.add(cube);
         }
 
@@ -114,12 +149,19 @@
           controls.update();
         };
 
+        createGrid();
+
         animate();
       }
 
-      // Initialize the scene with the specified number of data points
-      data = new Array(numDataPoints).fill(null);
-      createScatterPlot(data);
+      // Initialize the scene with JSON data points
+      const jsonData = [
+        { x: 40, y: 40, color: 0x00fff },
+        { x: 140, y: 10, color: 0x00fff },
+        { x: 10, y: 120, color: 0x00fff },
+      ];
+
+      createScatterPlot(jsonData);
     </script>
   </body>
 </html>

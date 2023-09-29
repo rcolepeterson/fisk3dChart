@@ -64,6 +64,71 @@
         floor.position.y = -0.01;
         scene.add(floor);
       }
+      function mapValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the range [min2, max2]
+        var mappedValue =
+          ((value - min1) * (max2 - min2)) / (max1 - min1) + min2;
+
+        return mappedValue;
+      }
+      function mapYValue(value, min1, max1, min2, max2) {
+        // Ensure the value is within the range [min1, max1]
+        value = Math.min(Math.max(value, min1), max1);
+
+        // Calculate the mapped value in the inverted range [min2, max2]
+        var mappedValue = (max1 - value) / (max1 - min1);
+
+        return mappedValue;
+      }
+
+      function createRowLabel(rowNumber) {
+        const labelCanvas = document.createElement("canvas");
+        const context = labelCanvas.getContext("2d");
+        context.font = "12px Arial";
+        context.fillStyle = "black"; // Set the text color
+
+        // Create the text for the label (you can customize this)
+        const labelText = `Row ${rowNumber + 1}`;
+
+        // Measure the text size
+        const textMetrics = context.measureText(labelText);
+
+        // Set the canvas size based on the text size
+        labelCanvas.width = textMetrics.width;
+        labelCanvas.height = 12; // Adjust the height as needed
+
+        // Draw the text on the canvas
+        context.fillText(labelText, 0, 10); // Adjust the position as needed
+
+        // Create a texture from the canvas
+        const labelTexture = new THREE.CanvasTexture(labelCanvas);
+
+        // Create a material using the texture
+        const labelMaterial = new THREE.MeshBasicMaterial({
+          map: labelTexture,
+        });
+
+        // Create a plane with the label
+        const labelMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(
+            labelCanvas.width / 200,
+            labelCanvas.height / 200
+          ), // Adjust the size as needed
+          labelMaterial
+        );
+
+        // Position the label to the left of the row
+        labelMesh.position.set(
+          -gridSizeX / 2 - 0.5,
+          0,
+          (rowNumber - gridSizeY / 2) * cubeSize
+        );
+
+        return labelMesh;
+      }
 
       // Function to create the scatter plot
       function createScatterPlot(data) {
@@ -86,9 +151,13 @@
 
         // Create cubes based on JSON data points
         for (const dataPoint of data) {
-          const x = (dataPoint.x - 0.5) * gridSizeX;
+          var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
+          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var yValueToMap = dataPoint.y; // This value is in the range [0, 120]
+          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+          const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0; // You can adjust the vertical position if needed
-          const z = (dataPoint.y - 0.5) * gridSizeY;
+          const z = (mappedYValue - 0.5) * gridSizeY;
 
           const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
           scene.add(cube);
@@ -117,31 +186,9 @@
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 0.4, y: 0.6666666666666666, color: 0x00fff },
-        // { x: 0, y: 0, color: 0x00fff },
-        // { x: 1, y: 0.7, color: 0x00fff },
-        // { x: 0.3, y: 0.6, color: 0xff0000 },
-        // { x: 0.1, y: 0.6, color: 0xff0000 },
-        // { x: 0.38, y: 0.8, color: 0xff0000 },
-        // { x: 0.37, y: 0.6, color: 0xff0000 },
-        // { x: 0.23, y: 0.65, color: 0xff0000 },
-        // { x: 0.53, y: 0.6, color: 0xff0000 },
-        // { x: 0.8, y: 0.7, color: 0xad934b },
-        // { x: 0.28, y: 0.7, color: 0xad934b },
-        // { x: 0.38, y: 0.3, color: 0xad934b },
-        // { x: 0.2, y: 0.4, color: 0x022e53 },
-        // { x: 0.9, y: 0.7, color: 0x022e53 },
-        // { x: 0.95, y: 0.31, color: 0x00ff00 },
-        // { x: 0.89, y: 0.31, color: 0x022e53 },
-        // { x: 0.7, y: 0.8, color: 0xad934b },
-        // { x: 0.6, y: 0.3, color: 0xff0000 },
-        // { x: 0.5, y: 0.5, color: 0xad934b },
-        // { x: 0.48, y: 0.4, color: 0xad934b },
-        // { x: 0.68, y: 0.3, color: 0xad934b },
-        // { x: 0.13, y: 0.2, color: 0x022e53 },
-        // { x: 0.29, y: 0.1, color: 0x022e53 },
-
-        // Add more data points as needed
+        { x: 40, y: 40, color: 0x00fff },
+        { x: 140, y: 10, color: 0x00fff },
+        { x: 10, y: 120, color: 0x00fff },
       ];
 
       createScatterPlot(jsonData);
