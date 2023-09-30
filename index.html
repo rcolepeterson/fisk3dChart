@@ -92,8 +92,118 @@
         `;
       }
 
-      // Function to create the scatter plot
+      // Function to create and position labels based on yAxisValues
+      function createYAxisLabels(yAxisValues) {
+        for (let i = 0; i < yAxisValues.length; i++) {
+          let yPoint = yAxisValues[i];
+          var xValueToMap = yPoint.x; // This value is in the range [0, 140]
+          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var yValueToMap = yPoint.y; // This value is in the range [0, 120]
+          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
+          const x = (mappedXValue - 0.5) * gridSizeX;
+          const y = 0; // You can adjust the vertical position if needed
+          const z = (mappedYValue - 0.5) * gridSizeY;
+
+          const labelGeometry = new THREE.TextGeometry(yPoint.label + " -", {
+            font: font,
+            size: 0.2, // Adjust the size as needed
+            height: 0.01, // Adjust the height as needed
+          });
+
+          const labelMaterial = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+          });
+
+          const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
+
+          // Rotate the label to be vertical
+          labelMesh.rotation.x = -Math.PI / 2;
+
+          const labelX = gridSizeX / 2 - cubeSize / 2 + 1.1; // Adjust the X position to right-align the text
+          const labelY = 0;
+          const labelZ = z;
+
+          labelMesh.position.set(-8.75, labelY, labelZ);
+
+          scene.add(labelMesh);
+        }
+      }
+      function createYAxisLabels(yAxisValues) {
+        for (let i = 0; i < yAxisValues.length; i++) {
+          let yPoint = yAxisValues[i];
+          var xValueToMap = yPoint.x; // This value is in the range [0, 140]
+          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var yValueToMap = yPoint.y; // This value is in the range [0, 120]
+          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
+          const x = (mappedXValue - 0.5) * gridSizeX;
+          const y = 0; // You can adjust the vertical position if needed
+          const z = (mappedYValue - 0.5) * gridSizeY;
+
+          const labelGeometry = new THREE.TextGeometry(yPoint.label, {
+            font: font,
+            size: 0.2, // Adjust the size as needed
+            height: 0.01, // Adjust the height as needed
+          });
+
+          const labelMaterial = new THREE.MeshBasicMaterial({
+            color: 0x999999,
+          });
+
+          const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
+
+          // Rotate the label to be vertical
+          labelMesh.rotation.x = -Math.PI / 2;
+
+          const labelX = gridSizeX / 2 - cubeSize / 2 + 1.1; // Adjust the X position to right-align the text
+          const labelY = 0;
+          const labelZ = z;
+
+          labelMesh.position.set(-8.75, labelY, labelZ);
+
+          scene.add(labelMesh);
+        }
+      }
+
+      function createXAxisLabels(xAxisValues) {
+        for (let i = 0; i < xAxisValues.length; i++) {
+          let xPoint = xAxisValues[i];
+          var xValueToMap = xPoint.x; // This value is in the range [0, 150]
+          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var yValueToMap = xPoint.y; // This value is in the range [0, 120]
+          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
+          const x = (mappedXValue - 0.5) * gridSizeX;
+          const y = 0; // You can adjust the vertical position if needed
+          const z = (mappedYValue - 0.5) * gridSizeY;
+
+          const labelGeometry = new THREE.TextGeometry(xPoint.label, {
+            font: font,
+            size: 0.2, // Adjust the size as needed
+            height: 0.01, // Adjust the height as needed
+          });
+
+          const labelMaterial = new THREE.MeshBasicMaterial({
+            color: 0x999999,
+          });
+
+          const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
+
+          // Rotate the label to be vertical
+          labelMesh.rotation.x = -Math.PI / 2;
+
+          const labelX = x;
+          const labelY = 0;
+          const labelZ = gridSizeY / 2 - cubeSize / 2 + 0.5; // Adjust the Z position to align with the bottom
+
+          labelMesh.position.set(labelX, labelY, labelZ);
+
+          scene.add(labelMesh);
+        }
+      }
+
+      // In your createScatterPlot method, call createYAxisLabels
       function createScatterPlot(data) {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -115,11 +225,11 @@
         // Load the font using FontLoader
         const loader = new THREE.FontLoader();
         loader.load(
-          "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
+          "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
           function (loadedFont) {
             font = loadedFont; // Store the loaded font
 
-            // Create cubes and labels based on JSON data points
+            // Create cubes based on JSON data points
             for (let i = 0; i < data.length; i++) {
               const dataPoint = data[i];
               var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
@@ -137,57 +247,29 @@
               scene.add(cube);
             }
 
-            let yAxisValues = [
-              { x: 0, y: 100, z: -2.3333333333333335, label: "100" },
-              { x: 0, y: 80, z: -3.3333333333333335, label: "80" },
-              { x: 0, y: 60, z: -3.3333333333333335, label: "60" },
-              { x: 0, y: 40, z: -3.3333333333333335, label: "40" },
-              { x: 0, y: 20, z: -3.3333333333333335, label: "20" },
-              { x: 0, y: 0, z: -3.3333333333333335, label: "0" },
-            ];
-            for (let i = 0; i < yAxisValues.length; i++) {
-              let yPoint = yAxisValues[i];
-              var xValueToMap = yPoint.x; // This value is in the range [0, 140]
-              var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
-              var yValueToMap = yPoint.y; // This value is in the range [0, 120]
-              var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
-
-              const x = (mappedXValue - 0.5) * gridSizeX;
-              const y = 0; // You can adjust the vertical position if needed
-              const z = (mappedYValue - 0.5) * gridSizeY;
-
-              console.log(x, y, z);
-
-              const labelGeometry = new THREE.TextGeometry(
-                yPoint.label + " -",
-                {
-                  font: font,
-                  size: 0.2, // Adjust the size as needed
-                  height: 0.01, // Adjust the height as needed
-                }
-              );
-
-              const labelMaterial = new THREE.MeshBasicMaterial({
-                color: 0x000000,
+            // Define your yAxisValues using a loop
+            let yAxisValues = [];
+            for (let y = 100; y >= 0; y -= 20) {
+              yAxisValues.push({
+                x: 0,
+                y,
+                z: -3.3333333333333335,
+                label: y.toString(),
               });
-
-              const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
-
-              // Rotate the label to be vertical
-              labelMesh.rotation.x = -Math.PI / 2;
-
-              labelMesh.rotation.x = -Math.PI / 2;
-
-              const labelX = gridSizeX / 2 - cubeSize / 2 + 1.1; // Adjust the X position to right-align the text
-              const labelY = 0;
-              const labelZ = z;
-
-              labelMesh.position.set(-8.75, labelY, labelZ);
-
-              // labelMesh.position.set(-8.75, y, z);
-
-              scene.add(labelMesh);
             }
+
+            // Call the createYAxisLabels method
+            createYAxisLabels(yAxisValues);
+
+            // Define an array to store X-axis values
+            const xAxisValues = [];
+
+            // Create X-axis labels from 0 to 140 with a step of 10
+            for (let x = 0; x <= 140; x += 10) {
+              xAxisValues.push({ x, y: 0, label: x.toString() });
+            }
+            // Call the function to create X-axis labels
+            createXAxisLabels(xAxisValues);
 
             // Lights
             const light1 = new THREE.DirectionalLight(0xffffff, 1);
