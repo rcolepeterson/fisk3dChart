@@ -67,7 +67,6 @@
         });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2;
-        floor.position.y = -0.01;
         scene.add(floor);
       }
 
@@ -94,6 +93,7 @@
       }
 
       // Function to create the scatter plot
+
       function createScatterPlot(data) {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -119,60 +119,74 @@
           function (loadedFont) {
             font = loadedFont; // Store the loaded font
 
-            // Create Y-axis labels
-            const yLabels = ["0", "20", "40", "60", "80", "100", "120"]; // Customize the labels as needed
-
-            // Set the label material once
-            const labelMaterial = new THREE.MeshBasicMaterial({
-              color: 0x000000,
-            });
-
-            const labelSpacingY = gridSizeY / (yLabels.length - 1);
-
-            for (let i = 0; i < yLabels.length; i++) {
-              const labelGeometry = new THREE.TextGeometry(yLabels[i], {
-                font: font,
-                size: 0.3, // Adjust the size as needed
-                height: 0.01, // Adjust the height as needed
-              });
-
-              const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
-              labelMesh.position.set(-0.5, 0.2 + i * labelSpacingY, 0); // Adjust the position as needed
-              scene.add(labelMesh);
-            }
-
-            // Add Y-axis line
-            const yAxisGeometry = new THREE.BufferGeometry();
-            const yAxisVertices = new Float32Array([
-              -0.5,
-              0,
-              0,
-              -0.5,
-              gridSizeY,
-              0,
-            ]); // Adjust the length as needed
-            yAxisGeometry.setAttribute(
-              "position",
-              new THREE.BufferAttribute(yAxisVertices, 3)
-            );
-            const yAxisMaterial = new THREE.LineBasicMaterial({
-              color: 0x000000,
-            });
-            const yAxisLine = new THREE.Line(yAxisGeometry, yAxisMaterial);
-            scene.add(yAxisLine);
-
-            // Create cubes based on JSON data points
-            for (const dataPoint of data) {
+            // Create cubes and labels based on JSON data points
+            for (let i = 0; i < data.length; i++) {
+              const dataPoint = data[i];
               var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
               var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
               var yValueToMap = dataPoint.y; // This value is in the range [0, 120]
               var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
               const x = (mappedXValue - 0.5) * gridSizeX;
               const y = 0; // You can adjust the vertical position if needed
               const z = (mappedYValue - 0.5) * gridSizeY;
 
+              console.log(x, y, z);
+
               const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
               scene.add(cube);
+            }
+
+            let yAxisValues = [
+              { x: 0, y: 100, z: -2.3333333333333335, label: "100" },
+              { x: 0, y: 80, z: -3.3333333333333335, label: "80" },
+              { x: 0, y: 60, z: -3.3333333333333335, label: "60" },
+              { x: 0, y: 40, z: -3.3333333333333335, label: "40" },
+              { x: 0, y: 20, z: -3.3333333333333335, label: "20" },
+              { x: 0, y: 0, z: -3.3333333333333335, label: "0" },
+            ];
+            for (let i = 0; i < yAxisValues.length; i++) {
+              let yPoint = yAxisValues[i];
+              var xValueToMap = yPoint.x; // This value is in the range [0, 140]
+              var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+              var yValueToMap = yPoint.y; // This value is in the range [0, 120]
+              var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
+              const x = (mappedXValue - 0.5) * gridSizeX;
+              const y = 0; // You can adjust the vertical position if needed
+              const z = (mappedYValue - 0.5) * gridSizeY;
+
+              console.log(x, y, z);
+
+              const labelGeometry = new THREE.TextGeometry(
+                yPoint.label + " -",
+                {
+                  font: font,
+                  size: 0.2, // Adjust the size as needed
+                  height: 0.01, // Adjust the height as needed
+                }
+              );
+
+              const labelMaterial = new THREE.MeshBasicMaterial({
+                color: 0x000000,
+              });
+
+              const labelMesh = new THREE.Mesh(labelGeometry, labelMaterial);
+
+              // Rotate the label to be vertical
+              labelMesh.rotation.x = -Math.PI / 2;
+
+              labelMesh.rotation.x = -Math.PI / 2;
+
+              const labelX = gridSizeX / 2 - cubeSize / 2 + 1.1; // Adjust the X position to right-align the text
+              const labelY = 0;
+              const labelZ = z;
+
+              labelMesh.position.set(-8.75, labelY, labelZ);
+
+              // labelMesh.position.set(-8.75, y, z);
+
+              scene.add(labelMesh);
             }
 
             // Lights
@@ -193,7 +207,6 @@
             };
 
             createGrid();
-
             animate();
           }
         );
@@ -223,9 +236,11 @@
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 40, y: 40, color: 0x00fff },
-        { x: 140, y: 10, color: 0x00fff },
-        { x: 10, y: 120, color: 0x00fff },
+        { x: 30, y: 90, color: 0x00fff, label: "A" },
+        { x: 10, y: 60, color: 0x00fff, label: "B" },
+        { x: 10, y: 10, color: 0x00fff, label: "A" },
+        { x: 80, y: 80, color: 0x00fff, label: "B" },
+        { x: 70, y: 110, color: 0x00fff, label: "A" },
       ];
 
       createScatterPlot(jsonData);
