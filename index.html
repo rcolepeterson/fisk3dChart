@@ -12,9 +12,16 @@
         width: 100%;
         height: 100vh;
       }
+      #cameraPosition {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: red;
+      }
     </style>
   </head>
   <body>
+    <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
@@ -62,6 +69,28 @@
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -0.01;
         scene.add(floor);
+      }
+
+      // Function to display camera position
+      function updateCameraPositionDisplay(camera) {
+        const cameraPositionElement = document.getElementById("cameraPosition");
+        const position = camera.position;
+        const rotation = camera.rotation;
+
+        // Round the values for display
+        const posX = position.x.toFixed(2);
+        const posY = position.y.toFixed(2);
+        const posZ = position.z.toFixed(2);
+        const rotX = THREE.MathUtils.radToDeg(rotation.x).toFixed(2);
+        const rotY = THREE.MathUtils.radToDeg(rotation.y).toFixed(2);
+        const rotZ = THREE.MathUtils.radToDeg(rotation.z).toFixed(2);
+
+        // Update the HTML element
+        cameraPositionElement.innerHTML = `
+          Camera Position:<br>
+          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+        `;
       }
 
       // Function to create the scatter plot
@@ -160,25 +189,10 @@
               requestAnimationFrame(animate);
               renderer.render(scene, camera);
               controls.update();
+              updateCameraPositionDisplay(camera);
             };
 
             createGrid();
-
-            // Add a label at a specific position
-            const labelGeometry = new THREE.TextGeometry("Test Label", {
-              font: font,
-              size: 0.8, // Adjust the size as needed
-              height: 0.01, // Adjust the height as needed
-            });
-
-            const labelMesh = new THREE.Mesh(
-              labelGeometry,
-              new THREE.MeshBasicMaterial({
-                color: 0x000000,
-              })
-            );
-            labelMesh.position.set(0, 1, 0); // Adjust the position as needed
-            scene.add(labelMesh);
 
             animate();
           }
