@@ -16,7 +16,6 @@
         position: absolute;
         top: 10px;
         left: 10px;
-        color: red;
       }
     </style>
   </head>
@@ -96,7 +95,7 @@
         for (let i = 0; i < yAxisValues.length; i++) {
           let yPoint = yAxisValues[i];
           var xValueToMap = yPoint.x; // This value is in the range [0, 140]
-          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
           var yValueToMap = yPoint.y; // This value is in the range [0, 120]
           var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
@@ -133,7 +132,7 @@
         for (let i = 0; i < xAxisValues.length; i++) {
           let xPoint = xAxisValues[i];
           var xValueToMap = xPoint.x; // This value is in the range [0, 150]
-          var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+          var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
           var yValueToMap = xPoint.y; // This value is in the range [0, 120]
           var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
@@ -166,7 +165,6 @@
         }
       }
 
-      // In your createScatterPlot method, call createYAxisLabels
       function createScatterPlot(data) {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -196,7 +194,7 @@
             for (let i = 0; i < data.length; i++) {
               const dataPoint = data[i];
               var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
-              var mappedXValue = mapValue(xValueToMap, 0, 150, 0, 1);
+              var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
               var yValueToMap = dataPoint.y; // This value is in the range [0, 120]
               var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
@@ -257,8 +255,7 @@
         );
       }
 
-      // Function to create the scatter plot
-      function mapValue(value, min1, max1, min2, max2) {
+      function mapXValue(value, min1, max1, min2, max2) {
         // Ensure the value is within the range [min1, max1]
         value = Math.min(Math.max(value, min1), max1);
 
@@ -281,11 +278,11 @@
 
       // Initialize the scene with JSON data points
       const jsonData = [
-        { x: 30, y: 90, color: 0x00fff, label: "A" },
-        { x: 10, y: 60, color: 0x00fff, label: "B" },
-        { x: 10, y: 10, color: 0x00fff, label: "A" },
-        { x: 80, y: 80, color: 0x00fff, label: "B" },
-        { x: 70, y: 110, color: 0x00fff, label: "A" },
+        { x: 30, y: 90, color: 0x00fff },
+        { x: 10, y: 60, color: 0x00fff },
+        { x: 10, y: 10, color: 0x444444 },
+        { x: 80, y: 80, color: 0xcccccc },
+        { x: 70, y: 110, color: 0x00fff },
       ];
 
       createScatterPlot(jsonData);
