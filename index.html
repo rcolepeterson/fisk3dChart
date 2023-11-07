@@ -39,9 +39,8 @@
         "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
         function (loadedFont) {
           font = loadedFont; // Store the loaded font
-
-          // Continue with the rest of the code
-          createScatterPlot();
+          // Continue with loading JSON data
+          loadJSONData();
         }
       );
 
@@ -195,15 +194,6 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        // Create cubes based on JSON data points
-        const jsonData = [
-          { x: 30, y: 90, color: 0x00fff },
-          { x: 10, y: 60, color: 0x00fff },
-          { x: 10, y: 10, color: 0x444444 },
-          { x: 80, y: 80, color: 0xcccccc },
-          { x: 70, y: 110, color: 0x00fff },
-        ];
-
         for (let i = 0; i < jsonData.length; i++) {
           const dataPoint = jsonData[i];
           var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
@@ -214,9 +204,6 @@
           const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0; // You can adjust the vertical position if needed
           const z = (mappedYValue - 0.5) * gridSizeY;
-
-          console.log(x, y, z);
-
           const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
           scene.add(cube);
         }
@@ -285,6 +272,21 @@
         var mappedValue = (max1 - value) / (max1 - min1);
 
         return mappedValue;
+      }
+      // Function to load JSON data
+      function loadJSONData() {
+        // You can adjust the URL to your JSON file
+        fetch("data.json")
+          .then((response) => response.json())
+          .then((data) => {
+            jsonData = data; // Store the loaded JSON data
+
+            // Continue with creating the scatter plot
+            createScatterPlot();
+          })
+          .catch((error) => {
+            console.error("Error loading JSON data:", error);
+          });
       }
     </script>
   </body>
