@@ -16,10 +16,35 @@
         position: absolute;
         top: 10px;
         left: 10px;
+        display: none;
       }
     </style>
   </head>
   <body>
+    <div id="uiContainer">
+      <p>This is your 3D scatter plot with some additional UI elements.</p>
+      <div>
+        <label>
+          <input type="radio" name="dataType" value="all" checked /> All Data
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="dataType" value="conductor" /> Conductor
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="dataType" value="alloy" /> Alloy
+        </label>
+      </div>
+      <div>
+        <label>
+          <input type="radio" name="dataType" value="fire wire" /> Fire Wire
+        </label>
+      </div>
+      <!-- Add more HTML elements as needed -->
+    </div>
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
 
@@ -44,12 +69,28 @@
         }
       );
 
+      // Function to filter data based on the selected radio button
+      function filterData(dataType) {
+        console.log("dataType", dataType);
+        scene.children.forEach((child) => {
+          if (child.userData && child.userData.type) {
+            if (dataType === "all" || child.userData.type === dataType) {
+              child.visible = true;
+            } else {
+              child.visible = false;
+            }
+          }
+        });
+      }
+
       // Function to create a single cube
-      function createCube(x, y, z, size, color) {
+      function createCube(x, y, z, size, color, type) {
         const geometry = new THREE.BoxGeometry(size, size, size);
         const material = new THREE.MeshPhongMaterial({ color });
         const cube = new THREE.Mesh(geometry, material);
         cube.position.set(x, y + size / 2, z);
+        // Add metadata indicating the type of data (e.g., "conductor", "alloy", "fire wire")
+        cube.userData.type = type;
         return cube;
       }
 
@@ -204,7 +245,14 @@
           const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0; // You can adjust the vertical position if needed
           const z = (mappedYValue - 0.5) * gridSizeY;
-          const cube = createCube(x, y, z, cubeSize, dataPoint.color); // Adjust color as needed
+          const cube = createCube(
+            x,
+            y,
+            z,
+            cubeSize,
+            dataPoint.color,
+            dataPoint.type
+          ); // Adjust color as needed
           scene.add(cube);
         }
 
@@ -288,6 +336,17 @@
             console.error("Error loading JSON data:", error);
           });
       }
+
+      // Add event listener to radio buttons
+      const radioButtons = document.querySelectorAll('input[name="dataType"]');
+
+      radioButtons.forEach((radioButton) => {
+        radioButton.addEventListener("change", (event) => {
+          console.log("change radio");
+          const selectedDataType = event.target.value;
+          filterData(selectedDataType);
+        });
+      });
     </script>
   </body>
 </html>

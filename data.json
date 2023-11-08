@@ -2,26 +2,31 @@
     {
         "x": 90,
         "y": 10,
-        "color": "#FF0000"
+        "color": "#FF0000",
+        "type": "conductor"
     },
     {
         "x": 10,
         "y": 60,
-        "color": "#00ff00"
+        "color": "#00ff00",
+        "type": "conductor"
     },
     {
         "x": 10,
         "y": 10,
-        "color": "#444444"
+        "color": "#444444",
+        "type": "alloy"
     },
     {
         "x": 80,
         "y": 80,
-        "color": "#cccccc"
+        "color": "#cccccc",
+        "type": "alloy"
     },
     {
         "x": 70,
         "y": 110,
-        "color": "#00ff00"
+        "color": "#00ff00",
+        "type": "fire wire"
     }
 ]
