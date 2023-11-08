@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <div id="uiContainer">
+    <!-- <div id="uiContainer">
       <div>
         <label>
           <input type="radio" name="dataType" value="all" checked /> All Data
@@ -26,7 +26,7 @@
           <input type="radio" name="dataType" value="fire wire" /> Fire Wire
         </label>
       </div>
-    </div>
+    </div> -->
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
 
@@ -200,6 +200,34 @@
         }
       }
 
+      // Add the raycasting and click event handling code here
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      // Inside your animation loop, check for raycasting and mouse events
+      const onDocumentMouseClick = (event) => {
+        event.preventDefault();
+
+        // Calculate the mouse position in normalized device coordinates
+        // (-1 to 1) for both components
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+
+        // Check for intersections with clickable objects (e.g., cubes)
+        const intersects = raycaster.intersectObjects(scene.children, true);
+
+        if (intersects.length > 0) {
+          // Handle the click event for the clicked cube
+          const clickedObject = intersects[0].object;
+
+          if (clickedObject.userData.url) {
+            window.open(clickedObject.userData.url, "_blank");
+          }
+        }
+      };
+
       function createScatterPlot() {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -235,7 +263,8 @@
             cubeSize,
             dataPoint.color,
             dataPoint.type
-          ); // Adjust color as needed
+          );
+          cube.userData.url = dataPoint.url;
           scene.add(cube);
         }
 
@@ -320,12 +349,13 @@
           });
       }
 
+      document.addEventListener("click", onDocumentMouseClick, false);
+
       // Add event listener to radio buttons
       const radioButtons = document.querySelectorAll('input[name="dataType"]');
 
       radioButtons.forEach((radioButton) => {
         radioButton.addEventListener("change", (event) => {
-          console.log("change radio");
           const selectedDataType = event.target.value;
           filterData(selectedDataType);
         });

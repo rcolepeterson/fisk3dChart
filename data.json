@@ -3,30 +3,35 @@
         "x": 90,
         "y": 10,
         "color": "#FF0000",
-        "type": "conductor"
+        "type": "conductor",
+        "url": "https://example.com/link1"
     },
     {
         "x": 10,
         "y": 60,
         "color": "#00ff00",
-        "type": "conductor"
+        "type": "conductor",
+        "url": "https://example.com/link1"
     },
     {
         "x": 10,
         "y": 10,
         "color": "#444444",
-        "type": "alloy"
+        "type": "alloy",
+        "url": "https://example.com/link1"
     },
     {
         "x": 80,
         "y": 80,
         "color": "#cccccc",
-        "type": "alloy"
+        "type": "alloy",
+        "url": "https://example.com/link1"
     },
     {
         "x": 70,
         "y": 110,
         "color": "#00ff00",
-        "type": "fire wire"
+        "type": "fire wire",
+        "url": "https://example.com/link1"
     }
 ]
