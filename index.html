@@ -256,7 +256,8 @@
           const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0; // You can adjust the vertical position if needed
           const z = (mappedYValue - 0.5) * gridSizeY;
-          const cube = createCube(
+
+          const cube1 = createCube(
             x,
             y,
             z,
@@ -264,8 +265,40 @@
             dataPoint.color,
             dataPoint.type
           );
-          cube.userData.url = dataPoint.url;
-          scene.add(cube);
+          cube1.userData.url = dataPoint.url;
+          scene.add(cube1);
+
+          const cube2 = createCube(
+            x,
+            y + cubeSize,
+            z,
+            cubeSize,
+            "#999999",
+            dataPoint.type
+          );
+          cube2.userData.url = dataPoint.url;
+          scene.add(cube2);
+
+          const cube3 = createCube(
+            x,
+            y + 2 * cubeSize,
+            z,
+            cubeSize,
+            "#cccccc",
+            dataPoint.type
+          );
+          cube3.userData.url = dataPoint.url;
+          scene.add(cube3);
+          // const cube = createCube(
+          //   x,
+          //   y,
+          //   z,
+          //   cubeSize,
+          //   dataPoint.color,
+          //   dataPoint.type
+          // );
+          // cube.userData.url = dataPoint.url;
+          // scene.add(cube);
         }
 
         // Define your yAxisValues using a loop
