@@ -271,48 +271,21 @@
           const y = 0; // You can adjust the vertical position if needed
           const z = (mappedYValue - 0.5) * gridSizeY;
 
-          const cube1 = createCube(
-            x,
-            y,
-            z,
-            cubeSize,
-            getColor(dataPoint.productline[0]),
-            dataPoint.type
-          );
-          cube1.userData.url = dataPoint.page_url;
-          scene.add(cube1);
-
-          const cube2 = createCube(
-            x,
-            y + cubeSize,
-            z,
-            cubeSize,
-            getColor(dataPoint.productline[0]),
-            dataPoint.type
-          );
-          cube2.userData.url = dataPoint.url;
-          scene.add(cube2);
-
-          const cube3 = createCube(
-            x,
-            y + 2 * cubeSize,
-            z,
-            cubeSize,
-            getColor(dataPoint.productline[0]),
-            dataPoint.type
-          );
-          cube3.userData.url = dataPoint.url;
-          scene.add(cube3);
-          // const cube = createCube(
-          //   x,
-          //   y,
-          //   z,
-          //   cubeSize,
-          //   dataPoint.color,
-          //   dataPoint.type
-          // );
-          // cube.userData.url = dataPoint.url;
-          // scene.add(cube);
+          // Choose a random number of cubes in the stack (between 1 and 5)
+          const numCubes = Math.floor(Math.random() * 15) + 1;
+          // Loop to create individual cubes within the stack
+          for (let j = 0; j < numCubes; j++) {
+            const cube = createCube(
+              x,
+              y + j * cubeSize, // Adjust the height of each cube in the stack
+              z,
+              cubeSize,
+              getRandomColor(), // Use a function to generate random colors or apply your logic
+              dataPoint.type
+            );
+            cube.userData.url = dataPoint.url;
+            scene.add(cube);
+          }
         }
 
         // Define your yAxisValues using a loop
@@ -327,7 +300,7 @@
         }
 
         // Call the createYAxisLabels method
-        createYAxisLabels(yAxisValues);
+        //createYAxisLabels(yAxisValues);
 
         // Define an array to store X-axis values
         const xAxisValues = [];
@@ -337,7 +310,7 @@
           xAxisValues.push({ x, y: 0, label: x.toString() });
         }
         // Call the function to create X-axis labels
-        createXAxisLabels(xAxisValues);
+        //createXAxisLabels(xAxisValues);
 
         // Lights
         const light1 = new THREE.DirectionalLight(0xffffff, 1);
@@ -358,6 +331,17 @@
 
         createGrid();
         animate();
+      }
+
+      ////////
+
+      function getRandomColor() {
+        const letters = "0123456789ABCDEF";
+        let color = "#";
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
       }
 
       function mapXValue(value, min1, max1, min2, max2) {
