@@ -228,6 +228,20 @@
         }
       };
 
+      // this function returns a hex value based on the productline Number passed in
+      function getColor(productLine) {
+        switch (productLine) {
+          case 1:
+            return "#ff0000";
+          case 2:
+            return "#00ff00";
+          case 3:
+            return "#0000ff";
+          default:
+            return "#000000";
+        }
+      }
+
       function createScatterPlot() {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -246,11 +260,11 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        for (let i = 0; i < jsonData.length; i++) {
-          const dataPoint = jsonData[i];
-          var xValueToMap = dataPoint.x; // This value is in the range [0, 140]
+        for (let i = 0; i < jsonData.data.e.length; i++) {
+          const dataPoint = jsonData.data.e[i];
+          var xValueToMap = dataPoint.tensile; // This value is in the range [0, 140]
           var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
-          var yValueToMap = dataPoint.y; // This value is in the range [0, 120]
+          var yValueToMap = dataPoint.conduct; // This value is in the range [0, 120]
           var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
           const x = (mappedXValue - 0.5) * gridSizeX;
@@ -262,10 +276,10 @@
             y,
             z,
             cubeSize,
-            dataPoint.color,
+            getColor(dataPoint.productline[0]),
             dataPoint.type
           );
-          cube1.userData.url = dataPoint.url;
+          cube1.userData.url = dataPoint.page_url;
           scene.add(cube1);
 
           const cube2 = createCube(
@@ -273,7 +287,7 @@
             y + cubeSize,
             z,
             cubeSize,
-            "#999999",
+            getColor(dataPoint.productline[0]),
             dataPoint.type
           );
           cube2.userData.url = dataPoint.url;
@@ -284,7 +298,7 @@
             y + 2 * cubeSize,
             z,
             cubeSize,
-            "#cccccc",
+            getColor(dataPoint.productline[0]),
             dataPoint.type
           );
           cube3.userData.url = dataPoint.url;
@@ -369,7 +383,7 @@
       // Function to load JSON data
       function loadJSONData() {
         // You can adjust the URL to your JSON file
-        fetch("data.json")
+        fetch("data_test.json")
           .then((response) => response.json())
           .then((data) => {
             jsonData = data; // Store the loaded JSON data

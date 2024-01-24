@@ -1,14 +1,14 @@
 [
     {
-        "x": 90,
-        "y": 10,
+        "x": 95,
+        "y": 90,
         "color": "#FF0000",
         "type": "conductor",
         "url": "https://example.com/link1"
     },
     {
-        "x": 10,
-        "y": 60,
+        "x": 45,
+        "y": 39,
         "color": "#00ff00",
         "type": "conductor",
         "url": "https://example.com/link1"
