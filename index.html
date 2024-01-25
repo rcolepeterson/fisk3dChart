@@ -120,10 +120,10 @@
 
         // Update the HTML element
         cameraPositionElement.innerHTML = `
-          Camera Position:<br>
-          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
-          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
-        `;
+                      Camera Position:<br>
+                      X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+                      Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+                    `;
       }
 
       function createYAxisLabels(yAxisValues) {
@@ -228,18 +228,54 @@
         }
       };
 
-      // this function returns a hex value based on the productline Number passed in
-      function getColor(productLine) {
-        switch (productLine) {
-          case 1:
-            return "#ff0000";
-          case 2:
-            return "#00ff00";
-          case 3:
-            return "#0000ff";
+      function getColor(productType) {
+        switch (productType) {
+          case "Alloy Conductor Soft Temper":
+            return "#aa934d";
+          case "Alloy Conductor Hard Temper":
+            return "#7d4daa"; // Replace with the actual color you choose
+          case "Alloy Wire":
+            return "#123152";
+          case "Fine Wire":
+            return "#43837d";
           default:
             return "#000000";
         }
+      }
+
+      function getColorBasedOnFactors(dataPoint) {
+        // Define default colors for each type
+        const defaultColors = {
+          "Alloy Conductor Soft Temper": "#aa934d",
+          "Alloy Conductor Hard Temper": "#867bcc",
+          "Alloy Wire": "#123152",
+          "Fine Wire": "#43837d",
+          // Add more types and default colors as needed
+        };
+
+        // Define colors for each factor
+        const factorColors = {
+          stress_relaxation: "#bece71", // Flex Life
+          spring_properties: "#6cb2c4", // Spring Properties
+          formability: "#cfc250", // Formability
+          // Add more factors and colors as needed
+        };
+
+        // Choose the default color based on the product type
+        let color = defaultColors[dataPoint.type[0]] || "#FFFFFF"; // Default to white if type is not recognized
+
+        // Apply colors based on factors
+        if (dataPoint.stress_relaxation) {
+          color = factorColors.stress_relaxation;
+        }
+        if (dataPoint.spring_properties) {
+          color = factorColors.spring_properties;
+        }
+        if (dataPoint.formability) {
+          color = factorColors.formability;
+        }
+
+        return color;
       }
 
       function createScatterPlot() {
@@ -260,31 +296,192 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        for (let i = 0; i < jsonData.data.e.length; i++) {
-          const dataPoint = jsonData.data.e[i];
-          var xValueToMap = dataPoint.tensile; // This value is in the range [0, 140]
-          var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
-          var yValueToMap = dataPoint.conduct; // This value is in the range [0, 120]
-          var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+        for (let i = 0; i < jsonData.data.entries.length; i++) {
+          const dataPoint = jsonData.data.entries[i];
+          const xValueToMap = dataPoint.x_tensile_e;
+          const mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
+
+          const yValueToMap = dataPoint.y_conduct_e;
+          const mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
 
           const x = (mappedXValue - 0.5) * gridSizeX;
-          const y = 0; // You can adjust the vertical position if needed
+          const y = 0;
+
           const z = (mappedYValue - 0.5) * gridSizeY;
 
-          // Choose a random number of cubes in the stack (between 1 and 5)
-          const numCubes = Math.floor(Math.random() * 15) + 1;
-          // Loop to create individual cubes within the stack
-          for (let j = 0; j < numCubes; j++) {
-            const cube = createCube(
-              x,
-              y + j * cubeSize, // Adjust the height of each cube in the stack
-              z,
-              cubeSize,
-              getRandomColor(), // Use a function to generate random colors or apply your logic
-              dataPoint.type
-            );
-            cube.userData.url = dataPoint.url;
-            scene.add(cube);
+          let numCubes;
+          let color = getColorBasedOnFactors(dataPoint);
+
+          switch (dataPoint.product_name) {
+            case "C11000 ETP":
+              numCubes = 7;
+              // Create BASE box
+              const baseCube = createCube(
+                x,
+                y,
+                z,
+                cubeSize,
+                "#123152", //
+                dataPoint.type[0]
+              );
+              baseCube.userData.url = dataPoint.product_url;
+              scene.add(baseCube);
+
+              // Create stack with 1 box alloy wire bright lime green/stress relaxation
+              for (let j = 1; j <= 1; j++) {
+                const alloyWireCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#bece71", // Bright lime green
+                  "Alloy Wire"
+                );
+                alloyWireCube.userData.url = dataPoint.product_url;
+                scene.add(alloyWireCube);
+              }
+
+              // Create stack with 1 box of turquoise Spring properties
+              for (let j = 2; j <= 2; j++) {
+                const turquoiseCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#6cb2b4", // Turquoise
+                  "Turquoise"
+                );
+                turquoiseCube.userData.url = dataPoint.product_url;
+                scene.add(turquoiseCube);
+              }
+
+              // Create stack with 5 boxes of mustard formability
+              for (let j = 3; j <= 7; j++) {
+                const mustardCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#cfc250", // Mustard
+                  "Mustard"
+                );
+                mustardCube.userData.url = dataPoint.product_url;
+                scene.add(mustardCube);
+              }
+              break;
+            case "C75200":
+              numCubes = 11;
+
+              // Create BASE box
+              const baseCubeC75200 = createCube(
+                x,
+                y,
+                z,
+                cubeSize,
+                "#123152",
+                dataPoint.type[0]
+              );
+              baseCubeC75200.userData.url = dataPoint.product_url;
+              scene.add(baseCubeC75200);
+
+              // Create stack with 4 boxes of Lime/stress relaxation
+              for (let j = 1; j <= 4; j++) {
+                const limeCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#bece71", // Lime green
+                  "Lime"
+                );
+                limeCube.userData.url = dataPoint.product_url;
+                scene.add(limeCube);
+              }
+
+              // Create stack with 4 boxes of turquoise Spring properties
+              for (let j = 5; j <= 8; j++) {
+                const turquoiseCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#6cb2b4", // Turquoise
+                  "Turquoise"
+                );
+                turquoiseCube.userData.url = dataPoint.product_url;
+                scene.add(turquoiseCube);
+              }
+
+              // Create stack with 3 boxes of mustard formability
+              for (let j = 9; j <= 11; j++) {
+                const mustardCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#cfc250", // Mustard
+                  "Mustard"
+                );
+                mustardCube.userData.url = dataPoint.product_url;
+                scene.add(mustardCube);
+              }
+              break;
+            case "C17200":
+              numCubes = 13;
+              // Create BASE box in deeper green
+              const baseCubeC17200 = createCube(
+                x,
+                y,
+                z,
+                cubeSize,
+                "#43837d", // Deeper green
+                dataPoint.type[0]
+              );
+              baseCubeC17200.userData.url = dataPoint.product_url;
+              scene.add(baseCubeC17200);
+
+              // Create stack with 4 boxes of lime
+              for (let j = 1; j <= 4; j++) {
+                const limeCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#bece71", // Lime
+                  "Lime"
+                );
+                limeCube.userData.url = dataPoint.product_url;
+                scene.add(limeCube);
+              }
+
+              // Create stack with 5 boxes of turquoise
+              for (let j = 5; j <= 9; j++) {
+                const turquoiseCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#6cb2b4", // Turquoise
+                  "Turquoise"
+                );
+                turquoiseCube.userData.url = dataPoint.product_url;
+                scene.add(turquoiseCube);
+              }
+
+              // Create stack with 4 boxes of mustard
+              for (let j = 10; j <= 13; j++) {
+                const mustardCube = createCube(
+                  x,
+                  y + j * cubeSize,
+                  z,
+                  cubeSize,
+                  "#cfc250", // Mustard
+                  "Mustard"
+                );
+                mustardCube.userData.url = dataPoint.product_url;
+                scene.add(mustardCube);
+              }
+              break;
           }
         }
 
@@ -367,7 +564,7 @@
       // Function to load JSON data
       function loadJSONData() {
         // You can adjust the URL to your JSON file
-        fetch("data_test.json")
+        fetch("data_poc.json")
           .then((response) => response.json())
           .then((data) => {
             jsonData = data; // Store the loaded JSON data
