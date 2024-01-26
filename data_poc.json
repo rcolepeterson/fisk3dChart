@@ -22,8 +22,8 @@
                 "formability": 5
             },
             {
-                "x_tensile_e": 44,
-                "y_conduct_e": 44,
+                "x_tensile_e": 82,
+                "y_conduct_e": 11,
                 "product_name": "C75200",
                 "product_url": null,
                 "color": [
@@ -40,8 +40,8 @@
                 "formability": 5
             },
             {
-                "x_tensile_e": 93,
-                "y_conduct_e": 80,
+                "x_tensile_e": 144,
+                "y_conduct_e": 22,
                 "x_tensile_m": 29,
                 "y_conduct_m": 59,
                 "product_name": "C17200",
