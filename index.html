@@ -29,6 +29,7 @@
     </div> -->
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
+    <div id="info"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
@@ -206,6 +207,7 @@
 
       // Inside your animation loop, check for raycasting and mouse events
       const onDocumentMouseClick = (event) => {
+        console.log("we have clicked");
         event.preventDefault();
 
         // Calculate the mouse position in normalized device coordinates
@@ -217,16 +219,56 @@
 
         // Check for intersections with clickable objects (e.g., cubes)
         const intersects = raycaster.intersectObjects(scene.children, true);
+        console.log(intersects.length, "intersects");
 
         if (intersects.length > 0) {
           // Handle the click event for the clicked cube
           const clickedObject = intersects[0].object;
+          console.log(clickedObject);
 
           if (clickedObject.userData.url) {
             window.open(clickedObject.userData.url, "_blank");
           }
         }
       };
+
+      // Add an event listener for 'mousemove'
+      window.addEventListener(
+        "mousemove",
+        (event) => {
+          event.preventDefault();
+
+          // Calculate the mouse position in normalized device coordinates
+          // (-1 to 1) for both components
+          mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          raycaster.setFromCamera(mouse, camera);
+
+          // Check for intersections with clickable objects (e.g., cubes)
+          const intersects = raycaster.intersectObjects(scene.children, true);
+
+          if (intersects.length > 0) {
+            // Handle the hover event for the hovered cube
+            const hoveredObject = intersects[0].object;
+            //console.log("hoveredObject", hoveredObject);
+            // Access the product_name
+            let type = hoveredObject.userData.type;
+            // let productName = hoveredObject.userData.productName;
+
+            // Display the product_name
+            console.log(type);
+            // Get the info element
+            let infoElement = document.getElementById("info");
+
+            // Update the info element with the type
+            infoElement.textContent = type;
+
+            // Display a label or do something else
+          }
+        },
+        false
+      );
 
       function getColor(productType) {
         switch (productType) {

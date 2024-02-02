@@ -14,3 +14,9 @@ body {
   left: 10px;
   display: none;
 }
+
+#info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
