@@ -30,6 +30,7 @@
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
     <div id="info"></div>
+    <div id="label"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
@@ -247,24 +248,40 @@
 
           // Check for intersections with clickable objects (e.g., cubes)
           const intersects = raycaster.intersectObjects(scene.children, true);
-
+          let labelElement = document.getElementById("label");
           if (intersects.length > 0) {
-            // Handle the hover event for the hovered cube
             const hoveredObject = intersects[0].object;
-            //console.log("hoveredObject", hoveredObject);
-            // Access the product_name
+
+            // Access the type
             let type = hoveredObject.userData.type;
-            // let productName = hoveredObject.userData.productName;
 
-            // Display the product_name
-            console.log(type);
-            // Get the info element
-            let infoElement = document.getElementById("info");
+            if (type) {
+              // Update the label element with the type
+              //labelElement.textContent = type;
+              labelElement.innerHTML = `${type}<br>Information 1<br>Information 2`;
 
-            // Update the info element with the type
-            infoElement.textContent = type;
+              // Calculate the 2D position of the cube
+              const vector = new THREE.Vector3();
+              vector.setFromMatrixPosition(hoveredObject.matrixWorld);
+              vector.project(camera);
 
-            // Display a label or do something else
+              // Convert the normalized position to CSS coordinates
+              const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+              const y = (vector.y * -0.5 + 0.5) * window.innerHeight;
+
+              // Update the label position
+              labelElement.style.left = `${x}px`;
+              labelElement.style.top = `${y}px`;
+
+              // Make the label visible
+              labelElement.style.display = "block";
+            } else {
+              // If type is null or an empty string, hide the label
+              labelElement.style.display = "none";
+            }
+          } else {
+            // If there are no intersections, hide the label
+            labelElement.style.display = "none";
           }
         },
         false

@@ -20,3 +20,9 @@ body {
   top: 20px;
   left: 20px;
 }
+
+#label {
+  position: absolute;
+  padding: 14px;
+  background-color: #ccc;
+}
