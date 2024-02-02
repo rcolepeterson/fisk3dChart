@@ -337,6 +337,33 @@
         return color;
       }
 
+      function createLabel(cube, i, labelContent) {
+        console.log(labelContent);
+        // Create a label for the cube
+        let labelElement = document.createElement("div");
+        labelElement.id = `label-${i}`;
+        labelElement.style.position = "absolute";
+        labelElement.style.backgroundColor = "#ccc";
+        labelElement.style.padding = "10px";
+
+        // Set the label text
+        labelElement.textContent = labelContent;
+
+        // Append the label to the body
+        document.body.appendChild(labelElement);
+
+        // Position the label at the base of the cube
+        // This will depend on how your cubes are positioned and might require adjusting
+        const vector = new THREE.Vector3();
+        vector.setFromMatrixPosition(cube.matrixWorld);
+        vector.project(camera);
+        const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+        const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+        labelElement.style.left = `${labelX}px`;
+        labelElement.style.top = `${labelY}px`;
+      }
+      // Define an array to store your cubes
+      let cubes = [];
       function createScatterPlot() {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -385,6 +412,8 @@
               );
               baseCube.userData.url = dataPoint.product_url;
               scene.add(baseCube);
+              cubes.push(baseCube);
+              createLabel(baseCube, i, "Product Name");
 
               // Create stack with 1 box alloy wire bright lime green/stress relaxation
               for (let j = 1; j <= 1; j++) {
@@ -442,6 +471,8 @@
               );
               baseCubeC75200.userData.url = dataPoint.product_url;
               scene.add(baseCubeC75200);
+              cubes.push(baseCubeC75200);
+              createLabel(baseCubeC75200, i, "Product Name");
 
               // Create stack with 4 boxes of Lime/stress relaxation
               for (let j = 1; j <= 4; j++) {
@@ -498,6 +529,8 @@
               );
               baseCubeC17200.userData.url = dataPoint.product_url;
               scene.add(baseCubeC17200);
+              cubes.push(baseCubeC17200);
+              createLabel(baseCubeC17200, i, "Product Name");
 
               // Create stack with 4 boxes of lime
               for (let j = 1; j <= 4; j++) {
@@ -583,6 +616,22 @@
           renderer.render(scene, camera);
           controls.update();
           updateCameraPositionDisplay(camera);
+
+          ////
+
+          // Update the position of the labels
+          cubes.forEach((cube, i) => {
+            const labelElement = document.getElementById(`label-${i}`);
+            if (labelElement) {
+              const vector = new THREE.Vector3();
+              vector.setFromMatrixPosition(cube.matrixWorld);
+              vector.project(camera);
+              const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+              const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+              labelElement.style.left = `${labelX}px`;
+              labelElement.style.top = `${labelY}px`;
+            }
+          });
         };
 
         createGrid();
