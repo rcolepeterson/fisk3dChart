@@ -76,6 +76,15 @@
         cube.userData.type = type;
         return cube;
       }
+      function createCubeHalf(x, y, z, size, color, type) {
+        const geometry = new THREE.BoxGeometry(size, size / 2, size);
+        const material = new THREE.MeshPhongMaterial({ color });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(x, y + size / 2, z);
+        // Add metadata indicating the type of data (e.g., "conductor", "alloy", "fire wire")
+        cube.userData.type = type;
+        return cube;
+      }
 
       // Function to create the grid
       function createGrid() {
@@ -97,7 +106,7 @@
         const floorMaterial = new THREE.MeshPhongMaterial({
           map: gridTexture,
           wireframe: true, // Display as wireframe
-          color: 0xcccccc, // Set the floor color to grey
+          color: 0xffffff, // Set the floor color to grey
         });
         const yPosition = 0;
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
@@ -168,7 +177,7 @@
       function createXAxisLabels(xAxisValues) {
         for (let i = 0; i < xAxisValues.length; i++) {
           let xPoint = xAxisValues[i];
-          var xValueToMap = xPoint.x; // This value is in the range [0, 150]
+          var xValueToMap = xPoint.x - 1.5; // This value is in the range [0, 150]
           var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
           var yValueToMap = xPoint.y; // This value is in the range [0, 120]
           var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
@@ -234,58 +243,58 @@
       };
 
       // Add an event listener for 'mousemove'
-      window.addEventListener(
-        "mousemove",
-        (event) => {
-          event.preventDefault();
+      // window.addEventListener(
+      //   "mousemove",
+      //   (event) => {
+      //     event.preventDefault();
 
-          // Calculate the mouse position in normalized device coordinates
-          // (-1 to 1) for both components
-          mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-          mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      //     // Calculate the mouse position in normalized device coordinates
+      //     // (-1 to 1) for both components
+      //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      //     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-          raycaster.setFromCamera(mouse, camera);
+      //     raycaster.setFromCamera(mouse, camera);
 
-          // Check for intersections with clickable objects (e.g., cubes)
-          const intersects = raycaster.intersectObjects(scene.children, true);
-          let labelElement = document.getElementById("label");
-          if (intersects.length > 0) {
-            const hoveredObject = intersects[0].object;
+      //     // Check for intersections with clickable objects (e.g., cubes)
+      //     const intersects = raycaster.intersectObjects(scene.children, true);
+      //     let labelElement = document.getElementById("label");
+      //     if (intersects.length > 0) {
+      //       const hoveredObject = intersects[0].object;
 
-            // Access the type
-            let type = hoveredObject.userData.type;
+      //       // Access the type
+      //       let type = hoveredObject.userData.type;
 
-            if (type) {
-              // Update the label element with the type
-              //labelElement.textContent = type;
-              labelElement.innerHTML = `${type}<br>Information 1<br>Information 2`;
+      //       if (type) {
+      //         // Update the label element with the type
+      //         //labelElement.textContent = type;
+      //         labelElement.innerHTML = `${type}<br>Information 1<br>Information 2`;
 
-              // Calculate the 2D position of the cube
-              const vector = new THREE.Vector3();
-              vector.setFromMatrixPosition(hoveredObject.matrixWorld);
-              vector.project(camera);
+      //         // Calculate the 2D position of the cube
+      //         const vector = new THREE.Vector3();
+      //         vector.setFromMatrixPosition(hoveredObject.matrixWorld);
+      //         vector.project(camera);
 
-              // Convert the normalized position to CSS coordinates
-              const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
-              const y = (vector.y * -0.5 + 0.5) * window.innerHeight;
+      //         // Convert the normalized position to CSS coordinates
+      //         const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
+      //         const y = (vector.y * -0.5 + 0.5) * window.innerHeight;
 
-              // Update the label position
-              labelElement.style.left = `${x}px`;
-              labelElement.style.top = `${y}px`;
+      //         // Update the label position
+      //         labelElement.style.left = `${x}px`;
+      //         labelElement.style.top = `${y}px`;
 
-              // Make the label visible
-              labelElement.style.display = "block";
-            } else {
-              // If type is null or an empty string, hide the label
-              labelElement.style.display = "none";
-            }
-          } else {
-            // If there are no intersections, hide the label
-            labelElement.style.display = "none";
-          }
-        },
-        false
-      );
+      //         // Make the label visible
+      //         labelElement.style.display = "block";
+      //       } else {
+      //         // If type is null or an empty string, hide the label
+      //         labelElement.style.display = "none";
+      //       }
+      //     } else {
+      //       // If there are no intersections, hide the label
+      //       labelElement.style.display = "none";
+      //     }
+      //   },
+      //   false
+      // );
 
       function getColor(productType) {
         switch (productType) {
@@ -338,14 +347,13 @@
       }
 
       function createLabel(cube, i, labelContent) {
-        console.log(labelContent);
         // Create a label for the cube
         let labelElement = document.createElement("div");
         labelElement.id = `label-${i}`;
         labelElement.style.position = "absolute";
-        labelElement.style.backgroundColor = "#ccc";
-        labelElement.style.padding = "10px";
-
+        labelElement.style.backgroundColor = "#d5d5d5";
+        // labelElement.style.padding = "10px";
+        labelElement.className = "cube-label";
         // Set the label text
         labelElement.textContent = labelContent;
 
@@ -361,6 +369,32 @@
         const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
         labelElement.style.left = `${labelX}px`;
         labelElement.style.top = `${labelY}px`;
+        labelElement.style.height = "15px";
+        // Store the original size
+        const originalWidth = labelElement.offsetWidth;
+        const originalHeight = labelElement.offsetHeight;
+
+        // Add event listeners
+        // Add event listeners
+        labelElement.addEventListener("mouseover", function () {
+          // Increase size and change content on mouseover
+          labelElement.style.width = "200px"; // Replace with the new width
+          labelElement.style.height = "100px"; // Replace with the new height
+          labelElement.innerHTML =
+            "Material Name<br>Click to view specifications";
+        });
+
+        labelElement.addEventListener("mouseout", function () {
+          // Reset size and content on mouseout
+          labelElement.style.width = `${originalWidth}px`;
+          labelElement.style.height = `15px`;
+          labelElement.textContent = labelContent;
+        });
+
+        labelElement.addEventListener("click", function () {
+          // Navigate to product page
+          window.location.href = "https://fiskalloy.com/";
+        });
       }
       // Define an array to store your cubes
       let cubes = [];
@@ -402,7 +436,7 @@
             case "C11000 ETP":
               numCubes = 7;
               // Create BASE box
-              const baseCube = createCube(
+              const baseCube = createCubeHalf(
                 x,
                 y,
                 z,
@@ -413,13 +447,13 @@
               baseCube.userData.url = dataPoint.product_url;
               scene.add(baseCube);
               cubes.push(baseCube);
-              createLabel(baseCube, i, "Product Name");
+              createLabel(baseCube, i, "C11000 ETP");
 
               // Create stack with 1 box alloy wire bright lime green/stress relaxation
               for (let j = 1; j <= 1; j++) {
                 const alloyWireCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#bece71", // Bright lime green
@@ -433,7 +467,7 @@
               for (let j = 2; j <= 2; j++) {
                 const turquoiseCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#6cb2b4", // Turquoise
@@ -447,7 +481,7 @@
               for (let j = 3; j <= 7; j++) {
                 const mustardCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#cfc250", // Mustard
@@ -461,7 +495,7 @@
               numCubes = 11;
 
               // Create BASE box
-              const baseCubeC75200 = createCube(
+              const baseCubeC75200 = createCubeHalf(
                 x,
                 y,
                 z,
@@ -472,13 +506,13 @@
               baseCubeC75200.userData.url = dataPoint.product_url;
               scene.add(baseCubeC75200);
               cubes.push(baseCubeC75200);
-              createLabel(baseCubeC75200, i, "Product Name");
+              createLabel(baseCubeC75200, i, "C75200");
 
               // Create stack with 4 boxes of Lime/stress relaxation
               for (let j = 1; j <= 4; j++) {
                 const limeCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#bece71", // Lime green
@@ -492,7 +526,7 @@
               for (let j = 5; j <= 8; j++) {
                 const turquoiseCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#6cb2b4", // Turquoise
@@ -506,7 +540,7 @@
               for (let j = 9; j <= 11; j++) {
                 const mustardCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#cfc250", // Mustard
@@ -519,7 +553,7 @@
             case "C17200":
               numCubes = 13;
               // Create BASE box in deeper green
-              const baseCubeC17200 = createCube(
+              const baseCubeC17200 = createCubeHalf(
                 x,
                 y,
                 z,
@@ -530,13 +564,13 @@
               baseCubeC17200.userData.url = dataPoint.product_url;
               scene.add(baseCubeC17200);
               cubes.push(baseCubeC17200);
-              createLabel(baseCubeC17200, i, "Product Name");
+              createLabel(baseCubeC17200, i, "C17200");
 
               // Create stack with 4 boxes of lime
               for (let j = 1; j <= 4; j++) {
                 const limeCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#bece71", // Lime
@@ -550,7 +584,7 @@
               for (let j = 5; j <= 9; j++) {
                 const turquoiseCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#6cb2b4", // Turquoise
@@ -564,7 +598,7 @@
               for (let j = 10; j <= 13; j++) {
                 const mustardCube = createCube(
                   x,
-                  y + j * cubeSize,
+                  y + j * cubeSize - 0.1,
                   z,
                   cubeSize,
                   "#cfc250", // Mustard

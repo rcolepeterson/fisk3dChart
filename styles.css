@@ -26,3 +26,24 @@ body {
   padding: 14px;
   background-color: #ccc;
 }
+
+.cube-label {
+  position: absolute;
+  background-color: #d5d5d5;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 12px;
+  /* Add any other styles you want */
+}
+
+.cube-label {
+  /* Other styles... */
+  transition: transform 0.3s ease;
+}
+
+.cube-label:hover {
+  transform: scale(1.2); /* Adjust scale factor as needed */
+}
