@@ -1,6 +1,12 @@
+@font-face {
+  font-family: "Gotham Rounded Medium";
+  src: url("GothamRounded-Medium.woff2") format("woff2");
+}
+
 body {
   margin: 0;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif !important;
+  /* font-family: "Trebuchet MS", Arial, Helvetica, sans-serif !important; */
+  font-family: "Gotham Rounded Medium", sans-serif;
   font-size: 16px;
   margin: 0;
   padding: 0;
