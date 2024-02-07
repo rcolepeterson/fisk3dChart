@@ -4,7 +4,7 @@
 }
 @font-face {
   font-family: "Gotham Book";
-  src: url("/Users/Gotham-Book.woff2") format("woff2");
+  src: url("Gotham-Book.woff2") format("woff2");
 }
 
 body {
