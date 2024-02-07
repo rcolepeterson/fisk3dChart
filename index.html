@@ -352,14 +352,18 @@
         labelElement.id = `label-${i}`;
         labelElement.style.position = "absolute";
         labelElement.style.backgroundColor = "#d5d5d5";
-        // labelElement.style.padding = "10px";
         labelElement.className = "cube-label";
-        // Set the label text
 
-        // Append the label to the body
-        let contentWrapper = document.createElement("div");
-        contentWrapper.textContent = labelContent;
-        labelElement.appendChild(contentWrapper);
+        // Create a wrapper for the normal state
+        let normalContent = document.createElement("div");
+        normalContent.textContent = labelContent;
+        labelElement.appendChild(normalContent);
+
+        // Create a wrapper for the hover state
+        let hoverContent = document.createElement("div");
+        hoverContent.innerHTML = `<div class='content'>${labelContent}</div><div class='content'><span class='font-base'>Tensile: </span> #1234</div><div class='content'><span class='font-base'>Conductivity: </span>#1234</div><div class='content'>Click to view specifications</div>`;
+        hoverContent.style.display = "none"; // Hide it initially
+        labelElement.appendChild(hoverContent);
 
         // Position the label at the base of the cube
         // This will depend on how your cubes are positioned and might require adjusting
@@ -370,30 +374,24 @@
         const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
         labelElement.style.left = `${labelX}px`;
         labelElement.style.top = `${labelY}px`;
-        // labelElement.style.height = "15px";
-        // Store the original size
 
-        // Add event listeners
-        // Add event listeners
         labelElement.addEventListener("mouseover", function () {
-          // Increase size and change content on mouseover
-          labelElement.style.width = "200px"; // Replace with the new width
-          labelElement.style.height = "100px"; // Replace with the new height
-          contentWrapper.innerHTML =
-            "Material Name<br>Click to view specifications";
+          // Show hover state and hide normal state
+          normalContent.style.display = "none";
+          hoverContent.style.display = "block";
         });
 
         labelElement.addEventListener("mouseout", function () {
-          // Reset size and content on mouseout
-          labelElement.style.width = "auto";
-          labelElement.style.height = "auto";
-          contentWrapper.textContent = labelContent;
+          // Show normal state and hide hover state
+          normalContent.style.display = "block";
+          hoverContent.style.display = "none";
         });
 
         labelElement.addEventListener("click", function () {
           // Navigate to product page
           window.location.href = "https://fiskalloy.com/";
         });
+
         document.body.appendChild(labelElement);
       }
       // Define an array to store your cubes

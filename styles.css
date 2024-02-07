@@ -43,9 +43,9 @@ body {
   padding: 10px;
   padding-left: 15px;
   padding-right: 15px;
-  border-radius: 10px;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 11px;
   /* Add any other styles you want */
 }
 
@@ -58,6 +58,11 @@ body {
   transform: scale(1.2); /* Adjust scale factor as needed */
 }
 
+.font-base {
+  font-weight: 400;
+  font-family: "Gotham Book";
+}
+
 .content {
-  cursor: none;
+  cursor: pointer;
 }
