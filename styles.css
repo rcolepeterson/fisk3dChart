@@ -2,6 +2,10 @@
   font-family: "Gotham Rounded Medium";
   src: url("GothamRounded-Medium.woff2") format("woff2");
 }
+@font-face {
+  font-family: "Gotham Book";
+  src: url("/Users/Gotham-Book.woff2") format("woff2");
+}
 
 body {
   margin: 0;
@@ -52,4 +56,8 @@ body {
 
 .cube-label:hover {
   transform: scale(1.2); /* Adjust scale factor as needed */
+}
+
+.content {
+  cursor: none;
 }

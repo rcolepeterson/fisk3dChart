@@ -355,10 +355,11 @@
         // labelElement.style.padding = "10px";
         labelElement.className = "cube-label";
         // Set the label text
-        labelElement.textContent = labelContent;
 
         // Append the label to the body
-        document.body.appendChild(labelElement);
+        let contentWrapper = document.createElement("div");
+        contentWrapper.textContent = labelContent;
+        labelElement.appendChild(contentWrapper);
 
         // Position the label at the base of the cube
         // This will depend on how your cubes are positioned and might require adjusting
@@ -369,10 +370,8 @@
         const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
         labelElement.style.left = `${labelX}px`;
         labelElement.style.top = `${labelY}px`;
-        labelElement.style.height = "15px";
+        // labelElement.style.height = "15px";
         // Store the original size
-        const originalWidth = labelElement.offsetWidth;
-        const originalHeight = labelElement.offsetHeight;
 
         // Add event listeners
         // Add event listeners
@@ -380,21 +379,22 @@
           // Increase size and change content on mouseover
           labelElement.style.width = "200px"; // Replace with the new width
           labelElement.style.height = "100px"; // Replace with the new height
-          labelElement.innerHTML =
+          contentWrapper.innerHTML =
             "Material Name<br>Click to view specifications";
         });
 
         labelElement.addEventListener("mouseout", function () {
           // Reset size and content on mouseout
-          labelElement.style.width = `${originalWidth}px`;
-          labelElement.style.height = `15px`;
-          labelElement.textContent = labelContent;
+          labelElement.style.width = "auto";
+          labelElement.style.height = "auto";
+          contentWrapper.textContent = labelContent;
         });
 
         labelElement.addEventListener("click", function () {
           // Navigate to product page
           window.location.href = "https://fiskalloy.com/";
         });
+        document.body.appendChild(labelElement);
       }
       // Define an array to store your cubes
       let cubes = [];
