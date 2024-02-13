@@ -195,7 +195,7 @@
 
       // Inside your animation loop, check for raycasting and mouse events
       const onDocumentMouseClick = (event) => {
-        console.log("we have clicked");
+        //console.log("we have clicked");
         event.preventDefault();
 
         // Calculate the mouse position in normalized device coordinates
@@ -207,12 +207,12 @@
 
         // Check for intersections with clickable objects (e.g., cubes)
         const intersects = raycaster.intersectObjects(scene.children, true);
-        console.log(intersects.length, "intersects");
+        // console.log(intersects.length, "intersects");
 
         if (intersects.length > 0) {
           // Handle the click event for the clicked cube
           const clickedObject = intersects[0].object;
-          console.log(clickedObject);
+          //  console.log(clickedObject);
 
           if (clickedObject.userData.url) {
             window.open(clickedObject.userData.url, "_blank");
