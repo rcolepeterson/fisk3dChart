@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- https://fiskalloy.com/products/alloy-explorer/ -->
+<!-- https://github.com/rcolepeterson/testmechart/blob/labels/index.html#L140 -->
 <html>
   <head>
     <title>3D Scatter Plot</title>
@@ -460,8 +462,12 @@
 
             // Continue with creating the scatter plot
             //createScatterPlot(data);
-            const firstItem = [data[0]];
-            createScatterPlot(firstItem);
+            // const firstItem = [data[0]];
+            // createScatterPlot(firstItem);
+            const alloyConductors = jsonData.filter((item) =>
+              item.type.includes("Alloy Conductors")
+            );
+            createScatterPlot(alloyConductors);
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);
