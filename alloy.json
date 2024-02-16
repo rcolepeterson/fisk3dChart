@@ -5,6 +5,7 @@
         "x_tensile_m": 400,
         "y_conduct_m": 0.495,
         "product_name": "Percon 17 - Soft Temper",
+        "product_shortname": "P17 - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -25,6 +26,7 @@
         "x_tensile_m": 655,
         "y_conduct_m": 0.466,
         "product_name": "Percon 17 - Hard Temper",
+        "product_shortname": "P17 - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -45,6 +47,7 @@
         "x_tensile_m": 758,
         "y_conduct_m": 0.425,
         "product_name": "Percon 19 - Hard Temper",
+        "product_shortname": "P19 - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -65,6 +68,7 @@
         "x_tensile_m": 414,
         "y_conduct_m": 0.524,
         "product_name": "Percon 24 - Soft Temper",
+        "product_shortname": "P24 - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -85,6 +89,7 @@
         "x_tensile_m": 552,
         "y_conduct_m": 0.495,
         "product_name": "Percon 28 - Soft Temper",
+        "product_shortname": "P28 - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -105,6 +110,7 @@
         "x_tensile_m": 655,
         "y_conduct_m": 0.367,
         "product_name": "Percon HS-95 - Soft Temper",
+        "product_shortname": "HS95 - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -125,6 +131,7 @@
         "x_tensile_m": 896,
         "y_conduct_m": 0.233,
         "product_name": "Percon HS-95 - Hard Temper",
+        "product_shortname": "HS95 - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -145,6 +152,7 @@
         "x_tensile_m": 862,
         "y_conduct_m": 0.064,
         "product_name": "MicroShield - Hard Temper",
+        "product_shortname": "MS1 - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -165,6 +173,7 @@
         "x_tensile_m": 310,
         "y_conduct_m": 0.227,
         "product_name": "Copper Clad Steel (40%) - Soft Temper",
+        "product_shortname": "CCS - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -185,6 +194,7 @@
         "x_tensile_m": 758,
         "y_conduct_m": 0.227,
         "product_name": "Copper Clad Steel (40%) - Hard Temper",
+        "product_shortname": "CCS - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -205,6 +215,7 @@
         "x_tensile_m": 400,
         "y_conduct_m": 0.116,
         "product_name": "N02201 Low-Carbon Nickel - Soft Temper",
+        "product_shortname": "Nickel 201 - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -225,6 +236,7 @@
         "x_tensile_m": 221,
         "y_conduct_m": 0.582,
         "product_name": "C10200 Oxygen-Free (OF) \/ C11000 Electrolytic Tough Pitch (ETP) - Soft Temper",
+        "product_shortname": "C10200 OF \/ C11000 ETP - Soft Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -245,6 +257,7 @@
         "x_tensile_m": 413,
         "y_conduct_m": 0.559,
         "product_name": "C10200 Oxygen-Free (OF) \/ C11000 Electrolytic Tough Pitch (ETP) - Hard Temper",
+        "product_shortname": "C10200 OF \/ C11000 ETP - Hard Temper",
         "product_url": null,
         "color": [
             "#af933f"
@@ -265,6 +278,7 @@
         "x_tensile_m": 290,
         "y_conduct_m": 0.59,
         "product_name": "C10200 Oxygen-Free (Cu-OF)",
+        "product_shortname": "C10200 OF",
         "product_url": null,
         "color": [
             "#003155"
@@ -285,6 +299,7 @@
         "x_tensile_m": 290,
         "y_conduct_m": 0.59,
         "product_name": "C11000 Electrolytic Tough Pitch (Cu-ETP)",
+        "product_shortname": "C11000 ETP",
         "product_url": null,
         "color": [
             "#003155"
@@ -305,6 +320,7 @@
         "x_tensile_m": 365,
         "y_conduct_m": 0.55,
         "product_name": "C15100 Copper Zirconium (CuZr0.1)",
+        "product_shortname": "C15100",
         "product_url": null,
         "color": [
             "#003155"
@@ -325,6 +341,7 @@
         "x_tensile_m": 990,
         "y_conduct_m": 0.13,
         "product_name": "C17200 Copper Beryllium (CuBe2)",
+        "product_shortname": "C17200",
         "product_url": null,
         "color": [
             "#003155",
@@ -347,6 +364,7 @@
         "x_tensile_m": 605,
         "y_conduct_m": 0.28,
         "product_name": "C17510 Copper Beryllium Nickel (CuNi2Be)",
+        "product_shortname": "C17510",
         "product_url": null,
         "color": [
             "#003155",
@@ -369,6 +387,7 @@
         "x_tensile_m": 605,
         "y_conduct_m": 0.47,
         "product_name": "C18080 Copper Chromium Silver (CuCrAgSi)",
+        "product_shortname": "C18080",
         "product_url": null,
         "color": [
             "#003155",
@@ -391,6 +410,7 @@
         "x_tensile_m": 585,
         "y_conduct_m": 0.47,
         "product_name": "C18150 Copper Chromium Zirconium (CuCr1Zr)",
+        "product_shortname": "C18150",
         "product_url": null,
         "color": [
             "#003155",
@@ -413,6 +433,7 @@
         "x_tensile_m": 435,
         "y_conduct_m": 0.43,
         "product_name": "C18661 Copper Magnesium (CuMg0.2)",
+        "product_shortname": "C18661 CMG1",
         "product_url": null,
         "color": [
             "#003155"
@@ -433,6 +454,7 @@
         "x_tensile_m": 370,
         "y_conduct_m": 0.47,
         "product_name": "C19210 Copper Iron, High Conductivity (CuFe0.1P)",
+        "product_shortname": "C19210",
         "product_url": null,
         "color": [
             "#003155"
@@ -453,6 +475,7 @@
         "x_tensile_m": 465,
         "y_conduct_m": 0.38,
         "product_name": "C19400 Copper Iron (CuFe2P)",
+        "product_shortname": "C19400",
         "product_url": null,
         "color": [
             "#003155"
@@ -473,6 +496,7 @@
         "x_tensile_m": 460,
         "y_conduct_m": 0.47,
         "product_name": "C19700 High Performance Alloy (CuFe0.7MgP)",
+        "product_shortname": "C19700",
         "product_url": null,
         "color": [
             "#003155"
@@ -493,6 +517,7 @@
         "x_tensile_m": 375,
         "y_conduct_m": 0.33,
         "product_name": "C21000 Gilding, 95% (CuZn5)",
+        "product_shortname": "C21000",
         "product_url": null,
         "color": [
             "#003155"
@@ -513,6 +538,7 @@
         "x_tensile_m": 610,
         "y_conduct_m": 0.16,
         "product_name": "C26000 Cartridge Brass (CuZn30)",
+        "product_shortname": "C26000",
         "product_url": null,
         "color": [
             "#003155"
@@ -533,6 +559,7 @@
         "x_tensile_m": 550,
         "y_conduct_m": 0.16,
         "product_name": "C42500 Tin Brass (CuSn3Zn9)",
+        "product_shortname": "C42500",
         "product_url": null,
         "color": [
             "#003155"
@@ -553,6 +580,7 @@
         "x_tensile_m": 590,
         "y_conduct_m": 0.09,
         "product_name": "C51000 Phosphor Bronze, 5% A (CuSn5)",
+        "product_shortname": "C51000",
         "product_url": null,
         "color": [
             "#003155",
@@ -575,6 +603,7 @@
         "x_tensile_m": 645,
         "y_conduct_m": 0.08,
         "product_name": "C51900 Phosphor Bronze, 6% (CuSn6)",
+        "product_shortname": "C51900",
         "product_url": null,
         "color": [
             "#1a857d",
@@ -597,6 +626,7 @@
         "x_tensile_m": 700,
         "y_conduct_m": 0.08,
         "product_name": "C52100 Phosphor Bronze, 8% C (CuSn8)",
+        "product_shortname": "C52100",
         "product_url": null,
         "color": [
             "#003155",
@@ -619,6 +649,7 @@
         "x_tensile_m": 710,
         "y_conduct_m": 0.23,
         "product_name": "C70250 Copper Nickel Silicon (CuNi3Si1)",
+        "product_shortname": "C70250",
         "product_url": null,
         "color": [
             "#003155",
@@ -641,6 +672,7 @@
         "x_tensile_m": 590,
         "y_conduct_m": 0.06,
         "product_name": "C72500 Copper Nickel Tin (CuNi9Sn2)",
+        "product_shortname": "C72500",
         "product_url": null,
         "color": [
             "#003155"
@@ -661,6 +693,7 @@
         "x_tensile_m": 565,
         "y_conduct_m": 0.03,
         "product_name": "C75200 Nickel Silver, 65-18 (CuNi18Zn20)",
+        "product_shortname": "C75200",
         "product_url": null,
         "color": [
             "#003155"
