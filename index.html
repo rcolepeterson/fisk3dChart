@@ -300,6 +300,7 @@
         labelElement.style.position = "absolute";
         labelElement.style.backgroundColor = "#d5d5d5";
         labelElement.className = "cube-label";
+        cube.userData.labelElement = labelElement;
 
         // Create a wrapper for the normal state
         let normalContent = document.createElement("div");
@@ -596,8 +597,10 @@
               cube.userData.x_tensile_e >= minTensileStrength
             ) {
               cube.visible = true;
+              cube.userData.labelElement.style.display = 'block'; 
             } else {
               cube.visible = false;
+              cube.userData.labelElement.style.display = 'none'; 
             }
           }
         });
