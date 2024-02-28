@@ -11,6 +11,55 @@
     <div id="chartContainer"></div>
     <div id="info"></div>
     <div id="label"></div>
+    <div id="dd">
+      <!-- Add these dropdowns in your HTML -->
+      <div class="form-group">
+        <label for="minConductivity">Minimum Conductivity</label>
+        <select id="minConductivity" class="minimal">
+          <!-- Add options from 0 to 100 in increments of 10 -->
+          <option value="0">0</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+          <option value="60">60</option>
+          <option value="70">70</option>
+          <option value="80">80</option>
+          <option value="90">90</option>
+          <option value="100">100</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="minTensileStrength">Minimum Tensile Strength</label>
+        <select id="minTensileStrength" class="minimal">
+        <!-- Add options from 0 to 200 in increments of 10 -->
+        <option value="0">0</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+        <option value="60">60</option>
+        <option value="70">70</option>
+        <option value="80">80</option>
+        <option value="90">90</option>
+        <option value="100">100</option>
+        <option value="110">110</option>
+        <option value="120">120</option>
+        <option value="130">130</option>
+        <option value="140">140</option>
+        <option value="150">150</option>
+        <option value="160">160</option>
+        <option value="170">170</option>
+        <option value="180">180</option>
+        <option value="190">190</option>
+        <option value="200">200</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/js/controls/OrbitControls.js"></script>
@@ -32,6 +81,28 @@
           loadJSONData();
         }
       );
+
+      // Function to display camera position
+      function updateCameraPositionDisplay(camera) {
+        const cameraPositionElement = document.getElementById("cameraPosition");
+        const position = camera.position;
+        const rotation = camera.rotation;
+
+        // Round the values for display
+        const posX = position.x.toFixed(2);
+        const posY = position.y.toFixed(2);
+        const posZ = position.z.toFixed(2);
+        const rotX = THREE.MathUtils.radToDeg(rotation.x).toFixed(2);
+        const rotY = THREE.MathUtils.radToDeg(rotation.y).toFixed(2);
+        const rotZ = THREE.MathUtils.radToDeg(rotation.z).toFixed(2);
+
+        // Update the HTML element
+        cameraPositionElement.innerHTML = `
+          Camera Position:<br>
+          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+        `;
+      }
 
       // Function to filter data based on the selected radio button
       function filterData(dataType) {
@@ -232,7 +303,8 @@
 
         // Create a wrapper for the normal state
         let normalContent = document.createElement("div");
-        normalContent.textContent = labelContent.product_shortname;
+        normalContent.className = "initial-content";
+        normalContent.innerHTML = labelContent.product_shortname;
         let tensileValue = labelContent.x_tensile_e; // replace with actual value
         let conductivityValue = labelContent.y_conduct_e; // replace with actual value
 
@@ -241,7 +313,7 @@
         let content = `<div class='content'>${labelContent.product_name}</div>
                     <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
                     <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
-                    <div class='content'>Click to view specifications</div>`;
+                    <div class='content center-text click'>CLICK FOR MORE</div>`;
 
         // Create a wrapper for the hover state
         let hoverContent = document.createElement("div");
@@ -281,6 +353,7 @@
 
       // Define an array to store your cubes
       let cubes = [];
+      let allCubes = [];
       function createScatterPlot(data) {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -336,6 +409,9 @@
             dataPoint.type[0]
           );
           baseCube.userData.url = dataPoint.product_url;
+          baseCube.userData.y_conduct_e = dataPoint.y_conduct_e; // Add this line
+          baseCube.userData.x_tensile_e = dataPoint.x_tensile_e;
+          baseCube.userData.id = i;
           scene.add(baseCube);
           cubes.push(baseCube);
           createLabel(baseCube, i, dataPoint);
@@ -354,6 +430,10 @@
                 property
               );
               cube.userData.url = dataPoint.product_url;
+              cube.userData.y_conduct_e = dataPoint.y_conduct_e; // Add this line
+              cube.userData.x_tensile_e = dataPoint.x_tensile_e;
+              cube.userData.baseCubeId = i;
+              allCubes.push(cube);
               scene.add(cube);
             }
             cubeY += numCubes * cubeSize;
@@ -485,6 +565,59 @@
           filterData(selectedDataType);
         });
       });
+
+      // drop down
+      // Get the dropdown elements
+      const minConductivityDropdown =
+        document.getElementById("minConductivity");
+      const minTensileStrengthDropdown =
+        document.getElementById("minTensileStrength");
+
+      // Add event listeners
+      minConductivityDropdown.addEventListener("change", filterMyData);
+      minTensileStrengthDropdown.addEventListener("change", filterMyData);
+
+      function filterMyData() {
+        const minConductivity = Number(minConductivityDropdown.value);
+        const minTensileStrength = Number(minTensileStrengthDropdown.value);
+
+        console.log(`Min Conductivity: ${minConductivity}`);
+        console.log(`Min Tensile Strength: ${minTensileStrength}`);
+        console.log("allCubes", allCubes.length);
+
+        // Loop through the base cubes
+        cubes.forEach((cube) => {
+          console.log(cube.userData.type);
+          if (cube.userData.type.includes("Alloy Conductors")) {
+            console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
+
+            if (
+              cube.userData.y_conduct_e >= minConductivity &&
+              cube.userData.x_tensile_e >= minTensileStrength
+            ) {
+              cube.visible = true;
+            } else {
+              cube.visible = false;
+            }
+          }
+        });
+
+        // Loop through the other cubes
+        allCubes.forEach((cube) => {
+          // Find the base cube that corresponds to this cube
+          const baseCubeId = cube.userData.baseCubeId;
+          const baseCube = cubes.find((c) => c.userData.id === baseCubeId);
+
+          if (baseCube && baseCube.visible === false) {
+            cube.visible = false;
+          } else {
+            cube.visible = true;
+          }
+        });
+
+        // Add this line to re-render the scene
+        //renderer.render(scene, camera);
+      }
     </script>
   </body>
 </html>
