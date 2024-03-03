@@ -262,6 +262,54 @@
         }
       }
 
+      function createAxisLabels() {
+  const xAxisLabelGeometry = new THREE.TextGeometry('TENSILE STRENGTH (ksi)', {
+    font: font,
+    size: 0.3, // Adjust the size as needed
+    height: 0.01, // Adjust the height as needed
+  });
+
+  const yAxisLabelGeometry = new THREE.TextGeometry('CONDUCTIVITY (% IACS @ 68°F)', {
+    font: font,
+    size: 0.3, // Adjust the size as needed
+    height: 0.01, // Adjust the height as needed
+  });
+
+  const labelMaterial = new THREE.MeshBasicMaterial({
+    color: 0x999999,
+  });
+
+  const xAxisLabelMesh = new THREE.Mesh(xAxisLabelGeometry, labelMaterial);
+  const yAxisLabelMesh = new THREE.Mesh(yAxisLabelGeometry, labelMaterial);
+
+  // Rotate the labels to be vertical
+  xAxisLabelMesh.rotation.x = -Math.PI / 2;
+  //yAxisLabelMesh.rotation.x = -Math.PI / 2;
+
+  // Rotate the Y-axis label to align with the Y-axis
+yAxisLabelMesh.rotation.x = -Math.PI / 2;
+yAxisLabelMesh.rotation.z = Math.PI/2; // Rotate around the Z-axis
+
+
+  // Position the labels at the midpoint of the respective axes
+  // xAxisLabelMesh.position.set(0, gridSizeY / 2, gridSizeY / 2 - cubeSize / 2 + 0.5);
+  // Position the labels at the midpoint of the respective axes
+const labelX = -2; // Midpoint of the X-axis
+const labelY = 0;
+const labelZ = 4.6; // Same Z position as the grid labels
+
+xAxisLabelMesh.position.set(labelX, labelY, labelZ);
+const yAxisLabelX = -gridSizeX / 2 - 1.2; // Left side of the X-axis
+const yAxisLabelY = 0;
+const yAxisLabelZ = 3; // Same Z position as the grid labels
+//console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
+yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
+
+
+  scene.add(xAxisLabelMesh);
+  scene.add(yAxisLabelMesh);
+}
+
       // Add the raycasting and click event handling code here
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -506,19 +554,13 @@
         };
 
         createGrid();
+        createAxisLabels();
         animate();
       }
 
       ////////
 
-      function getRandomColor() {
-        const letters = "0123456789ABCDEF";
-        let color = "#";
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      }
+     
 
       function mapXValue(value, min1, max1, min2, max2) {
         // Ensure the value is within the range [min1, max1]
@@ -589,9 +631,7 @@
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
 
-        console.log(`Min Conductivity: ${minConductivity}`);
-        console.log(`Min Tensile Strength: ${minTensileStrength}`);
-        console.log("allCubes", allCubes.length);
+        
 
         // Loop through the base cubes
         cubes.forEach((cube) => {
