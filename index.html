@@ -473,7 +473,14 @@
         const light2 = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light2);
 
-        camera.position.set(-3, 2, 5);
+        // camera.position.set(-3, 2, 5);
+        // Set the camera position
+        camera.position.set(0, 6, 0);
+
+// Set the camera rotation
+        camera.rotation.x = THREE.MathUtils.degToRad(-90);
+        camera.rotation.y = THREE.MathUtils.degToRad(0);
+        camera.rotation.z = THREE.MathUtils.degToRad(0);
 
         const animate = function () {
           requestAnimationFrame(animate);
