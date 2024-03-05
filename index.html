@@ -35,30 +35,48 @@
       <div class="form-group">
         <label for="minTensileStrength">Minimum Tensile Strength</label>
         <select id="minTensileStrength" class="minimal">
-        <!-- Add options from 0 to 200 in increments of 10 -->
-        <option value="0">0</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-        <option value="50">50</option>
-        <option value="60">60</option>
-        <option value="70">70</option>
-        <option value="80">80</option>
-        <option value="90">90</option>
-        <option value="100">100</option>
-        <option value="110">110</option>
-        <option value="120">120</option>
-        <option value="130">130</option>
-        <option value="140">140</option>
-        <option value="150">150</option>
-        <option value="160">160</option>
-        <option value="170">170</option>
-        <option value="180">180</option>
-        <option value="190">190</option>
-        <option value="200">200</option>
-        <!-- Add more options as needed -->
-      </select>
+          <!-- Add options from 0 to 200 in increments of 10 -->
+          <option value="0">0</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+          <option value="60">60</option>
+          <option value="70">70</option>
+          <option value="80">80</option>
+          <option value="90">90</option>
+          <option value="100">100</option>
+          <option value="110">110</option>
+          <option value="120">120</option>
+          <option value="130">130</option>
+          <option value="140">140</option>
+          <option value="150">150</option>
+          <option value="160">160</option>
+          <option value="170">170</option>
+          <option value="180">180</option>
+          <option value="190">190</option>
+          <option value="200">200</option>
+          <!-- Add more options as needed -->
+        </select>
+      </div>
+
+      <!-- <input type="radio" name="dataType" value="option1" /> Option 1<br />
+      <input type="radio" name="dataType" value="option2" /> Option 2<br />
+      <input type="radio" name="dataType" value="option3" /> Option 3<br /> -->
+
+      <!-- <div class="form-group">
+        <label for="flexLife">Flex Life</label>
+        <div class="styled-radio">
+          <input type="radio" id="flexLife" name="radioButtonOne" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="softResistance">Soft Resistance</label>
+        <div class="styled-radio">
+          <input type="radio" id="softResistance" name="radioButtoTwo" />
+        </div>
+      </div> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
@@ -263,52 +281,62 @@
       }
 
       function createAxisLabels() {
-  const xAxisLabelGeometry = new THREE.TextGeometry('TENSILE STRENGTH (ksi)', {
-    font: font,
-    size: 0.3, // Adjust the size as needed
-    height: 0.01, // Adjust the height as needed
-  });
+        const xAxisLabelGeometry = new THREE.TextGeometry(
+          "TENSILE STRENGTH (ksi)",
+          {
+            font: font,
+            size: 0.3, // Adjust the size as needed
+            height: 0.01, // Adjust the height as needed
+          }
+        );
 
-  const yAxisLabelGeometry = new THREE.TextGeometry('CONDUCTIVITY (% IACS @ 68°F)', {
-    font: font,
-    size: 0.3, // Adjust the size as needed
-    height: 0.01, // Adjust the height as needed
-  });
+        const yAxisLabelGeometry = new THREE.TextGeometry(
+          "CONDUCTIVITY (% IACS @ 68°F)",
+          {
+            font: font,
+            size: 0.3, // Adjust the size as needed
+            height: 0.01, // Adjust the height as needed
+          }
+        );
 
-  const labelMaterial = new THREE.MeshBasicMaterial({
-    color: 0x999999,
-  });
+        const labelMaterial = new THREE.MeshBasicMaterial({
+          color: 0x999999,
+        });
 
-  const xAxisLabelMesh = new THREE.Mesh(xAxisLabelGeometry, labelMaterial);
-  const yAxisLabelMesh = new THREE.Mesh(yAxisLabelGeometry, labelMaterial);
+        const xAxisLabelMesh = new THREE.Mesh(
+          xAxisLabelGeometry,
+          labelMaterial
+        );
+        const yAxisLabelMesh = new THREE.Mesh(
+          yAxisLabelGeometry,
+          labelMaterial
+        );
 
-  // Rotate the labels to be vertical
-  xAxisLabelMesh.rotation.x = -Math.PI / 2;
-  //yAxisLabelMesh.rotation.x = -Math.PI / 2;
+        // Rotate the labels to be vertical
+        xAxisLabelMesh.rotation.x = -Math.PI / 2;
+        //yAxisLabelMesh.rotation.x = -Math.PI / 2;
 
-  // Rotate the Y-axis label to align with the Y-axis
-yAxisLabelMesh.rotation.x = -Math.PI / 2;
-yAxisLabelMesh.rotation.z = Math.PI/2; // Rotate around the Z-axis
+        // Rotate the Y-axis label to align with the Y-axis
+        yAxisLabelMesh.rotation.x = -Math.PI / 2;
+        yAxisLabelMesh.rotation.z = Math.PI / 2; // Rotate around the Z-axis
 
+        // Position the labels at the midpoint of the respective axes
+        // xAxisLabelMesh.position.set(0, gridSizeY / 2, gridSizeY / 2 - cubeSize / 2 + 0.5);
+        // Position the labels at the midpoint of the respective axes
+        const labelX = -2; // Midpoint of the X-axis
+        const labelY = 0;
+        const labelZ = 4.6; // Same Z position as the grid labels
 
-  // Position the labels at the midpoint of the respective axes
-  // xAxisLabelMesh.position.set(0, gridSizeY / 2, gridSizeY / 2 - cubeSize / 2 + 0.5);
-  // Position the labels at the midpoint of the respective axes
-const labelX = -2; // Midpoint of the X-axis
-const labelY = 0;
-const labelZ = 4.6; // Same Z position as the grid labels
+        xAxisLabelMesh.position.set(labelX, labelY, labelZ);
+        const yAxisLabelX = -gridSizeX / 2 - 1.2; // Left side of the X-axis
+        const yAxisLabelY = 0;
+        const yAxisLabelZ = 3; // Same Z position as the grid labels
+        //console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
+        yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
 
-xAxisLabelMesh.position.set(labelX, labelY, labelZ);
-const yAxisLabelX = -gridSizeX / 2 - 1.2; // Left side of the X-axis
-const yAxisLabelY = 0;
-const yAxisLabelZ = 3; // Same Z position as the grid labels
-//console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
-yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
-
-
-  scene.add(xAxisLabelMesh);
-  scene.add(yAxisLabelMesh);
-}
+        scene.add(xAxisLabelMesh);
+        scene.add(yAxisLabelMesh);
+      }
 
       // Add the raycasting and click event handling code here
       const raycaster = new THREE.Raycaster();
@@ -525,7 +553,7 @@ yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
         // Set the camera position
         camera.position.set(0, 6, 0);
 
-// Set the camera rotation
+        // Set the camera rotation
         camera.rotation.x = THREE.MathUtils.degToRad(-90);
         camera.rotation.y = THREE.MathUtils.degToRad(0);
         camera.rotation.z = THREE.MathUtils.degToRad(0);
@@ -559,8 +587,6 @@ yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
       }
 
       ////////
-
-     
 
       function mapXValue(value, min1, max1, min2, max2) {
         // Ensure the value is within the range [min1, max1]
@@ -604,7 +630,11 @@ yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
           });
       }
 
-      document.addEventListener("click", onDocumentMouseClick, false);
+      // document.addEventListener("click", onDocumentMouseClick, false);
+      const chartContainer = document.getElementById("chartContainer");
+
+      // Add click event listener to chartContainer
+      chartContainer.addEventListener("click", onDocumentMouseClick, false);
 
       // Add event listener to radio buttons
       const radioButtons = document.querySelectorAll('input[name="dataType"]');
@@ -631,8 +661,6 @@ yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
 
-        
-
         // Loop through the base cubes
         cubes.forEach((cube) => {
           console.log(cube.userData.type);
@@ -644,10 +672,10 @@ yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
               cube.userData.x_tensile_e >= minTensileStrength
             ) {
               cube.visible = true;
-              cube.userData.labelElement.style.display = 'block'; 
+              cube.userData.labelElement.style.display = "block";
             } else {
               cube.visible = false;
-              cube.userData.labelElement.style.display = 'none'; 
+              cube.userData.labelElement.style.display = "none";
             }
           }
         });
