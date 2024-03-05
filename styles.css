@@ -62,6 +62,7 @@ body {
 }
 
 .cube-label:hover {
+  z-index: 999;
   transform: scale(1.2); /* Adjust scale factor as needed */
 }
 
