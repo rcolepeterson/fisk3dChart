@@ -65,13 +65,28 @@
       <input type="radio" name="dataType" value="option2" /> Option 2<br />
       <input type="radio" name="dataType" value="option3" /> Option 3<br /> -->
 
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label for="flexLife">Flex Life</label>
         <div class="styled-radio">
           <input type="radio" id="flexLife" name="radioButtonOne" />
         </div>
       </div>
       <div class="form-group">
+        <label>
+          <input type="radio" name="dataType" value="all" checked /> All Data
+        </label>
+        <div>
+          <label>
+            <input type="radio" name="dataType" value="soft_resistance" />
+            Conductor
+          </label>
+          <label>
+            <input type="radio" name="dataType" value="flex_life" />
+            Flex Life
+          </label>
+        </div>
+      </div>
+      <!-- <div class="form-group">
         <label for="softResistance">Soft Resistance</label>
         <div class="styled-radio">
           <input type="radio" id="softResistance" name="radioButtoTwo" />
@@ -123,13 +138,20 @@
       }
 
       // Function to filter data based on the selected radio button
+      // Function to filter data based on the selected radio button
       function filterData(dataType) {
         scene.children.forEach((child) => {
           if (child.userData && child.userData.type) {
-            if (dataType === "all" || child.userData.type === dataType) {
+            // If the child is a base cube, always make it visible
+            if (child.userData.id !== undefined) {
               child.visible = true;
             } else {
-              child.visible = false;
+              // If the child is not a base cube, apply the filter
+              if (dataType === "all" || child.userData.type === dataType) {
+                child.visible = true;
+              } else {
+                child.visible = false;
+              }
             }
           }
         });
