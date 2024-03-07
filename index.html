@@ -73,7 +73,7 @@
           </label>
           <label>
             <input type="checkbox" name="dataType" value="soft_resistance" />
-            Conductor
+            Softing Resistance
           </label>
         </div>
       </div>
@@ -146,6 +146,15 @@
             }
           }
         });
+
+        // Then, adjust the y-position of the cubes
+        // scene.children
+        //   .filter((child) => child.visible) // Only consider visible cubes
+        //   .sort((a, b) => a.position.y - b.position.y) // Sort by y-position
+        //   .forEach((child, index) => {
+        //     // Set the y-position based on the index
+        //     child.position.y = index * cubeSize;
+        //   });
       }
 
       // Function to create a single cube
