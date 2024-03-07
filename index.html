@@ -66,23 +66,14 @@
       <input type="radio" name="dataType" value="option3" /> Option 3<br /> -->
 
       <div class="form-group">
-        <label for="flexLife">Flex Life</label>
-        <div class="styled-radio">
-          <input type="radio" id="flexLife" name="radioButtonOne" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>
-          <input type="radio" name="dataType" value="all" checked /> All Data
-        </label>
         <div>
           <label>
-            <input type="radio" name="dataType" value="soft_resistance" />
-            Conductor
+            <input type="checkbox" name="dataType" value="flex_life" />
+            Flex Life
           </label>
           <label>
-            <input type="radio" name="dataType" value="flex_life" />
-            Flex Life
+            <input type="checkbox" name="dataType" value="soft_resistance" />
+            Conductor
           </label>
         </div>
       </div>
@@ -138,8 +129,8 @@
       }
 
       // Function to filter data based on the selected radio button
-      // Function to filter data based on the selected radio button
-      function filterData(dataType) {
+      // Function to filter data based on the selected checkboxes
+      function filterData(dataTypes) {
         scene.children.forEach((child) => {
           if (child.userData && child.userData.type) {
             // If the child is a base cube, always make it visible
@@ -147,7 +138,7 @@
               child.visible = true;
             } else {
               // If the child is not a base cube, apply the filter
-              if (dataType === "all" || child.userData.type === dataType) {
+              if (dataTypes[child.userData.type]) {
                 child.visible = true;
               } else {
                 child.visible = false;
@@ -532,6 +523,7 @@
               cube.userData.y_conduct_e = dataPoint.y_conduct_e; // Add this line
               cube.userData.x_tensile_e = dataPoint.x_tensile_e;
               cube.userData.baseCubeId = i;
+              cube.visible = false;
               allCubes.push(cube);
               scene.add(cube);
             }
@@ -658,13 +650,30 @@
       // Add click event listener to chartContainer
       chartContainer.addEventListener("click", onDocumentMouseClick, false);
 
-      // Add event listener to radio buttons
-      const radioButtons = document.querySelectorAll('input[name="dataType"]');
+      // // Add event listener to radio buttons
+      // const radioButtons = document.querySelectorAll('input[name="dataType"]');
 
-      radioButtons.forEach((radioButton) => {
-        radioButton.addEventListener("change", (event) => {
-          const selectedDataType = event.target.value;
-          filterData(selectedDataType);
+      // radioButtons.forEach((radioButton) => {
+      //   radioButton.addEventListener("change", (event) => {
+      //     const selectedDataType = event.target.value;
+      //     filterData(selectedDataType);
+      //   });
+      // });
+
+      // Get the checkboxes
+      const checkboxes = document.querySelectorAll('input[name="dataType"]');
+
+      // Listen for changes to the checkboxes
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+          // Create an object with the visibility for each data type
+          const dataTypes = {};
+          checkboxes.forEach((checkbox) => {
+            dataTypes[checkbox.value] = checkbox.checked;
+          });
+
+          // Filter the data
+          filterData(dataTypes);
         });
       });
 
