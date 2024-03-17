@@ -132,14 +132,28 @@
 
       // Function to filter data based on the selected checkboxes
       function filterData(dataTypes) {
+        const minConductivity = Number(minConductivityDropdown.value);
+        const minTensileStrength = Number(minTensileStrengthDropdown.value);
+        console.log(minConductivity, minTensileStrength);
         scene.children.forEach((child) => {
           if (child.userData && child.userData.type) {
-            // If the child is a base cube, always make it visible
+            // If the child is a base cube, check if it meets the minimum requirements
             if (child.userData.id !== undefined) {
-              child.visible = true;
+              if (
+                child.userData.y_conduct_e >= minConductivity &&
+                child.userData.x_tensile_e >= minTensileStrength
+              ) {
+                child.visible = true;
+              } else {
+                child.visible = false;
+              }
             } else {
               // If the child is not a base cube, apply the filter
-              if (dataTypes[child.userData.type]) {
+              if (
+                dataTypes[child.userData.type] &&
+                child.userData.y_conduct_e >= minConductivity &&
+                child.userData.x_tensile_e >= minTensileStrength
+              ) {
                 child.visible = true;
               } else {
                 child.visible = false;
@@ -734,11 +748,23 @@
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
 
+        ///
+        // Get the checkboxes
+        const checkboxes = document.querySelectorAll('input[name="dataType"]');
+
+        // Create an object with the visibility for each data type
+        const dataTypes = {};
+        checkboxes.forEach((checkbox) => {
+          dataTypes[checkbox.value] = checkbox.checked;
+        });
+
+        ///
+
         // Loop through the base cubes
         cubes.forEach((cube) => {
-          console.log(cube.userData.type);
+          //console.log(cube.userData.type);
           if (cube.userData.type.includes("Alloy Conductors")) {
-            console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
+            //console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
 
             if (
               cube.userData.y_conduct_e >= minConductivity &&
@@ -761,8 +787,10 @@
 
           if (baseCube && baseCube.visible === false) {
             cube.visible = false;
-          } else {
+          } else if (dataTypes[cube.userData.type]) {
             cube.visible = true;
+          } else {
+            cube.visible = false;
           }
         });
 
