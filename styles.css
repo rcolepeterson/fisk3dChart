@@ -148,6 +148,84 @@ select:-moz-focusring {
 }
 
 /* radio buttons */
-input[type="radio"] {
-  appearance: auto; /* Reset the appearance property to its default value */
+
+.form-group-filters {
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
+.custom-checkbox {
+  display: block;
+  position: relative;
+
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  width: 220px; /* Adjusted width */
+  height: 40px; /* Adjusted height */
+  background: #eee;
+  border: 1px solid #ddd;
+  border: thin solid gray; /* Added border */
+  border-radius: 4px; /* Added border-radius */
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+/* 
+.custom-checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+} */
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+  background-color: black; /* Added background color */
+  border-radius: 50%; /* Added border radius */
+}
+
+.custom-checkbox .checkmark:after {
+  left: 9px;
+  top: 15px;
+  width: 10px; /* Adjusted width */
+  height: 10px; /* Adjusted height */
+  border: none; /* Removed border */
+}
+
+.flex-life {
+  background-color: #bece71;
+}
+
+.soft-resistance {
+  background-color: #6cb2b4;
 }

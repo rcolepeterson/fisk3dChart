@@ -61,28 +61,33 @@
         </select>
       </div>
 
-      <!-- <input type="radio" name="dataType" value="option1" /> Option 1<br />
-      <input type="radio" name="dataType" value="option2" /> Option 2<br />
-      <input type="radio" name="dataType" value="option3" /> Option 3<br /> -->
-
-      <div class="form-group">
+      <div class="form-group-filters">
         <div>
-          <label>
-            <input type="checkbox" name="dataType" value="flex_life" />
-            Flex Life
+          <label for="flex_life">Flex Life</label>
+          <label class="custom-checkbox flex-life">
+            <input
+              type="checkbox"
+              id="flex_life"
+              name="dataType"
+              value="flex_life"
+            />
+            <span class="checkmark"></span>
           </label>
-          <label>
-            <input type="checkbox" name="dataType" value="soft_resistance" />
-            Softing Resistance
+        </div>
+
+        <div>
+          <label for="soft_resistance">Softing Resistance</label>
+          <label class="custom-checkbox soft-resistance">
+            <input
+              type="checkbox"
+              id="soft_resistance"
+              name="dataType"
+              value="soft_resistance"
+            />
+            <span class="checkmark"></span>
           </label>
         </div>
       </div>
-      <!-- <div class="form-group">
-        <label for="softResistance">Soft Resistance</label>
-        <div class="styled-radio">
-          <input type="radio" id="softResistance" name="radioButtoTwo" />
-        </div>
-      </div> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
@@ -208,6 +213,7 @@
         const geometry = new THREE.BoxGeometry(size, size, size);
         const material = new THREE.MeshPhongMaterial({ color });
         const cube = new THREE.Mesh(geometry, material);
+
         cube.position.set(x, y + size / 2, z);
         // Add metadata indicating the type of data (e.g., "conductor", "alloy", "fire wire")
         cube.userData.type = type;
@@ -612,14 +618,24 @@
         createXAxisLabels(xAxisValues);
 
         // Lights
-        const light1 = new THREE.DirectionalLight(0xffffff, 1);
-        light1.position.set(1, 1, 1);
+        // const light1 = new THREE.DirectionalLight(0xffffff, 1);
+        // light1.position.set(1, 1, 1);
+        // scene.add(light1);
+
+        // const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+        // scene.add(light2);
+        // Lights
+        const light1 = new THREE.DirectionalLight(0xffffff, 0.75); // Reduced intensity to 0.75
+        light1.position.set(-1, 1, 1);
         scene.add(light1);
 
-        const light2 = new THREE.AmbientLight(0xffffff, 0.5);
+        const light2 = new THREE.AmbientLight(0xffffff, 0.25); // Reduced intensity to 0.25
         scene.add(light2);
 
-        // camera.position.set(-3, 2, 5);
+        const light3 = new THREE.DirectionalLight(0xffffff, 0.5); // Reduced intensity to 0.5
+        light3.position.set(1, -1, 1);
+        scene.add(light3);
+
         // Set the camera position
         camera.position.set(0, 6, 0);
 
@@ -686,14 +702,15 @@
           .then((data) => {
             jsonData = data; // Store the loaded JSON data
 
-            // Continue with creating the scatter plot
-            //createScatterPlot(data);
-            // const firstItem = [data[0]];
-            // createScatterPlot(firstItem);
+            // const alloyWire = jsonData.filter((item) =>
+            //   item.type.includes("Alloy Wire")
+            // );
+
             const alloyConductors = jsonData.filter((item) =>
               item.type.includes("Alloy Conductors")
             );
-            createScatterPlot(alloyConductors);
+            createScatterPlot(alloyConductors, "Alloy Conductors");
+            //createScatterPlot(alloyWire, "Alloy Wire");
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);
@@ -705,16 +722,6 @@
 
       // Add click event listener to chartContainer
       chartContainer.addEventListener("click", onDocumentMouseClick, false);
-
-      // // Add event listener to radio buttons
-      // const radioButtons = document.querySelectorAll('input[name="dataType"]');
-
-      // radioButtons.forEach((radioButton) => {
-      //   radioButton.addEventListener("change", (event) => {
-      //     const selectedDataType = event.target.value;
-      //     filterData(selectedDataType);
-      //   });
-      // });
 
       // Get the checkboxes
       const checkboxes = document.querySelectorAll('input[name="dataType"]');
