@@ -111,8 +111,6 @@ body {
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
-}
-*/ label {
   font-size: 14px;
 }
 
@@ -151,7 +149,7 @@ select:-moz-focusring {
 
 .form-group-filters {
   display: flex;
-  margin-top: 10px;
+  margin-top: 8px;
   gap: 10px;
   margin-left: 10px;
   margin-right: 15px;
@@ -165,7 +163,7 @@ select:-moz-focusring {
   font-size: 22px;
   user-select: none;
   width: 220px; /* Adjusted width */
-  height: 40px; /* Adjusted height */
+  height: 39px; /* Adjusted height */
   background: #eee;
   border: 1px solid #ddd;
   border: thin solid gray; /* Added border */
