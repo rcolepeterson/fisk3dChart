@@ -102,6 +102,10 @@
       // Assuming cubeSize is defined somewhere above
       const baseCubeHeight = cubeSize;
 
+      // Store the initial window size
+      let initialWindowWidth = window.innerWidth;
+      let initialWindowHeight = window.innerHeight;
+
       // Load the font using FontLoader at the beginning
       const loader = new THREE.FontLoader();
       loader.load(
@@ -618,23 +622,23 @@
         createXAxisLabels(xAxisValues);
 
         // Lights
-        // const light1 = new THREE.DirectionalLight(0xffffff, 1);
-        // light1.position.set(1, 1, 1);
-        // scene.add(light1);
-
-        // const light2 = new THREE.AmbientLight(0xffffff, 0.5);
-        // scene.add(light2);
-        // Lights
-        const light1 = new THREE.DirectionalLight(0xffffff, 0.75); // Reduced intensity to 0.75
-        light1.position.set(-1, 1, 1);
+        const light1 = new THREE.DirectionalLight(0xffffff, 1);
+        light1.position.set(1, 1, 1);
         scene.add(light1);
 
-        const light2 = new THREE.AmbientLight(0xffffff, 0.25); // Reduced intensity to 0.25
+        const light2 = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(light2);
+        // Lights
+        // const light1 = new THREE.DirectionalLight(0xffffff, 0.75); // Reduced intensity to 0.75
+        // light1.position.set(-1, 1, 1);
+        // scene.add(light1);
 
-        const light3 = new THREE.DirectionalLight(0xffffff, 0.5); // Reduced intensity to 0.5
-        light3.position.set(1, -1, 1);
-        scene.add(light3);
+        // const light2 = new THREE.AmbientLight(0xffffff, 0.25); // Reduced intensity to 0.25
+        // scene.add(light2);
+
+        // const light3 = new THREE.DirectionalLight(0xffffff, 0.5); // Reduced intensity to 0.5
+        // light3.position.set(1, -1, 1);
+        // scene.add(light3);
 
         // Set the camera position
         camera.position.set(0, 6, 0);
@@ -659,8 +663,11 @@
               const vector = new THREE.Vector3();
               vector.setFromMatrixPosition(cube.matrixWorld);
               vector.project(camera);
-              const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
-              const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+              // const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+              // const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+
+              const labelX = (vector.x * 0.5 + 0.5) * initialWindowWidth;
+              const labelY = (vector.y * -0.5 + 0.5) * initialWindowHeight;
               labelElement.style.left = `${labelX}px`;
               labelElement.style.top = `${labelY}px`;
             }
