@@ -10,7 +10,7 @@
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
     <div id="info"></div>
-    <div id="label"></div>
+    <!-- <div id="label"></div> -->
     <div id="dd">
       <!-- Add these dropdowns in your HTML -->
       <div class="form-group">
@@ -654,7 +654,10 @@
           controls.update();
           updateCameraPositionDisplay(camera);
 
-          ////
+          // Get the chartContainer size and position
+          const chartContainer = document.getElementById("chartContainer");
+          const { width, height, left, top } =
+            chartContainer.getBoundingClientRect();
 
           // Update the position of the labels
           cubes.forEach((cube, i) => {
@@ -663,11 +666,9 @@
               const vector = new THREE.Vector3();
               vector.setFromMatrixPosition(cube.matrixWorld);
               vector.project(camera);
-              // const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
-              // const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
-
-              const labelX = (vector.x * 0.5 + 0.5) * initialWindowWidth;
-              const labelY = (vector.y * -0.5 + 0.5) * initialWindowHeight;
+              // Use the chartContainer size and position to calculate the label positions
+              const labelX = (vector.x * 0.5 + 0.5) * width + left;
+              const labelY = (vector.y * -0.5 + 0.5) * height + top;
               labelElement.style.left = `${labelX}px`;
               labelElement.style.top = `${labelY}px`;
             }

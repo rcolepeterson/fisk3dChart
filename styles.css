@@ -16,6 +16,17 @@ body {
   padding: 0;
   overflow: hidden;
   background-color: white; /* Set the background color to white */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+#chartContainer {
+  position: relative;
+  display: inline-block;
 }
 
 #cameraPosition {
