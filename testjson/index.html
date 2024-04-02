@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSON Test</title>
+  </head>
+  <body>
+    <h1>JSON Test</h1>
+    <button id="fetchButton1">Fetch TEST JSON 1</button>
+    <button id="fetchButton2">Fetch FISK JSON 2</button>
+    <div id="result"></div>
+
+    <script>
+      document
+        .getElementById("fetchButton1")
+        .addEventListener("click", function () {
+          fetchData("https://jsonplaceholder.typicode.com/posts/1");
+        });
+
+      document
+        .getElementById("fetchButton2")
+        .addEventListener("click", function () {
+          fetchData(
+            "https://fiskalloy.com/wp-admin/admin-ajax.php?action=fskdm_alloy_graph_data"
+          );
+        });
+
+      function fetchData(url) {
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("result").textContent = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          })
+          .catch((error) => {
+            document.getElementById("result").textContent = "Error: " + error;
+          });
+      }
+    </script>
+  </body>
+</html>
