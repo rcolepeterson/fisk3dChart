@@ -88,6 +88,7 @@
           </label>
         </div>
       </div>
+      <button id="toggle-units-button">Toggle Units</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
@@ -99,6 +100,7 @@
       const gridSizeX = 16; // Number of columns
       const gridSizeY = 7; // Number of rows
       const cubeSize = 0.4;
+      let isMetric = false;
       // Assuming cubeSize is defined somewhere above
       const baseCubeHeight = cubeSize;
 
@@ -321,13 +323,42 @@
         }
       }
 
+      function convertUnits(value) {
+        // Convert inches to centimeters if isMetric is true
+        // return isMetric ? value * 2.54 : value;
+        return isMetric ? value * 0.3048 : value;
+      }
+
+      // Call this function when the button is clicked
+      function toggleUnits() {
+        console.log("toggle");
+        isMetric = !isMetric; // Toggle the unit
+        createXAxisLabels(xAxisValues); // Recreate the labels with the new unit
+      }
+
       function createXAxisLabels(xAxisValues) {
+        console.log(
+          "toggle: createXAxisLabels",
+          xAxisValues,
+          "isMetric",
+          isMetric
+        );
+        // First, remove all existing labels from the scene
+        scene.children = scene.children.filter(
+          (child) => child.type !== "Mesh" || !child.geometry.isTextGeometry
+        );
+
         for (let i = 0; i < xAxisValues.length; i++) {
           let xPoint = xAxisValues[i];
-          var xValueToMap = xPoint.x - 1.5; // This value is in the range [0, 150]
+          var xValueToMap = convertUnits(xPoint.x - 1.5);
           var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
-          var yValueToMap = xPoint.y; // This value is in the range [0, 120]
+          var yValueToMap = convertUnits(xPoint.y);
           var mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+
+          // Update the label property
+          xPoint.label = isMetric
+            ? Math.round(xValueToMap).toString()
+            : xPoint.label;
 
           const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0; // You can adjust the vertical position if needed
@@ -509,6 +540,7 @@
       // Define an array to store your cubes
       let cubes = [];
       let allCubes = [];
+      let xAxisValues = [];
       function createScatterPlot(data) {
         scene = new THREE.Scene();
         scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
@@ -610,9 +642,6 @@
 
         // Call the createYAxisLabels method
         createYAxisLabels(yAxisValues);
-
-        // Define an array to store X-axis values
-        const xAxisValues = [];
 
         // Create X-axis labels from 0 to 140 with a step of 10
         for (let x = 0; x <= 140; x += 10) {
@@ -724,6 +753,11 @@
             console.error("Error loading JSON data:", error);
           });
       }
+
+      //toggle
+      document
+        .getElementById("toggle-units-button")
+        .addEventListener("click", toggleUnits);
 
       // document.addEventListener("click", onDocumentMouseClick, false);
       const chartContainer = document.getElementById("chartContainer");
