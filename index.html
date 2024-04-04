@@ -87,6 +87,43 @@
             <span class="checkmark"></span>
           </label>
         </div>
+        <div>
+          <label for="stress_relaxation">Stress Relaxation</label>
+          <label class="custom-checkbox stress-relaxation">
+            <input
+              type="checkbox"
+              id="stress_relaxation"
+              name="dataType"
+              value="stress_relaxation"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div>
+          <label for="spring_properties">Spring Properties</label>
+          <label class="custom-checkbox spring-properties">
+            <input
+              type="checkbox"
+              id="spring_properties"
+              name="dataType"
+              value="spring_properties"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div>
+          <label for="formability">Formability</label>
+          <label class="custom-checkbox formability">
+            <input
+              type="checkbox"
+              id="formability"
+              name="dataType"
+              value="formability"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
       </div>
     </div>
 
@@ -542,16 +579,16 @@
             "soft_resistance",
             "stress_relaxation",
             "spring_properties",
-            "machinability",
+            // "machinability",
             "formability",
           ];
           const colors = [
             "#bece71",
-            "#6cb2b4",
+            "#697ba6",
+            "#bece71",
+            "#6cb2c4",
+            // "#123152",
             "#cfc250",
-            "#43837d",
-            "#123152",
-            "#af933f",
           ];
 
           // Create base cube
@@ -705,20 +742,21 @@
       // Function to load JSON data
       function loadJSONData() {
         // You can adjust the URL to your JSON file
-        fetch("alloy.json")
+        fetch(
+          "https://fiskalloy.com/wp-admin/admin-ajax.php?action=fskdm_alloy_graph_data"
+        )
           .then((response) => response.json())
           .then((data) => {
             jsonData = data; // Store the loaded JSON data
 
-            // const alloyWire = jsonData.filter((item) =>
-            //   item.type.includes("Alloy Wire")
-            // );
-
-            const alloyConductors = jsonData.filter((item) =>
-              item.type.includes("Alloy Conductors")
+            const alloyWire = jsonData.filter((item) =>
+              item.type.includes("Alloy Wire")
             );
-            createScatterPlot(alloyConductors, "Alloy Conductors");
-            //createScatterPlot(alloyWire, "Alloy Wire");
+            createScatterPlot(alloyWire, "Alloy Wire");
+            // const alloyConductors = jsonData.filter((item) =>
+            //   item.type.includes("Alloy Conductors")
+            // );
+            //createScatterPlot(alloyConductors, "Alloy Conductors");
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);

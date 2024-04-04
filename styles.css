@@ -236,5 +236,17 @@ select:-moz-focusring {
 }
 
 .soft-resistance {
-  background-color: #6cb2b4;
+  background-color: #697ba6;
+}
+
+.stress-relaxation {
+  background-color: #bece71;
+}
+
+.spring-properties {
+  background-color: #6cb2c4;
+}
+
+.formability {
+  background-color: #cfc250;
 }
