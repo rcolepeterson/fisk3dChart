@@ -814,9 +814,13 @@
         ///
 
         // Loop through the base cubes
+        // Loop through the base cubes
         cubes.forEach((cube) => {
           //console.log(cube.userData.type);
-          if (cube.userData.type.includes("Alloy Conductors")) {
+          if (
+            cube.userData.type.includes("Alloy Conductors") ||
+            cube.userData.type.includes("Alloy Wire")
+          ) {
             //console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
 
             if (
