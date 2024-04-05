@@ -749,14 +749,12 @@
           .then((data) => {
             jsonData = data; // Store the loaded JSON data
 
-            const alloyWire = jsonData.filter((item) =>
-              item.type.includes("Alloy Wire")
+            const alloyData = jsonData.filter(
+              (item) =>
+                item.type.includes("Alloy Wire") ||
+                item.type.includes("Alloy Conductors")
             );
-            createScatterPlot(alloyWire, "Alloy Wire");
-            // const alloyConductors = jsonData.filter((item) =>
-            //   item.type.includes("Alloy Conductors")
-            // );
-            //createScatterPlot(alloyConductors, "Alloy Conductors");
+            createScatterPlot(alloyData);
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);
