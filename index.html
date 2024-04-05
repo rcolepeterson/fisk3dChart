@@ -12,6 +12,36 @@
     <div id="info"></div>
     <!-- <div id="label"></div> -->
     <div id="dd">
+      <div class="form-group-filters">
+        <div>
+          <label for="toggleConductors">Alloy Conductors</label>
+          <label class="custom-checkbox toggle-conductors">
+            <input
+              type="checkbox"
+              id="toggleConductors"
+              name="dataType"
+              value="Alloy Conductors"
+              onclick="toggleAlloyConductors()"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div>
+          <label for="toggleWire">Alloy Wire</label>
+          <label class="custom-checkbox toggle-wire">
+            <input
+              type="checkbox"
+              id="toggleWire"
+              name="dataType"
+              value="Alloy Wire"
+              onclick="toggleAlloyWire()"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+
       <!-- Add these dropdowns in your HTML -->
       <div class="form-group">
         <label for="minConductivity">Minimum Conductivity</label>
@@ -70,6 +100,7 @@
               id="flex_life"
               name="dataType"
               value="flex_life"
+              class="performance-checkbox"
             />
             <span class="checkmark"></span>
           </label>
@@ -83,6 +114,7 @@
               id="soft_resistance"
               name="dataType"
               value="soft_resistance"
+              class="performance-checkbox"
             />
             <span class="checkmark"></span>
           </label>
@@ -95,6 +127,7 @@
               id="stress_relaxation"
               name="dataType"
               value="stress_relaxation"
+              class="performance-checkbox"
             />
             <span class="checkmark"></span>
           </label>
@@ -107,6 +140,7 @@
               id="spring_properties"
               name="dataType"
               value="spring_properties"
+              class="performance-checkbox"
             />
             <span class="checkmark"></span>
           </label>
@@ -120,6 +154,7 @@
               id="formability"
               name="dataType"
               value="formability"
+              class="performance-checkbox"
             />
             <span class="checkmark"></span>
           </label>
@@ -153,6 +188,54 @@
           loadJSONData();
         }
       );
+
+      // Function to toggle visibility of Alloy Conductors and associated stacked cubes
+      function toggleAlloyConductors() {
+        cubes.forEach((cube) => {
+          // Check if the cube is an Alloy Conductor
+          if (cube.userData.type.includes("Alloy Conductors")) {
+            cube.visible = !cube.visible; // Toggle visibility of the main cube
+
+            // Check if the cube has a label element and toggle its display
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = cube.visible
+                ? "block"
+                : "none";
+            }
+
+            // Toggle visibility of associated stacked cubes
+            allCubes.forEach((c) => {
+              if (c.userData.baseCubeId === cube.userData.id) {
+                c.visible = cube.visible;
+              }
+            });
+          }
+        });
+      }
+
+      // Function to toggle visibility of Alloy Wire
+      function toggleAlloyWire() {
+        cubes.forEach((cube) => {
+          // Check if the cube is an Alloy Conductor
+          if (cube.userData.type.includes("Alloy Wire")) {
+            cube.visible = !cube.visible; // Toggle visibility of the main cube
+
+            // Check if the cube has a label element and toggle its display
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = cube.visible
+                ? "block"
+                : "none";
+            }
+
+            // Toggle visibility of associated stacked cubes
+            allCubes.forEach((c) => {
+              if (c.userData.baseCubeId === cube.userData.id) {
+                c.visible = cube.visible;
+              }
+            });
+          }
+        });
+      }
 
       // Function to display camera position
       function updateCameraPositionDisplay(camera) {
@@ -768,7 +851,9 @@
       chartContainer.addEventListener("click", onDocumentMouseClick, false);
 
       // Get the checkboxes
-      const checkboxes = document.querySelectorAll('input[name="dataType"]');
+      const checkboxes = document.querySelectorAll(
+        'input[name="dataType"].performance-checkbox'
+      );
 
       // Listen for changes to the checkboxes
       checkboxes.forEach((checkbox) => {
