@@ -40,6 +40,19 @@
             <span class="checkmark"></span>
           </label>
         </div>
+        <div>
+          <label for="toggleFineWire">Fine Wire</label>
+          <label class="custom-checkbox toggle-fine-wire">
+            <input
+              type="checkbox"
+              id="toggleFineWire"
+              name="dataType"
+              value="Fine Wire"
+              onclick="toggleFineWire()"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
       </div>
 
       <!-- Add these dropdowns in your HTML -->
@@ -218,6 +231,30 @@
         cubes.forEach((cube) => {
           // Check if the cube is an Alloy Conductor
           if (cube.userData.type.includes("Alloy Wire")) {
+            cube.visible = !cube.visible; // Toggle visibility of the main cube
+
+            // Check if the cube has a label element and toggle its display
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = cube.visible
+                ? "block"
+                : "none";
+            }
+
+            // Toggle visibility of associated stacked cubes
+            allCubes.forEach((c) => {
+              if (c.userData.baseCubeId === cube.userData.id) {
+                c.visible = cube.visible;
+              }
+            });
+          }
+        });
+      }
+      // Function to toggle visibility of Fine Wire
+      function toggleFineWire() {
+        console.log("toggle fine wire", cubes.length, cubes);
+        cubes.forEach((cube) => {
+          // Check if the cube is an fine wire
+          if (cube.userData.type.includes("Fine Wire")) {
             cube.visible = !cube.visible; // Toggle visibility of the main cube
 
             // Check if the cube has a label element and toggle its display
@@ -837,7 +874,24 @@
                 item.type.includes("Alloy Wire") ||
                 item.type.includes("Alloy Conductors")
             );
-            createScatterPlot(alloyData);
+
+            const fineWireData = jsonData
+              .filter((item) => item.type.includes("Fine Wire"))
+              .map((item) => {
+                // Create a new object to avoid mutating the original item
+                let newItem = { ...item };
+                // Flatten the type array
+                newItem.type = [item.type.find((type) => type === "Fine Wire")];
+                // Use the second color if it exists, otherwise use the first color
+                newItem.color = item.color[1]
+                  ? [item.color[1]]
+                  : [item.color[0]];
+                return newItem;
+              });
+
+            createScatterPlot(alloyData.concat(fineWireData));
+
+            // createScatterPlot(alloyData);
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);
@@ -902,7 +956,8 @@
           //console.log(cube.userData.type);
           if (
             cube.userData.type.includes("Alloy Conductors") ||
-            cube.userData.type.includes("Alloy Wire")
+            cube.userData.type.includes("Alloy Wire") ||
+            cube.userData.type.includes("Fine Wire")
           ) {
             //console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
 
