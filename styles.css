@@ -41,6 +41,12 @@ body {
   top: 10px;
   right: 10px;
   display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.navItemHolder {
+  gap: 10px;
 }
 
 #info {
@@ -107,8 +113,12 @@ body {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  margin: 10px;
+  /* margin: 10px; */
   width: 120px;
+}
+
+.performanceGroup {
+  display: flex;
 }
 
 .form-control:focus {
@@ -122,7 +132,8 @@ body {
 label {
   display: inline-block;
   margin-bottom: 0.5rem;
-  font-size: 14px;
+  font-size: 12px;
+  /* max-width: 78px; */
 }
 
 select {
@@ -149,6 +160,7 @@ select.minimal {
     calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
   background-size: 5px 5px, 5px 5px, 1px 1.5em;
   background-repeat: no-repeat;
+  margin-bottom: 0.5rem;
 }
 
 select:-moz-focusring {
@@ -161,9 +173,7 @@ select:-moz-focusring {
 .form-group-filters {
   display: flex;
   margin-top: 8px;
-  gap: 10px;
-  margin-left: 10px;
-  margin-right: 15px;
+  /* gap: 10px; */
 }
 
 .custom-checkbox {
@@ -173,7 +183,7 @@ select:-moz-focusring {
   cursor: pointer;
   font-size: 22px;
   user-select: none;
-  width: 120px; /* Adjusted width */
+  width: 80px; /* Adjusted width */
   height: 39px; /* Adjusted height */
   background: #eee;
   border: 1px solid #ddd;

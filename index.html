@@ -12,179 +12,194 @@
     <div id="info"></div>
     <!-- <div id="label"></div> -->
     <div id="dd">
-      <div class="form-group-filters">
-        <div>
-          <label for="toggleAll">Show All</label>
-          <label class="custom-checkbox toggle-all">
-            <input
-              type="radio"
-              id="toggleAll"
-              name="dataType"
-              value="All"
-              onclick="showAll()"
-              checked
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div>
-          <label for="toggleConductors">Alloy Conductors</label>
-          <label class="custom-checkbox toggle-conductors">
-            <input
-              type="radio"
-              id="toggleConductors"
-              name="dataType"
-              value="Alloy Conductors"
-              onclick="showAlloyConductors()"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
+      <div>
+        <p>Alloy Selection</p>
+        <div class="form-group-filters navItemHolder">
+          <div>
+            <label class="custom-checkbox toggle-all">
+              <input
+                type="radio"
+                id="toggleAll"
+                name="dataType"
+                value="All"
+                onclick="showAll()"
+                checked
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleAll">All Products</label>
+          </div>
+          <div>
+            <label class="custom-checkbox toggle-conductors">
+              <input
+                type="radio"
+                id="toggleConductors"
+                name="dataType"
+                value="Alloy Conductors"
+                onclick="showAlloyConductors()"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleConductors">Alloy<br />Conductors</label>
+          </div>
 
-        <div>
-          <label for="toggleWire">Alloy Wire</label>
-          <label class="custom-checkbox toggle-wire">
-            <input
-              type="radio"
-              id="toggleWire"
-              name="dataType"
-              value="Alloy Wire"
-              onclick="showAlloyWire()"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div>
-          <label for="toggleFineWire">Fine Wire</label>
-          <label class="custom-checkbox toggle-fine-wire">
-            <input
-              type="radio"
-              id="toggleFineWire"
-              name="dataType"
-              value="Fine Wire"
-              onclick="showFineWire()"
-            />
-            <span class="checkmark"></span>
-          </label>
+          <div>
+            <label class="custom-checkbox toggle-wire">
+              <input
+                type="radio"
+                id="toggleWire"
+                name="dataType"
+                value="Alloy Wire"
+                onclick="showAlloyWire()"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleWire">Alloy Wire</label>
+          </div>
+          <div>
+            <label class="custom-checkbox toggle-fine-wire">
+              <input
+                type="radio"
+                id="toggleFineWire"
+                name="dataType"
+                value="Fine Wire"
+                onclick="showFineWire()"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleFineWire">Fine Wire</label>
+          </div>
         </div>
       </div>
 
       <!-- Add these dropdowns in your HTML -->
-      <div class="form-group">
-        <label for="minConductivity">Minimum Conductivity</label>
-        <select id="minConductivity" class="minimal">
-          <!-- Add options from 0 to 100 in increments of 10 -->
-          <option value="0">0</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="60">60</option>
-          <option value="70">70</option>
-          <option value="80">80</option>
-          <option value="90">90</option>
-          <option value="100">100</option>
-          <!-- Add more options as needed -->
-        </select>
+      <div>
+        <p>Performance Range</p>
+        <div class="performanceGroup navItemHolder">
+          <div class="form-group">
+            <select id="minConductivity" class="minimal">
+              <!-- Add options from 0 to 100 in increments of 10 -->
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+              <option value="70">70</option>
+              <option value="80">80</option>
+              <option value="90">90</option>
+              <option value="100">100</option>
+              <!-- Add more options as needed -->
+            </select>
+            <label for="minConductivity"
+              >Minimum<br />
+              Conductivity</label
+            >
+          </div>
+
+          <div class="form-group">
+            <select id="minTensileStrength" class="minimal">
+              <!-- Add options from 0 to 200 in increments of 10 -->
+              <option value="0">0</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+              <option value="70">70</option>
+              <option value="80">80</option>
+              <option value="90">90</option>
+              <option value="100">100</option>
+              <option value="110">110</option>
+              <option value="120">120</option>
+              <option value="130">130</option>
+              <option value="140">140</option>
+              <option value="150">150</option>
+              <option value="160">160</option>
+              <option value="170">170</option>
+              <option value="180">180</option>
+              <option value="190">190</option>
+              <option value="200">200</option>
+              <!-- Add more options as needed -->
+            </select>
+            <label for="minTensileStrength"
+              >Minimum<br />Tensile Strength</label
+            >
+          </div>
+        </div>
       </div>
+      <div>
+        <p>Additional Performance Criteria</p>
+        <div class="form-group-filters navItemHolder">
+          <div>
+            <label class="custom-checkbox flex-life">
+              <input
+                type="checkbox"
+                id="flex_life"
+                name="dataType"
+                value="flex_life"
+                class="performance-checkbox"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="flex_life">Flex Life</label>
+          </div>
 
-      <div class="form-group">
-        <label for="minTensileStrength">Minimum Tensile Strength</label>
-        <select id="minTensileStrength" class="minimal">
-          <!-- Add options from 0 to 200 in increments of 10 -->
-          <option value="0">0</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="60">60</option>
-          <option value="70">70</option>
-          <option value="80">80</option>
-          <option value="90">90</option>
-          <option value="100">100</option>
-          <option value="110">110</option>
-          <option value="120">120</option>
-          <option value="130">130</option>
-          <option value="140">140</option>
-          <option value="150">150</option>
-          <option value="160">160</option>
-          <option value="170">170</option>
-          <option value="180">180</option>
-          <option value="190">190</option>
-          <option value="200">200</option>
-          <!-- Add more options as needed -->
-        </select>
-      </div>
+          <div>
+            <label class="custom-checkbox soft-resistance">
+              <input
+                type="checkbox"
+                id="soft_resistance"
+                name="dataType"
+                value="soft_resistance"
+                class="performance-checkbox"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="soft_resistance">Softing<br />Resistance</label>
+          </div>
+          <div>
+            <label class="custom-checkbox stress-relaxation">
+              <input
+                type="checkbox"
+                id="stress_relaxation"
+                name="dataType"
+                value="stress_relaxation"
+                class="performance-checkbox"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="stress_relaxation">Stress<br />Relaxation</label>
+          </div>
+          <div>
+            <label class="custom-checkbox spring-properties">
+              <input
+                type="checkbox"
+                id="spring_properties"
+                name="dataType"
+                value="spring_properties"
+                class="performance-checkbox"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="spring_properties">Spring<br />Properties</label>
+          </div>
 
-      <div class="form-group-filters">
-        <div>
-          <label for="flex_life">Flex Life</label>
-          <label class="custom-checkbox flex-life">
-            <input
-              type="checkbox"
-              id="flex_life"
-              name="dataType"
-              value="flex_life"
-              class="performance-checkbox"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-
-        <div>
-          <label for="soft_resistance">Softing Resistance</label>
-          <label class="custom-checkbox soft-resistance">
-            <input
-              type="checkbox"
-              id="soft_resistance"
-              name="dataType"
-              value="soft_resistance"
-              class="performance-checkbox"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div>
-          <label for="stress_relaxation">Stress Relaxation</label>
-          <label class="custom-checkbox stress-relaxation">
-            <input
-              type="checkbox"
-              id="stress_relaxation"
-              name="dataType"
-              value="stress_relaxation"
-              class="performance-checkbox"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div>
-          <label for="spring_properties">Spring Properties</label>
-          <label class="custom-checkbox spring-properties">
-            <input
-              type="checkbox"
-              id="spring_properties"
-              name="dataType"
-              value="spring_properties"
-              class="performance-checkbox"
-            />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-
-        <div>
-          <label for="formability">Formability</label>
-          <label class="custom-checkbox formability">
-            <input
-              type="checkbox"
-              id="formability"
-              name="dataType"
-              value="formability"
-              class="performance-checkbox"
-            />
-            <span class="checkmark"></span>
-          </label>
+          <div>
+            <label class="custom-checkbox formability">
+              <input
+                type="checkbox"
+                id="formability"
+                name="dataType"
+                value="formability"
+                class="performance-checkbox"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="formability">Formability</label>
+          </div>
         </div>
       </div>
     </div>
