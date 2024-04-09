@@ -14,14 +14,28 @@
     <div id="dd">
       <div class="form-group-filters">
         <div>
+          <label for="toggleAll">Show All</label>
+          <label class="custom-checkbox toggle-all">
+            <input
+              type="radio"
+              id="toggleAll"
+              name="dataType"
+              value="All"
+              onclick="showAll()"
+              checked
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div>
           <label for="toggleConductors">Alloy Conductors</label>
           <label class="custom-checkbox toggle-conductors">
             <input
-              type="checkbox"
+              type="radio"
               id="toggleConductors"
               name="dataType"
               value="Alloy Conductors"
-              onclick="toggleAlloyConductors()"
+              onclick="showAlloyConductors()"
             />
             <span class="checkmark"></span>
           </label>
@@ -31,11 +45,11 @@
           <label for="toggleWire">Alloy Wire</label>
           <label class="custom-checkbox toggle-wire">
             <input
-              type="checkbox"
+              type="radio"
               id="toggleWire"
               name="dataType"
               value="Alloy Wire"
-              onclick="toggleAlloyWire()"
+              onclick="showAlloyWire()"
             />
             <span class="checkmark"></span>
           </label>
@@ -44,11 +58,11 @@
           <label for="toggleFineWire">Fine Wire</label>
           <label class="custom-checkbox toggle-fine-wire">
             <input
-              type="checkbox"
+              type="radio"
               id="toggleFineWire"
               name="dataType"
               value="Fine Wire"
-              onclick="toggleFineWire()"
+              onclick="showFineWire()"
             />
             <span class="checkmark"></span>
           </label>
@@ -202,75 +216,100 @@
         }
       );
 
-      // Function to toggle visibility of Alloy Conductors and associated stacked cubes
-      function toggleAlloyConductors() {
+      // Function to show only Alloy Conductors
+      function showAlloyConductors() {
         cubes.forEach((cube) => {
-          // Check if the cube is an Alloy Conductor
+          // Hide all cubes
+          cube.visible = false;
+          if (cube.userData.labelElement) {
+            cube.userData.labelElement.style.display = "none";
+          }
+          // Show only Alloy Conductors cubes
           if (cube.userData.type.includes("Alloy Conductors")) {
-            cube.visible = !cube.visible; // Toggle visibility of the main cube
-
-            // Check if the cube has a label element and toggle its display
+            cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = cube.visible
-                ? "block"
-                : "none";
+              cube.userData.labelElement.style.display = "block";
             }
-
-            // Toggle visibility of associated stacked cubes
-            allCubes.forEach((c) => {
-              if (c.userData.baseCubeId === cube.userData.id) {
-                c.visible = cube.visible;
-              }
-            });
           }
+        });
+        // Update visibility of associated stacked cubes
+        allCubes.forEach((c) => {
+          c.visible =
+            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+              ?.visible || false;
         });
       }
 
-      // Function to toggle visibility of Alloy Wire
-      function toggleAlloyWire() {
+      // Function to show only Alloy Wire
+      function showAlloyWire() {
         cubes.forEach((cube) => {
-          // Check if the cube is an Alloy Conductor
+          // Hide all cubes
+          cube.visible = false;
+          if (cube.userData.labelElement) {
+            cube.userData.labelElement.style.display = "none";
+          }
+          // Show only Alloy Wire cubes
           if (cube.userData.type.includes("Alloy Wire")) {
-            cube.visible = !cube.visible; // Toggle visibility of the main cube
-
-            // Check if the cube has a label element and toggle its display
+            cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = cube.visible
-                ? "block"
-                : "none";
+              cube.userData.labelElement.style.display = "block";
             }
-
-            // Toggle visibility of associated stacked cubes
-            allCubes.forEach((c) => {
-              if (c.userData.baseCubeId === cube.userData.id) {
-                c.visible = cube.visible;
-              }
-            });
           }
         });
+        // Update visibility of associated stacked cubes
+        allCubes.forEach((c) => {
+          c.visible =
+            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+              ?.visible || false;
+        });
       }
-      // Function to toggle visibility of Fine Wire
-      function toggleFineWire() {
-        console.log("toggle fine wire", cubes.length, cubes);
+      // Function to show only Fine Wire
+      function showFineWire() {
         cubes.forEach((cube) => {
-          // Check if the cube is an fine wire
-          if (cube.userData.type.includes("Fine Wire")) {
-            cube.visible = !cube.visible; // Toggle visibility of the main cube
-
-            // Check if the cube has a label element and toggle its display
-            if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = cube.visible
-                ? "block"
-                : "none";
-            }
-
-            // Toggle visibility of associated stacked cubes
-            allCubes.forEach((c) => {
-              if (c.userData.baseCubeId === cube.userData.id) {
-                c.visible = cube.visible;
-              }
-            });
+          // Hide all cubes
+          cube.visible = false;
+          if (cube.userData.labelElement) {
+            cube.userData.labelElement.style.display = "none";
           }
+          // Show only Fine Wire cubes
+          if (cube.userData.type.includes("Fine Wire")) {
+            cube.visible = true;
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = "block";
+            }
+          }
+        });
+        // Update visibility of associated stacked cubes
+        allCubes.forEach((c) => {
+          c.visible =
+            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+              ?.visible || false;
+        });
+      }
+
+      // Function to show all cubes
+      function showAll() {
+        cubes.forEach((cube) => {
+          if (
+            cube.userData.type.includes("Alloy Conductors") ||
+            cube.userData.type.includes("Alloy Wire")
+          ) {
+            cube.visible = true;
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = "block";
+            }
+          } else if (cube.userData.type.includes("Fine Wire")) {
+            cube.visible = false;
+            if (cube.userData.labelElement) {
+              cube.userData.labelElement.style.display = "none";
+            }
+          }
+        });
+        // Update visibility of associated stacked cubes
+        allCubes.forEach((c) => {
+          c.visible =
+            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+              ?.visible || false;
         });
       }
 
@@ -290,10 +329,10 @@
 
         // Update the HTML element
         cameraPositionElement.innerHTML = `
-          Camera Position:<br>
-          X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
-          Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
-        `;
+                Camera Position:<br>
+                X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+                Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+              `;
       }
 
       // Function to filter data based on the selected checkboxes
@@ -435,10 +474,10 @@
 
         // Update the HTML element
         cameraPositionElement.innerHTML = `
-                      Camera Position:<br>
-                      X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
-                      Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
-                    `;
+                            Camera Position:<br>
+                            X: ${posX}, Y: ${posY}, Z: ${posZ}<br>
+                            Rotation X: ${rotX}, Y: ${rotY}, Z: ${rotZ}
+                          `;
       }
 
       function createYAxisLabels(yAxisValues) {
@@ -623,9 +662,9 @@
         labelElement.appendChild(normalContent);
 
         let content = `<div class='content'>${labelContent.product_name}</div>
-                    <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
-                    <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
-                    <div class='content click'>CLICK FOR MORE</div>`;
+                          <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
+                          <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
+                          <div class='content click'>CLICK FOR MORE</div>`;
 
         // Create a wrapper for the hover state
         let hoverContent = document.createElement("div");
