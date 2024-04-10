@@ -179,15 +179,12 @@ select:-moz-focusring {
 .custom-checkbox {
   display: block;
   position: relative;
-
   cursor: pointer;
   font-size: 22px;
   user-select: none;
   width: 80px; /* Adjusted width */
   height: 39px; /* Adjusted height */
   background: #eee;
-  border: 1px solid #ddd;
-  border: thin solid gray; /* Added border */
   border-radius: 4px; /* Added border-radius */
 }
 
@@ -249,4 +246,66 @@ select:-moz-focusring {
 
 .formability {
   background-color: #cfc250;
+}
+
+.custom-radio {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 22px;
+  user-select: none;
+  width: 80px; /* Adjusted width */
+  height: 39px; /* Adjusted height */
+  background: #cb792d;
+
+  border-radius: 4px; /* Added border-radius */
+}
+.custom-radio.toggle-conductors {
+  background: #aa934d;
+}
+.custom-radio.toggle-wire {
+  background: #133153;
+}
+.custom-radio.toggle-fine-wire {
+  background: #44827d;
+}
+
+.custom-radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-radio:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.custom-radio input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.custom-radio input:checked ~ .checkmark:after {
+  display: block;
+  background-color: black; /* Added background color */
+  border-radius: 50%; /* Added border radius */
+}
+
+.custom-radio .checkmark:after {
+  left: 9px;
+  top: 15px;
+  width: 10px; /* Adjusted width */
+  height: 10px; /* Adjusted height */
+  border: none; /* Removed border */
 }
