@@ -20,7 +20,7 @@
               <input
                 type="radio"
                 id="toggleAll"
-                name="dataType"
+                name="productType"
                 value="All"
                 onclick="showAll()"
                 checked
@@ -35,7 +35,7 @@
               <input
                 type="radio"
                 id="toggleConductors"
-                name="dataType"
+                name="productType"
                 value="Alloy Conductors"
                 onclick="showAlloyConductors()"
               />
@@ -49,7 +49,7 @@
               <input
                 type="radio"
                 id="toggleWire"
-                name="dataType"
+                name="productType"
                 value="Alloy Wire"
                 onclick="showAlloyWire()"
               />
@@ -62,7 +62,7 @@
               <input
                 type="radio"
                 id="toggleFineWire"
-                name="dataType"
+                name="productType"
                 value="Fine Wire"
                 onclick="showFineWire()"
               />
@@ -380,11 +380,25 @@
 
       // Function to filter data based on the selected checkboxes
       function filterData(dataTypes) {
+        //console.log("filter the dta", dataTypes);
+        var selectedProduct = document.querySelector(
+          'input[name="productType"]:checked'
+        );
+        console.log("se product", selectedProduct.value);
+
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
-        console.log(minConductivity, minTensileStrength);
+
         scene.children.forEach((child) => {
           if (child.userData && child.userData.type) {
+            if (
+              selectedProduct.value === "Alloy Conductors" &&
+              (child.userData.type === "Alloy Wire" ||
+                child.userData.type === "Fine Wire")
+            ) {
+              return;
+            }
+
             // If the child is a base cube, check if it meets the minimum requirements
             if (child.userData.id !== undefined) {
               if (
