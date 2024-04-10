@@ -134,7 +134,7 @@
       <div>
         <p>Additional Performance Criteria</p>
         <div class="form-group-filters navItemHolder">
-          <div>
+          <div id="flexLifeDiv" class="disabled">
             <label class="custom-checkbox flex-life">
               <input
                 type="checkbox"
@@ -148,7 +148,7 @@
             <label for="flex_life">Flex Life</label>
           </div>
 
-          <div>
+          <div id="softResistanceDiv" class="disabled">
             <label class="custom-checkbox soft-resistance">
               <input
                 type="checkbox"
@@ -161,7 +161,7 @@
             </label>
             <label for="soft_resistance">Softing<br />Resistance</label>
           </div>
-          <div>
+          <div id="stressRelaxationDiv" class="disabled">
             <label class="custom-checkbox stress-relaxation">
               <input
                 type="checkbox"
@@ -174,7 +174,7 @@
             </label>
             <label for="stress_relaxation">Stress<br />Relaxation</label>
           </div>
-          <div>
+          <div id="springPropertiesDiv" class="disabled">
             <label class="custom-checkbox spring-properties">
               <input
                 type="checkbox"
@@ -188,7 +188,7 @@
             <label for="spring_properties">Spring<br />Properties</label>
           </div>
 
-          <div>
+          <div id="formabilityDiv" class="disabled">
             <label class="custom-checkbox formability">
               <input
                 type="checkbox"
@@ -232,8 +232,20 @@
         }
       );
 
+      function toggleDiv(id, disable) {
+        var div = document.getElementById(id);
+
+        if (disable) {
+          div.classList.add("disabled");
+        } else {
+          div.classList.remove("disabled");
+        }
+      }
+
       // Function to show only Alloy Conductors
       function showAlloyConductors() {
+        toggleDiv("softResistanceDiv", false);
+        toggleDiv("flexLifeDiv", false);
         cubes.forEach((cube) => {
           // Hide all cubes
           cube.visible = false;
@@ -258,6 +270,11 @@
 
       // Function to show only Alloy Wire
       function showAlloyWire() {
+        toggleDiv("softResistanceDiv", true);
+        toggleDiv("flexLifeDiv", true);
+        toggleDiv("stressRelaxationDiv", false);
+        toggleDiv("springPropertiesDiv", false);
+        toggleDiv("formabilityDiv", false);
         cubes.forEach((cube) => {
           // Hide all cubes
           cube.visible = false;
@@ -281,6 +298,11 @@
       }
       // Function to show only Fine Wire
       function showFineWire() {
+        toggleDiv("softResistanceDiv", true);
+        toggleDiv("flexLifeDiv", true);
+        toggleDiv("stressRelaxationDiv", false);
+        toggleDiv("springPropertiesDiv", false);
+        toggleDiv("formabilityDiv", false);
         cubes.forEach((cube) => {
           // Hide all cubes
           cube.visible = false;
@@ -305,6 +327,11 @@
 
       // Function to show all cubes
       function showAll() {
+        toggleDiv("softResistanceDiv", true);
+        toggleDiv("flexLifeDiv", true);
+        toggleDiv("stressRelaxationDiv", true);
+        toggleDiv("springPropertiesDiv", true);
+        toggleDiv("formabilityDiv", true);
         cubes.forEach((cube) => {
           if (
             cube.userData.type.includes("Alloy Conductors") ||

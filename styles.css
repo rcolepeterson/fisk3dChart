@@ -309,3 +309,12 @@ select:-moz-focusring {
   height: 10px; /* Adjusted height */
   border: none; /* Removed border */
 }
+
+.disabled {
+  pointer-events: none;
+  /* opacity: 0.4; */
+}
+
+.disabled .custom-checkbox {
+  background-color: #e3e3e3;
+}
