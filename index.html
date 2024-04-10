@@ -398,6 +398,28 @@
             ) {
               return;
             }
+            if (
+              selectedProduct.value === "Fine Wire" &&
+              (child.userData.type === "Alloy Conductors" ||
+                child.userData.type === "Alloy Wire")
+            ) {
+              return;
+            }
+            if (
+              selectedProduct.value === "Alloy Wire" &&
+              (child.userData.type === "Alloy Conductors" ||
+                child.userData.type === "Fine Wire")
+            ) {
+              return;
+            }
+
+            if (selectedProduct.value === "Fine Wire") {
+              if (child.userData.baseCubeNAme !== "Fine Wire") {
+                return;
+              }
+            }
+
+            console.log("baseCubeNAme", child.userData.baseCubeNAme);
 
             // If the child is a base cube, check if it meets the minimum requirements
             if (child.userData.id !== undefined) {
@@ -843,6 +865,7 @@
               cube.userData.baseCubeId = i;
               cube.userData.originalY = cubeY + j * cubeSize + 0.1; // Store the original y-position for all cubes
               cube.visible = false;
+              cube.userData.baseCubeNAme = dataPoint.type[0];
               allCubes.push(cube);
               scene.add(cube);
             }
