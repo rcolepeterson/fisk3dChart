@@ -27,13 +27,14 @@ body {
 #chartContainer {
   position: relative;
   display: inline-block;
+  margin-top: 60px;
 }
 
 #cameraPosition {
   position: absolute;
-  top: 10px;
+  top: 50px;
   left: 10px;
-  display: none;
+  display: block;
 }
 
 #dd {
@@ -143,7 +144,7 @@ select {
   display: inline-block;
   font: inherit;
   line-height: 1.5em;
-  padding: 0.5em 3.5em 0.5em 1em;
+  padding: 0.37em 3.5em 0.37em 1em;
   margin: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
