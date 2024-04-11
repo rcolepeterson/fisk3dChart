@@ -244,6 +244,7 @@
 
       // Function to show only Alloy Conductors
       function showAlloyConductors() {
+        hideAll();
         toggleDiv("softResistanceDiv", false);
         toggleDiv("flexLifeDiv", false);
         cubes.forEach((cube) => {
@@ -261,15 +262,16 @@
           }
         });
         // Update visibility of associated stacked cubes
-        allCubes.forEach((c) => {
-          c.visible =
-            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-              ?.visible || false;
-        });
+        // allCubes.forEach((c) => {
+        //   c.visible =
+        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+        //       ?.visible || false;
+        // });
       }
 
       // Function to show only Alloy Wire
       function showAlloyWire() {
+        hideAll();
         toggleDiv("softResistanceDiv", true);
         toggleDiv("flexLifeDiv", true);
         toggleDiv("stressRelaxationDiv", false);
@@ -290,14 +292,15 @@
           }
         });
         // Update visibility of associated stacked cubes
-        allCubes.forEach((c) => {
-          c.visible =
-            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-              ?.visible || false;
-        });
+        // allCubes.forEach((c) => {
+        //   c.visible =
+        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+        //       ?.visible || false;
+        // });
       }
       // Function to show only Fine Wire
       function showFineWire() {
+        hideAll();
         toggleDiv("softResistanceDiv", true);
         toggleDiv("flexLifeDiv", true);
         toggleDiv("stressRelaxationDiv", false);
@@ -315,6 +318,21 @@
             if (cube.userData.labelElement) {
               cube.userData.labelElement.style.display = "block";
             }
+          }
+        });
+        // Update visibility of associated stacked cubes
+        // allCubes.forEach((c) => {
+        //   c.visible =
+        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+        //       ?.visible || false;
+        // });
+      }
+
+      function hideAll() {
+        cubes.forEach((cube) => {
+          cube.visible = false;
+          if (cube.userData.labelElement) {
+            cube.userData.labelElement.style.display = "none";
           }
         });
         // Update visibility of associated stacked cubes
@@ -349,11 +367,11 @@
           }
         });
         // Update visibility of associated stacked cubes
-        allCubes.forEach((c) => {
-          c.visible =
-            cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-              ?.visible || false;
-        });
+        // allCubes.forEach((c) => {
+        //   c.visible =
+        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
+        //       ?.visible || false;
+        // });
       }
 
       // Function to display camera position
