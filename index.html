@@ -410,7 +410,7 @@
         var selectedProduct = document.querySelector(
           'input[name="productType"]:checked'
         );
-        console.log("se product", selectedProduct.value);
+        console.log("the  product", selectedProduct.value);
 
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
@@ -444,8 +444,6 @@
                 return;
               }
             }
-
-            console.log("baseCubeNAme", child.userData.baseCubeNAme);
 
             // If the child is a base cube, check if it meets the minimum requirements
             if (child.userData.id !== undefined) {
@@ -510,6 +508,178 @@
               child.position.y = child.userData.originalY;
             }
           });
+        }
+        /////////////
+
+        if (selectedProduct.value === "Alloy Wire") {
+          // If "formability" and "stress_relaxation" are selected, but "spring_properties" is not, adjust the y-position of the cubes
+          if (
+            dataTypes.formability &&
+            !dataTypes.stress_relaxation &&
+            !dataTypes.spring_properties
+          ) {
+            // Get all the base cubes
+            const baseCubes = scene.children.filter(
+              (child) => child.userData.id !== undefined
+            );
+
+            baseCubes.forEach((baseCube) => {
+              // Get all the "formability" cubes for this base cube
+              const formabilityCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "formability" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // Sort the cubes by their original y-position
+              formabilityCubes.sort(
+                (a, b) => a.userData.originalY - b.userData.originalY
+              );
+
+              // Adjust the y-position of each "formability" cube to be just above the base cube
+              formabilityCubes.forEach((cube, index) => {
+                cube.position.y =
+                  baseCube.position.y +
+                  baseCubeHeight +
+                  cubeSize +
+                  index * cubeSize -
+                  0.5;
+              });
+            });
+          } else if (
+            dataTypes.formability &&
+            dataTypes.stress_relaxation &&
+            !dataTypes.spring_properties
+          ) {
+            // Get all the base cubes
+            // Get all the base cubes
+            const baseCubes = scene.children.filter(
+              (child) => child.userData.id !== undefined
+            );
+
+            baseCubes.forEach((baseCube) => {
+              // Get all the "formability" cubes for this base cube
+              const formabilityCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "formability" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // Get all the "stress_relaxation" cubes for this base cube
+              const stressRelaxationCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "stress_relaxation" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // If there are any "stress_relaxation" cubes, get the highest y position
+              if (stressRelaxationCubes.length > 0) {
+                const highestStressRelaxationY = Math.max(
+                  ...stressRelaxationCubes.map((cube) => cube.position.y)
+                );
+
+                // Adjust the y-position of each "formability" cube to be right after the "stress_relaxation" cubes
+                formabilityCubes.forEach((cube, index) => {
+                  cube.position.y =
+                    highestStressRelaxationY + cubeSize + index * cubeSize;
+                });
+              }
+            });
+          } else if (
+            dataTypes.formability &&
+            !dataTypes.stress_relaxation &&
+            dataTypes.spring_properties
+          ) {
+            console.log("WE ARE WORKING HERE");
+            // Get all the base cubes
+            const baseCubes = scene.children.filter(
+              (child) => child.userData.id !== undefined
+            );
+
+            baseCubes.forEach((baseCube) => {
+              // Get all the "spring_properties" cubes for this base cube
+              const springPropertiesCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "spring_properties" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // Adjust the y-position of each "spring_properties" cube to be right after the base cube
+              springPropertiesCubes.forEach((cube, index) => {
+                cube.position.y =
+                  baseCube.position.y +
+                  baseCubeHeight +
+                  cubeSize +
+                  index * cubeSize -
+                  0.5;
+              });
+
+              // Get all the "formability" cubes for this base cube
+              const formabilityCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "formability" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // If there are any "spring_properties" cubes, get the highest y position
+              if (springPropertiesCubes.length > 0) {
+                const highestSpringPropertiesY = Math.max(
+                  ...springPropertiesCubes.map((cube) => cube.position.y)
+                );
+
+                // Adjust the y-position of each "formability" cube to be right after the "spring_properties" cubes
+                formabilityCubes.forEach((cube, index) => {
+                  cube.position.y =
+                    highestSpringPropertiesY + cubeSize + index * cubeSize;
+                });
+              }
+            });
+          } else if (
+            dataTypes.spring_properties &&
+            !dataTypes.stress_relaxation
+          ) {
+            // Get all the base cubes
+            const baseCubes = scene.children.filter(
+              (child) => child.userData.id !== undefined
+            );
+
+            baseCubes.forEach((baseCube) => {
+              // Get all the "soft_resistance" cubes for this base cube
+              const softResistanceCubes = scene.children.filter(
+                (child) =>
+                  child.visible &&
+                  child.userData.type === "spring_properties" &&
+                  child.userData.baseCubeId === baseCube.userData.id
+              );
+
+              // Sort the cubes by their original y-position
+              softResistanceCubes.sort(
+                (a, b) => a.userData.originalY - b.userData.originalY
+              );
+
+              // Adjust the y-position of each cube
+              softResistanceCubes.forEach((cube, index) => {
+                cube.position.y =
+                  baseCube.position.y +
+                  baseCubeHeight +
+                  cubeSize +
+                  index * cubeSize -
+                  0.5;
+              });
+            });
+          } else {
+            // If the other filter is added back in, reset the y-position of each cube
+            scene.children.forEach((child) => {
+              if (child.userData && child.userData.originalY) {
+                child.position.y = child.userData.originalY;
+              }
+            });
+          }
         }
       }
 
