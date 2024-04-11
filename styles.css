@@ -290,7 +290,14 @@ select:-moz-focusring {
 .checkmark:after {
   content: "";
   position: absolute;
-  display: none;
+  display: block; /* Change this to block */
+  background-color: white; /* Change this to white */
+  border-radius: 50%; /* Added border radius */
+  left: 9px;
+  top: 15px;
+  width: 10px; /* Adjusted width */
+  height: 10px; /* Adjusted height */
+  border: none; /* Removed border */
 }
 
 .custom-radio input:checked ~ .checkmark:after {
