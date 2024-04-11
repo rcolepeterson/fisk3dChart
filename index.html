@@ -341,6 +341,14 @@
             cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
               ?.visible || false;
         });
+        //turn off filters
+        // Get all checkboxes with the class 'performance-checkbox'
+        var checkboxes = document.querySelectorAll(".performance-checkbox");
+
+        // Loop through each checkbox and uncheck it
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = false;
+        }
       }
 
       // Function to show all cubes
