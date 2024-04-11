@@ -353,6 +353,7 @@
 
       // Function to show all cubes
       function showAll() {
+        hideAll();
         toggleDiv("softResistanceDiv", true);
         toggleDiv("flexLifeDiv", true);
         toggleDiv("stressRelaxationDiv", true);
@@ -374,12 +375,6 @@
             }
           }
         });
-        // Update visibility of associated stacked cubes
-        // allCubes.forEach((c) => {
-        //   c.visible =
-        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-        //       ?.visible || false;
-        // });
       }
 
       // Function to display camera position
@@ -511,7 +506,10 @@
         }
         /////////////
 
-        if (selectedProduct.value === "Alloy Wire") {
+        if (
+          selectedProduct.value === "Alloy Wire" ||
+          selectedProduct.value === "Fine Wire"
+        ) {
           // If "formability" and "stress_relaxation" are selected, but "spring_properties" is not, adjust the y-position of the cubes
           if (
             dataTypes.formability &&
