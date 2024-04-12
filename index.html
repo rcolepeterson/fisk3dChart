@@ -1248,10 +1248,9 @@
       minTensileStrengthDropdown.addEventListener("change", filterMyData);
 
       function filterMyData() {
+        console.log("filterMyData: filter the data");
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
-
-        ///
         // Get the checkboxes
         const checkboxes = document.querySelectorAll('input[name="dataType"]');
 
@@ -1261,9 +1260,6 @@
           dataTypes[checkbox.value] = checkbox.checked;
         });
 
-        ///
-
-        // Loop through the base cubes
         // Loop through the base cubes
         cubes.forEach((cube) => {
           //console.log(cube.userData.type);

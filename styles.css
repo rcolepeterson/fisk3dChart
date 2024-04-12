@@ -34,7 +34,7 @@ body {
   position: absolute;
   top: 50px;
   left: 10px;
-  display: block;
+  display: none;
 }
 
 #dd {
