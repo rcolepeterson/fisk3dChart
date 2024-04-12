@@ -1248,9 +1248,14 @@
       minTensileStrengthDropdown.addEventListener("change", filterMyData);
 
       function filterMyData() {
-        console.log("filterMyData: filter the data");
+        console.log("filterMyData");
+        var selectedProduct = document.querySelector(
+          'input[name="productType"]:checked'
+        );
+        console.log("the  product", selectedProduct.value);
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
+
         // Get the checkboxes
         const checkboxes = document.querySelectorAll('input[name="dataType"]');
 
@@ -1262,12 +1267,8 @@
 
         // Loop through the base cubes
         cubes.forEach((cube) => {
-          //console.log(cube.userData.type);
-          if (
-            cube.userData.type.includes("Alloy Conductors") ||
-            cube.userData.type.includes("Alloy Wire") ||
-            cube.userData.type.includes("Fine Wire")
-          ) {
+          console.log(cube.userData.type);
+          if (cube.userData.type.includes(selectedProduct.value)) {
             //console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
 
             if (
@@ -1283,23 +1284,20 @@
           }
         });
 
-        // Loop through the other cubes
-        allCubes.forEach((cube) => {
-          // Find the base cube that corresponds to this cube
-          const baseCubeId = cube.userData.baseCubeId;
-          const baseCube = cubes.find((c) => c.userData.id === baseCubeId);
+        // // Loop through the other cubes
+        // allCubes.forEach((cube) => {
+        //   // Find the base cube that corresponds to this cube
+        //   const baseCubeId = cube.userData.baseCubeId;
+        //   const baseCube = cubes.find((c) => c.userData.id === baseCubeId);
 
-          if (baseCube && baseCube.visible === false) {
-            cube.visible = false;
-          } else if (dataTypes[cube.userData.type]) {
-            cube.visible = true;
-          } else {
-            cube.visible = false;
-          }
-        });
-
-        // Add this line to re-render the scene
-        //renderer.render(scene, camera);
+        //   if (baseCube && baseCube.visible === false) {
+        //     cube.visible = false;
+        //   } else if (dataTypes[cube.userData.type]) {
+        //     cube.visible = true;
+        //   } else {
+        //     cube.visible = false;
+        //   }
+        // });
       }
     </script>
   </body>
