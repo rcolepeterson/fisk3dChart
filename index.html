@@ -71,7 +71,34 @@
             <label for="toggleFineWire">Fine Wire</label>
           </div>
         </div>
-        <button id="toggle-units-button">Toggle Units</button>
+        <!-- <button id="toggle-units-button">Toggle Units</button> -->
+        <div class="unit-radio-buttons">
+          <div>
+            <label class="custom-radio">
+              <input
+                type="radio"
+                name="unitType"
+                value="English"
+                onclick="toggleUnits()"
+                checked
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleWire">English</label>
+          </div>
+          <div>
+            <label class="custom-radio">
+              <input
+                type="radio"
+                name="unitType"
+                value="Metric"
+                onclick="toggleUnits()"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label for="toggleFineWire">Metric</label>
+          </div>
+        </div>
       </div>
 
       <!-- Add these dropdowns in your HTML -->
@@ -1379,9 +1406,9 @@
       }
 
       //toggle
-      document
-        .getElementById("toggle-units-button")
-        .addEventListener("click", toggleUnits);
+      // document
+      //   .getElementById("toggle-units-button")
+      //   .addEventListener("click", toggleUnits);
 
       const chartContainer = document.getElementById("chartContainer");
 

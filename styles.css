@@ -326,3 +326,17 @@ select:-moz-focusring {
 .disabled .custom-checkbox {
   background-color: #e3e3e3;
 }
+
+.unit-radio-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.unit-radio-buttons .custom-radio {
+  /* width: 50px;
+  height: 25px; */
+  background: #fff;
+  border: 1px solid #000;
+}
