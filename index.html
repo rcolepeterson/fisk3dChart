@@ -412,7 +412,7 @@
         var selectedProduct = document.querySelector(
           'input[name="productType"]:checked'
         );
-        console.log("the  product", selectedProduct.value);
+        //console.log("the  product", selectedProduct.value);
 
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
@@ -1291,20 +1291,20 @@
           }
         });
 
-        // // Loop through the other cubes
-        // allCubes.forEach((cube) => {
-        //   // Find the base cube that corresponds to this cube
-        //   const baseCubeId = cube.userData.baseCubeId;
-        //   const baseCube = cubes.find((c) => c.userData.id === baseCubeId);
+        // Loop through the other cubes
+        allCubes.forEach((cube) => {
+          // Find the base cube that corresponds to this cube
+          const baseCubeId = cube.userData.baseCubeId;
+          const baseCube = cubes.find((c) => c.userData.id === baseCubeId);
 
-        //   if (baseCube && baseCube.visible === false) {
-        //     cube.visible = false;
-        //   } else if (dataTypes[cube.userData.type]) {
-        //     cube.visible = true;
-        //   } else {
-        //     cube.visible = false;
-        //   }
-        // });
+          if (baseCube && baseCube.visible === false) {
+            cube.visible = false;
+          } else if (dataTypes[cube.userData.type]) {
+            cube.visible = true;
+          } else {
+            cube.visible = false;
+          }
+        });
       }
     </script>
   </body>
