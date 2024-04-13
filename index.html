@@ -237,6 +237,15 @@
       // Call this function when the button is clicked
       function toggleUnits() {
         isMetric = !isMetric; // Toggle the unit
+        clearChart();
+        removeAllLabels();
+        hideAll();
+        toggleDiv("softResistanceDiv", true);
+        toggleDiv("flexLifeDiv", true);
+        toggleDiv("stressRelaxationDiv", true);
+        toggleDiv("springPropertiesDiv", true);
+        toggleDiv("formabilityDiv", true);
+        loadJSONData();
 
         // Create X-axis labels from 0 to 140 with a step of 10
         xAxisValues = [];
@@ -252,8 +261,8 @@
         }
 
         // Call the function to create X-axis labels
-        createXAxisLabels(xAxisValues);
-        // Do the same for Y-axis labels
+        //createXAxisLabels(xAxisValues);
+
         // Define your yAxisValues using a loop
         yAxisValues = [];
         if (isMetric) {
@@ -279,7 +288,7 @@
           }
         }
 
-        createYAxisLabels(yAxisValues);
+        //createYAxisLabels(yAxisValues);
       }
 
       function toggleDiv(id, disable) {
@@ -1024,6 +1033,18 @@
         labelElement.className = "cube-label";
         cube.userData.labelElement = labelElement;
 
+        // Create a wrapper element if it doesn't exist
+        let labelWrapper = document.getElementById("label-wrapper");
+        if (!labelWrapper) {
+          labelWrapper = document.createElement("div");
+          labelWrapper.id = "label-wrapper";
+          // Append the wrapper to the body
+          document.body.appendChild(labelWrapper);
+        }
+
+        // Append the label to the wrapper
+        labelWrapper.appendChild(labelElement);
+
         // Create a wrapper for the normal state
         let normalContent = document.createElement("div");
         normalContent.className = "initial-content";
@@ -1034,9 +1055,9 @@
         labelElement.appendChild(normalContent);
 
         let content = `<div class='content'>${labelContent.product_name}</div>
-                          <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
-                          <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
-                          <div class='content click'>CLICK FOR MORE</div>`;
+                      <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
+                      <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
+                      <div class='content click'>CLICK FOR MORE</div>`;
 
         // Create a wrapper for the hover state
         let hoverContent = document.createElement("div");
@@ -1070,8 +1091,6 @@
           // Navigate to product page
           window.location.href = "https://fiskalloy.com/";
         });
-
-        document.body.appendChild(labelElement);
       }
 
       // Define an array to store your cubes
@@ -1168,13 +1187,27 @@
 
         // Define your yAxisValues using a loop
         yAxisValues = [];
-        for (let y = 100; y >= 0; y -= 20) {
-          yAxisValues.push({
-            x: 0,
-            y,
-            z: -3.3333333333333335,
-            label: y.toString(),
-          });
+        if (isMetric) {
+          // Metrics: Run from 0 to 120 by 10 increments, but start from 120
+          for (let y = 120; y >= 0; y -= 10) {
+            const labelValue = (y / 120) * 0.6; // Calculate the label value based on the current y value
+            const label = labelValue.toFixed(2); // Format the label value as string
+            yAxisValues.push({
+              x: 0,
+              y,
+              z: -3.3333333333333335,
+              label: label,
+            });
+          }
+        } else {
+          for (let y = 100; y >= 0; y -= 20) {
+            yAxisValues.push({
+              x: 0,
+              y,
+              z: -3.3333333333333335,
+              label: y.toString(),
+            });
+          }
         }
 
         // Call the createYAxisLabels method
@@ -1183,10 +1216,17 @@
         // Define an array to store X-axis values. xAxisValues
         xAxisValues = [];
 
-        // Create X-axis labels from 0 to 140 with a step of 10
-        for (let x = 0; x <= 140; x += 10) {
-          xAxisValues.push({ x, y: 0, label: x.toString() });
+        if (isMetric) {
+          for (let x = 0; x <= 1000; x += 50) {
+            // You can convert the values to the appropriate metric units here
+            xAxisValues.push({ x, y: 0, label: x.toString() });
+          }
+        } else {
+          for (let x = 0; x <= 140; x += 10) {
+            xAxisValues.push({ x, y: 0, label: x.toString() });
+          }
         }
+
         // Call the function to create X-axis labels
         createXAxisLabels(xAxisValues);
 
@@ -1272,6 +1312,16 @@
         return mappedValue;
       }
 
+      function clearChart() {
+        const chartContainer = document.getElementById("chartContainer");
+        chartContainer.innerHTML = ""; // Clear the chart container
+      }
+      // Function to remove all labels
+      function removeAllLabels() {
+        let labels = document.querySelectorAll(".cube-label");
+        labels.forEach((label) => label.remove());
+      }
+
       // Function to load JSON data
       function loadJSONData() {
         // You can adjust the URL to your JSON file
@@ -1355,7 +1405,7 @@
         var selectedProduct = document.querySelector(
           'input[name="productType"]:checked'
         );
-        console.log("the  product", selectedProduct.value);
+
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
 
@@ -1372,8 +1422,6 @@
         cubes.forEach((cube) => {
           console.log(cube.userData.type);
           if (cube.userData.type.includes(selectedProduct.value)) {
-            //console.log(cube.userData.y_conduct_e, cube.userData.x_tensile_e);
-
             if (
               cube.userData.y_conduct_e >= minConductivity &&
               cube.userData.x_tensile_e >= minTensileStrength
