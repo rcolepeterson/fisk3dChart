@@ -245,6 +245,7 @@
         toggleDiv("stressRelaxationDiv", true);
         toggleDiv("springPropertiesDiv", true);
         toggleDiv("formabilityDiv", true);
+        document.getElementById("toggleAll").checked = true;
         loadJSONData();
 
         // Create X-axis labels from 0 to 140 with a step of 10
@@ -1115,11 +1116,27 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         data.forEach((dataPoint, i) => {
-          const xValueToMap = dataPoint.x_tensile_e;
-          const mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
+          // const xValueToMap = dataPoint.x_tensile_e;
+          // const mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
 
-          const yValueToMap = dataPoint.y_conduct_e;
-          const mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+          // const yValueToMap = dataPoint.y_conduct_e;
+          // const mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
+          let xValueToMap, yValueToMap;
+
+          if (isMetric) {
+            xValueToMap = dataPoint.x_tensile_m;
+            yValueToMap = dataPoint.y_conduct_m;
+          } else {
+            xValueToMap = dataPoint.x_tensile_e;
+            yValueToMap = dataPoint.y_conduct_e;
+          }
+
+          const mappedXValue = isMetric
+            ? mapXValue(xValueToMap, 0, 1000, 0, 1)
+            : mapXValue(xValueToMap, 0, 150, 0, 1);
+          const mappedYValue = isMetric
+            ? mapYValue(yValueToMap, 0, 0.6, 0, 1)
+            : mapYValue(yValueToMap, 0, 120, 0, 1);
 
           const x = (mappedXValue - 0.5) * gridSizeX;
           const y = 0;
