@@ -1053,6 +1053,7 @@
       };
 
       function createLabel(cube, i, labelContent) {
+        console.log("isMetric", isMetric);
         // Create a label for the cube
         let labelElement = document.createElement("div");
         labelElement.id = `label-${i}`;
@@ -1077,29 +1078,42 @@
         let normalContent = document.createElement("div");
         normalContent.className = "initial-content";
         normalContent.innerHTML = labelContent.product_shortname;
-        let tensileValue = labelContent.x_tensile_e; // replace with actual value
-        let conductivityValue = labelContent.y_conduct_e; // replace with actual value
+        let tensileValue = isMetric
+          ? labelContent.x_tensile_m
+          : labelContent.x_tensile_e;
+        let conductivityValue = isMetric
+          ? labelContent.y_conduct_m
+          : labelContent.y_conduct_e;
 
-        labelElement.appendChild(normalContent);
+        //console.log("labelContent.x_tensile_m", labelContent.x_tensile_m);
+
+        let tensileUnit = isMetric ? "MPa" : "ksi";
+        let conductivityUnit = isMetric ? "MS/m" : "% IACS @ 68°F";
 
         let content = `<div class='content'>${labelContent.product_name}</div>
-                      <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ksi</div>
-                      <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} % IACS @ 68°F</div>
-                      <div class='content click'>CLICK FOR MORE</div>`;
-
+               <div class='content'><span class='font-base'>Tensile: </span> ${tensileValue} ${tensileUnit}</div>
+               <div class='content'><span class='font-base'>Conductivity: </span>${conductivityValue} ${conductivityUnit}</div>
+               <div class='content click'>CLICK FOR MORE</div>`;
         // Create a wrapper for the hover state
         let hoverContent = document.createElement("div");
         hoverContent.innerHTML = content;
         hoverContent.style.display = "none"; // Hide it initially
         labelElement.appendChild(hoverContent);
+        labelElement.appendChild(normalContent);
 
         // Position the label at the base of the cube
         // This will depend on how your cubes are positioned and might require adjusting
         const vector = new THREE.Vector3();
         vector.setFromMatrixPosition(cube.matrixWorld);
         vector.project(camera);
-        const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
-        const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+        // const labelX = (vector.x * 0.5 + 0.5) * window.innerWidth;
+        // const labelY = (vector.y * -0.5 + 0.5) * window.innerHeight;
+        let adjustmentFactor = isMetric ? 2 : 0.5; // adjust this value as needed
+        const labelX =
+          (vector.x * adjustmentFactor + adjustmentFactor) * window.innerWidth;
+        const labelY =
+          (vector.y * -adjustmentFactor + adjustmentFactor) *
+          window.innerHeight;
         labelElement.style.left = `${labelX}px`;
         labelElement.style.top = `${labelY}px`;
 
@@ -1143,11 +1157,6 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         data.forEach((dataPoint, i) => {
-          // const xValueToMap = dataPoint.x_tensile_e;
-          // const mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
-
-          // const yValueToMap = dataPoint.y_conduct_e;
-          // const mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
           let xValueToMap, yValueToMap;
 
           if (isMetric) {
@@ -1309,8 +1318,16 @@
               vector.setFromMatrixPosition(cube.matrixWorld);
               vector.project(camera);
               // Use the chartContainer size and position to calculate the label positions
-              const labelX = (vector.x * 0.5 + 0.5) * width + left;
-              const labelY = (vector.y * -0.5 + 0.5) * height + top;
+              let labelX, labelY;
+              if (isMetric) {
+                // Adjust the label positions for metric units
+                labelX = (vector.x * 0.5 + 0.52) * width + left;
+                labelY = (vector.y * -0.5 + 0.49) * height + top;
+              } else {
+                // Adjust the label positions for non-metric units
+                labelX = (vector.x * 0.5 + 0.5) * width + left;
+                labelY = (vector.y * -0.5 + 0.5) * height + top;
+              }
               labelElement.style.left = `${labelX}px`;
               labelElement.style.top = `${labelY}px`;
             }
