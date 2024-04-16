@@ -340,3 +340,22 @@ select:-moz-focusring {
   background: #fff;
   border: 1px solid #000;
 }
+
+.unit {
+  cursor: pointer;
+  color: black;
+  font-size: 12px;
+}
+
+.unit.active {
+  color: #ca792d;
+}
+
+.units {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-direction: row;
+  margin-right: 8px;
+  margin-top: 8px;
+}

@@ -72,33 +72,6 @@
           </div>
         </div>
         <!-- <button id="toggle-units-button">Toggle Units</button> -->
-        <div class="unit-radio-buttons">
-          <div>
-            <label class="custom-radio">
-              <input
-                type="radio"
-                name="unitType"
-                value="English"
-                onclick="toggleUnits()"
-                checked
-              />
-              <span class="checkmark"></span>
-            </label>
-            <label for="toggleWire">English</label>
-          </div>
-          <div>
-            <label class="custom-radio">
-              <input
-                type="radio"
-                name="unitType"
-                value="Metric"
-                onclick="toggleUnits()"
-              />
-              <span class="checkmark"></span>
-            </label>
-            <label for="toggleFineWire">Metric</label>
-          </div>
-        </div>
       </div>
 
       <!-- Add these dropdowns in your HTML -->
@@ -157,6 +130,11 @@
               >Minimum<br />Tensile Strength</label
             >
           </div>
+        </div>
+        <div class="units">
+          <div id="english" class="unit active">English</div>
+          <div>/</div>
+          <div id="metric" class="unit">Metric</div>
         </div>
       </div>
       <div>
@@ -261,9 +239,33 @@
         }
       );
 
+      document.getElementById("english").addEventListener("click", function () {
+        isMetric = false;
+        updateUnits();
+      });
+
+      document.getElementById("metric").addEventListener("click", function () {
+        isMetric = true;
+        updateUnits();
+      });
+
+      function updateUnits() {
+        document.getElementById("english").classList.remove("active");
+        document.getElementById("metric").classList.remove("active");
+
+        if (isMetric) {
+          document.getElementById("metric").classList.add("active");
+        } else {
+          document.getElementById("english").classList.add("active");
+        }
+
+        // Call toggleUnits to execute any additional logic needed when the unit type is changed
+        toggleUnits();
+      }
+
       // Call this function when the button is clicked
       function toggleUnits() {
-        isMetric = !isMetric; // Toggle the unit
+        //isMetric = !isMetric; // Toggle the unit
         clearChart();
         removeAllLabels();
         hideAll();
