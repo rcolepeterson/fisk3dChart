@@ -340,6 +340,9 @@
         hideAll();
         toggleDiv("softResistanceDiv", false);
         toggleDiv("flexLifeDiv", false);
+        toggleDiv("stressRelaxationDiv", true);
+        toggleDiv("springPropertiesDiv", true);
+        toggleDiv("formabilityDiv", true);
         cubes.forEach((cube) => {
           // Hide all cubes
           cube.visible = false;
@@ -691,7 +694,6 @@
             !dataTypes.stress_relaxation &&
             dataTypes.spring_properties
           ) {
-            console.log("WE ARE WORKING HERE");
             // Get all the base cubes
             const baseCubes = scene.children.filter(
               (child) => child.userData.id !== undefined
@@ -971,7 +973,7 @@
 
       function createAxisLabels() {
         const xAxisLabelGeometry = new THREE.TextGeometry(
-          "TENSILE STRENGTH (ksi)",
+          isMetric ? "TENSILE STRENGTH (Mpa)" : "TENSILE STRENGTH (ksi)",
           {
             font: font,
             size: 0.3, // Adjust the size as needed
@@ -980,7 +982,9 @@
         );
 
         const yAxisLabelGeometry = new THREE.TextGeometry(
-          "CONDUCTIVITY (% IACS @ 68°F)",
+          isMetric
+            ? "CONDUCTIVITY (MS/m @ 20°C)"
+            : "CONDUCTIVITY (% IACS @ 68°F)",
           {
             font: font,
             size: 0.3, // Adjust the size as needed
@@ -1059,7 +1063,6 @@
       };
 
       function createLabel(cube, i, labelContent) {
-        console.log("isMetric", isMetric);
         // Create a label for the cube
         let labelElement = document.createElement("div");
         labelElement.id = `label-${i}`;
@@ -1339,7 +1342,6 @@
               labelY = (vector.y * -0.5 + 0.5) * height + top + offsetY;
               labelElement.style.left = `${labelX}px`;
               labelElement.style.top = `${labelY}px`;
-              console.log("oops");
             }
           });
         };
@@ -1504,7 +1506,6 @@
 
         // Loop through the base cubes
         cubes.forEach((cube) => {
-          console.log(cube.userData.type);
           if (cube.userData.type.includes(selectedProduct.value)) {
             if (
               cube.userData.y_conduct_e >= minConductivity &&
