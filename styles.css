@@ -392,3 +392,7 @@ select:-moz-focusring {
 .disable-click {
   pointer-events: none;
 }
+
+.header {
+  font-size: 22px;
+}
