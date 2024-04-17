@@ -10,6 +10,10 @@
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
     <div id="info"></div>
+    <div id="loader-container" class="loader-container">
+      <div id="loader" class="loader"></div>
+      <p>Loading...</p>
+    </div>
     <!-- <div id="label"></div> -->
     <div id="dd">
       <div>
@@ -1389,8 +1393,21 @@
         labels.forEach((label) => label.remove());
       }
 
+      function showLoader() {
+        document.getElementById("loader-container").style.display = "flex";
+        document.getElementById("english").classList.add("disable-click");
+        document.getElementById("metric").classList.add("disable-click");
+      }
+
+      function hideLoader() {
+        document.getElementById("loader-container").style.display = "none";
+        document.getElementById("english").classList.remove("disable-click");
+        document.getElementById("metric").classList.remove("disable-click");
+      }
+
       // Function to load JSON data
       function loadJSONData() {
+        showLoader();
         // You can adjust the URL to your JSON file
         fetch(
           "https://fiskalloy.com/wp-admin/admin-ajax.php?action=fskdm_alloy_graph_data"
@@ -1420,11 +1437,11 @@
               });
 
             createScatterPlot(alloyData.concat(fineWireData));
-
-            // createScatterPlot(alloyData);
+            hideLoader();
           })
           .catch((error) => {
             console.error("Error loading JSON data:", error);
+            hideLoader();
           });
       }
 
