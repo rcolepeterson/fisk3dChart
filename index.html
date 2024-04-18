@@ -123,11 +123,7 @@
               <option value="130">130</option>
               <option value="140">140</option>
               <option value="150">150</option>
-              <option value="160">160</option>
-              <option value="170">170</option>
-              <option value="180">180</option>
-              <option value="190">190</option>
-              <option value="200">200</option>
+
               <!-- Add more options as needed -->
             </select>
             <label for="minTensileStrength"
@@ -243,13 +239,46 @@
         }
       );
 
-      function updateDropdownValues(dropdownId, multiplier) {
+      // function updateDropdownValues(dropdownId, multiplier) {
+      //   const dropdown = document.getElementById(dropdownId);
+      //   for (let i = 0; i < dropdown.options.length; i++) {
+      //     const option = dropdown.options[i];
+      //     const value = parseInt(option.value, 10);
+      //     option.value = value * multiplier;
+      //     option.text = value * multiplier;
+      //   }
+      // }
+
+      function updateDropdownValues(dropdownId) {
         const dropdown = document.getElementById(dropdownId);
-        for (let i = 0; i < dropdown.options.length; i++) {
-          const option = dropdown.options[i];
-          const value = parseInt(option.value, 10);
-          option.value = value * multiplier;
-          option.text = value * multiplier;
+        dropdown.innerHTML = ""; // Remove all existing options
+
+        console.log(`Updating ${dropdownId} dropdown. isMetric: ${isMetric}`);
+
+        if (dropdownId === "minTensileStrength") {
+          // For tensile strength, use the multiplier approach
+          const options = isMetric
+            ? Array.from({ length: 21 }, (_, i) => i * 50)
+            : Array.from({ length: 16 }, (_, i) => i * 10);
+          for (let i = 0; i < options.length; i++) {
+            const option = document.createElement("option");
+            option.value = options[i];
+            option.text = options[i];
+            dropdown.appendChild(option);
+          }
+        } else if (dropdownId === "minConductivity") {
+          // For conductivity, replace the options with values from 0 to 0.60 in increments of 0.05 when the Metric system is selected
+          // and with values from 0 to 100 in increments of 10 when the English system is selected
+          const options = isMetric
+            ? Array.from({ length: 13 }, (_, i) => (i * 0.05).toFixed(2))
+            : Array.from({ length: 11 }, (_, i) => i * 10);
+          console.log(`Generated options for ${dropdownId}: ${options}`);
+          for (let i = 0; i < options.length; i++) {
+            const option = document.createElement("option");
+            option.value = options[i];
+            option.text = options[i];
+            dropdown.appendChild(option);
+          }
         }
       }
 
