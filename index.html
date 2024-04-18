@@ -1534,8 +1534,13 @@
           'input[name="productType"]:checked'
         );
 
+        console.log("filterMyData. sel product:", selectedProduct.value);
+
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
+
+        console.log("minConductivity:", minConductivity);
+        console.log("minTensileStrength:", minTensileStrength);
 
         // Get the checkboxes
         const checkboxes = document.querySelectorAll('input[name="dataType"]');
@@ -1548,7 +1553,10 @@
 
         // Loop through the base cubes
         cubes.forEach((cube) => {
-          if (cube.userData.type.includes(selectedProduct.value)) {
+          if (
+            selectedProduct.value === "All" ||
+            cube.userData.type.includes(selectedProduct.value)
+          ) {
             if (
               cube.userData.y_conduct_e >= minConductivity &&
               cube.userData.x_tensile_e >= minTensileStrength
