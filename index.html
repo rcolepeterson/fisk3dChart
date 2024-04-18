@@ -550,7 +550,7 @@
         var selectedProduct = document.querySelector(
           'input[name="productType"]:checked'
         );
-        //console.log("the  product", selectedProduct.value);
+        console.log("the  product", selectedProduct.value);
 
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
@@ -588,8 +588,12 @@
             // If the child is a base cube, check if it meets the minimum requirements
             if (child.userData.id !== undefined) {
               if (
-                child.userData.y_conduct_e >= minConductivity &&
-                child.userData.x_tensile_e >= minTensileStrength
+                (isMetric
+                  ? child.userData.y_conduct_m
+                  : child.userData.y_conduct_e) >= minConductivity &&
+                (isMetric
+                  ? child.userData.x_tensile_m
+                  : child.userData.x_tensile_e) >= minTensileStrength
               ) {
                 child.visible = true;
               } else {
@@ -599,8 +603,12 @@
               // If the child is not a base cube, apply the filter
               if (
                 dataTypes[child.userData.type] &&
-                child.userData.y_conduct_e >= minConductivity &&
-                child.userData.x_tensile_e >= minTensileStrength
+                (isMetric
+                  ? child.userData.y_conduct_m
+                  : child.userData.y_conduct_e) >= minConductivity &&
+                (isMetric
+                  ? child.userData.x_tensile_m
+                  : child.userData.x_tensile_e) >= minTensileStrength
               ) {
                 child.visible = true;
               } else {
@@ -1255,8 +1263,10 @@
             dataPoint.type[0]
           );
           baseCube.userData.url = dataPoint.product_url;
-          baseCube.userData.y_conduct_e = dataPoint.y_conduct_e; // Add this line
+          baseCube.userData.y_conduct_e = dataPoint.y_conduct_e;
           baseCube.userData.x_tensile_e = dataPoint.x_tensile_e;
+          baseCube.userData.y_conduct_m = dataPoint.y_conduct_m;
+          baseCube.userData.x_tensile_m = dataPoint.x_tensile_m;
           baseCube.userData.id = i;
           scene.add(baseCube);
           cubes.push(baseCube);
@@ -1276,8 +1286,10 @@
                 property
               );
               cube.userData.url = dataPoint.product_url;
-              cube.userData.y_conduct_e = dataPoint.y_conduct_e; // Add this line
+              cube.userData.y_conduct_e = dataPoint.y_conduct_e;
               cube.userData.x_tensile_e = dataPoint.x_tensile_e;
+              cube.userData.y_conduct_m = dataPoint.y_conduct_m;
+              cube.userData.x_tensile_m = dataPoint.x_tensile_m;
               cube.userData.baseCubeId = i;
               cube.userData.originalY = cubeY + j * cubeSize + 0.1; // Store the original y-position for all cubes
               cube.visible = false;
@@ -1557,9 +1569,25 @@
             selectedProduct.value === "All" ||
             cube.userData.type.includes(selectedProduct.value)
           ) {
+            const conductivity = isMetric
+              ? cube.userData.y_conduct_m
+              : cube.userData.y_conduct_e;
+            const tensileStrength = isMetric
+              ? cube.userData.x_tensile_m
+              : cube.userData.x_tensile_e;
+
+            console.log(`Cube type: ${cube.userData.type}`);
+            console.log(`Is Metric: ${isMetric}`);
+            console.log(
+              `Conductivity: ${conductivity}, minConductivity: ${minConductivity}`
+            );
+            console.log(
+              `Tensile Strength: ${tensileStrength}, minTensileStrength: ${minTensileStrength}`
+            );
+
             if (
-              cube.userData.y_conduct_e >= minConductivity &&
-              cube.userData.x_tensile_e >= minTensileStrength
+              conductivity >= minConductivity &&
+              tensileStrength >= minTensileStrength
             ) {
               cube.visible = true;
               cube.userData.labelElement.style.display = "block";
