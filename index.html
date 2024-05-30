@@ -75,6 +75,11 @@
             <label for="toggleFineWire">Fine Wire</label>
           </div>
         </div>
+        <div class="labels">
+          <div id="labelsOn" class="unit label active">Labels On</div>
+          <div>/</div>
+          <div id="labelsOff" class="unit label">Labels Off</div>
+        </div>
         <!-- <button id="toggle-units-button">Toggle Units</button> -->
       </div>
 
@@ -282,6 +287,23 @@
           }
         }
       }
+      // this code toggles the labels
+      // this code toggles the labels
+      document
+        .getElementById("labelsOn")
+        .addEventListener("click", function () {
+          this.classList.add("active");
+          document.getElementById("labelsOff").classList.remove("active");
+          //showLabels();
+        });
+
+      document
+        .getElementById("labelsOff")
+        .addEventListener("click", function () {
+          this.classList.add("active");
+          document.getElementById("labelsOn").classList.remove("active");
+          //hideLabels();
+        });
 
       document.getElementById("english").addEventListener("click", function () {
         isMetric = false;

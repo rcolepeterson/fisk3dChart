@@ -347,7 +347,8 @@ select:-moz-focusring {
   font-size: 12px;
 }
 
-.unit.active {
+.unit.active,
+label.active {
   color: #ca792d;
 }
 
@@ -358,6 +359,14 @@ select:-moz-focusring {
   flex-direction: row;
   margin-right: 8px;
   margin-top: 8px;
+}
+.labels {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-right: 8px;
+  margin-top: 18px;
 }
 .loader-container {
   display: none;
