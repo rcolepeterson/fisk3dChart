@@ -278,7 +278,7 @@
           const options = isMetric
             ? Array.from({ length: 13 }, (_, i) => (i * 0.05).toFixed(2))
             : Array.from({ length: 11 }, (_, i) => i * 10);
-          console.log(`Generated options for ${dropdownId}: ${options}`);
+          // console.log(`Generated options for ${dropdownId}: ${options}`);
           for (let i = 0; i < options.length; i++) {
             const option = document.createElement("option");
             option.value = options[i];
@@ -287,23 +287,36 @@
           }
         }
       }
-      // this code toggles the labels
-      // this code toggles the labels
-      document
-        .getElementById("labelsOn")
-        .addEventListener("click", function () {
-          this.classList.add("active");
-          document.getElementById("labelsOff").classList.remove("active");
-          //showLabels();
-        });
+      let labelsVisible = true; // Set to true by default
 
-      document
-        .getElementById("labelsOff")
-        .addEventListener("click", function () {
-          this.classList.add("active");
-          document.getElementById("labelsOn").classList.remove("active");
-          //hideLabels();
+      function handleButtonClick(
+        activeButtonId,
+        inactiveButtonId,
+        labelsShouldBeVisible
+      ) {
+        document
+          .getElementById(activeButtonId)
+          .addEventListener("click", function () {
+            this.classList.add("active");
+            document
+              .getElementById(inactiveButtonId)
+              .classList.remove("active");
+            labelsVisible = labelsShouldBeVisible;
+            toggleLabels();
+          });
+      }
+
+      function toggleLabels() {
+        cubes.forEach((cube) => {
+          if (cube.userData.labelElement) {
+            cube.userData.labelElement.style.display =
+              labelsVisible && cube.visible ? "block" : "none";
+          }
         });
+      }
+
+      handleButtonClick("labelsOn", "labelsOff", true);
+      handleButtonClick("labelsOff", "labelsOn", false);
 
       document.getElementById("english").addEventListener("click", function () {
         isMetric = false;
@@ -418,16 +431,12 @@
           if (cube.userData.type.includes("Alloy Conductors")) {
             cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = "block";
+              cube.userData.labelElement.style.display = labelsVisible
+                ? "block"
+                : "none";
             }
           }
         });
-        // Update visibility of associated stacked cubes
-        // allCubes.forEach((c) => {
-        //   c.visible =
-        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-        //       ?.visible || false;
-        // });
       }
 
       // Function to show only Alloy Wire
@@ -448,16 +457,12 @@
           if (cube.userData.type.includes("Alloy Wire")) {
             cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = "block";
+              cube.userData.labelElement.style.display = labelsVisible
+                ? "block"
+                : "none";
             }
           }
         });
-        // Update visibility of associated stacked cubes
-        // allCubes.forEach((c) => {
-        //   c.visible =
-        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-        //       ?.visible || false;
-        // });
       }
       // Function to show only Fine Wire
       function showFineWire() {
@@ -477,16 +482,12 @@
           if (cube.userData.type.includes("Fine Wire")) {
             cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = "block";
+              cube.userData.labelElement.style.display = labelsVisible
+                ? "block"
+                : "none";
             }
           }
         });
-        // Update visibility of associated stacked cubes
-        // allCubes.forEach((c) => {
-        //   c.visible =
-        //     cubes.find((cube) => cube.userData.id === c.userData.baseCubeId)
-        //       ?.visible || false;
-        // });
       }
 
       function hideAll() {
@@ -534,7 +535,9 @@
           ) {
             cube.visible = true;
             if (cube.userData.labelElement) {
-              cube.userData.labelElement.style.display = "block";
+              cube.userData.labelElement.style.display = labelsVisible
+                ? "block"
+                : "none";
             }
           } else if (cube.userData.type.includes("Fine Wire")) {
             cube.visible = false;
