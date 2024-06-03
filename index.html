@@ -269,7 +269,7 @@
         const dropdown = document.getElementById(dropdownId);
         dropdown.innerHTML = ""; // Remove all existing options
 
-        console.log(`Updating ${dropdownId} dropdown. isMetric: ${isMetric}`);
+        //console.log(`Updating ${dropdownId} dropdown. isMetric: ${isMetric}`);
 
         if (dropdownId === "minTensileStrength") {
           // For tensile strength, use the multiplier approach
@@ -599,7 +599,7 @@
         var selectedProduct = document.querySelector(
           'input[name="productType"]:checked'
         );
-        console.log("the  product", selectedProduct.value);
+        //console.log("the  product", selectedProduct.value);
 
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
@@ -1596,13 +1596,8 @@
           'input[name="productType"]:checked'
         );
 
-        console.log("filterMyData. sel product:", selectedProduct.value);
-
         const minConductivity = Number(minConductivityDropdown.value);
         const minTensileStrength = Number(minTensileStrengthDropdown.value);
-
-        console.log("minConductivity:", minConductivity);
-        console.log("minTensileStrength:", minTensileStrength);
 
         // Get the checkboxes
         const checkboxes = document.querySelectorAll('input[name="dataType"]');
@@ -1626,21 +1621,23 @@
               ? cube.userData.x_tensile_m
               : cube.userData.x_tensile_e;
 
-            console.log(`Cube type: ${cube.userData.type}`);
-            console.log(`Is Metric: ${isMetric}`);
-            console.log(
-              `Conductivity: ${conductivity}, minConductivity: ${minConductivity}`
-            );
-            console.log(
-              `Tensile Strength: ${tensileStrength}, minTensileStrength: ${minTensileStrength}`
-            );
+            // console.log(`Cube type: ${cube.userData.type}`);
+            // console.log(`Is Metric: ${isMetric}`);
+            // console.log(
+            //   `Conductivity: ${conductivity}, minConductivity: ${minConductivity}`
+            // );
+            // console.log(
+            //   `Tensile Strength: ${tensileStrength}, minTensileStrength: ${minTensileStrength}`
+            // );
 
             if (
               conductivity >= minConductivity &&
               tensileStrength >= minTensileStrength
             ) {
               cube.visible = true;
-              cube.userData.labelElement.style.display = "block";
+              cube.userData.labelElement.style.display = labelsVisible
+                ? "block"
+                : "none";
             } else {
               cube.visible = false;
               cube.userData.labelElement.style.display = "none";
