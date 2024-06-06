@@ -7,16 +7,13 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <img
-      src="3d-model_2818102.png"
-      style="
-        position: absolute;
-        bottom: 50px;
-        right: 50px;
-        height: 75px;
-        z-index: 999999;
-      "
-    />
+    <div id="threedee">
+      <img
+        src="3d-model_2818102.png"
+        alt="3d model"
+        style="height: 50px; z-index: 999999; display: relative"
+      />
+    </div>
     <div id="cameraPosition"></div>
     <div id="chartContainer"></div>
     <div id="info"></div>
@@ -85,11 +82,7 @@
             <label for="toggleFineWire">Fine Wire</label>
           </div>
         </div>
-        <div class="labels">
-          <div id="labelsOn" class="unit label active">Labels On</div>
-          <div>/</div>
-          <div id="labelsOff" class="unit label">Labels Off</div>
-        </div>
+
         <!-- <button id="toggle-units-button">Toggle Units</button> -->
       </div>
 
@@ -146,10 +139,17 @@
             >
           </div>
         </div>
-        <div class="units">
-          <div id="english" class="unit active">English</div>
-          <div>/</div>
-          <div id="metric" class="unit">Metric</div>
+        <div style="display: flex">
+          <div class="labels">
+            <div id="labelsOn" class="unit label active">Labels On</div>
+            <div>/</div>
+            <div id="labelsOff" class="unit label">Labels Off</div>
+          </div>
+          <div class="units">
+            <div id="english" class="unit active">English</div>
+            <div>/</div>
+            <div id="metric" class="unit">Metric</div>
+          </div>
         </div>
       </div>
       <div>
@@ -254,16 +254,6 @@
           loadJSONData();
         }
       );
-
-      // function updateDropdownValues(dropdownId, multiplier) {
-      //   const dropdown = document.getElementById(dropdownId);
-      //   for (let i = 0; i < dropdown.options.length; i++) {
-      //     const option = dropdown.options[i];
-      //     const value = parseInt(option.value, 10);
-      //     option.value = value * multiplier;
-      //     option.text = value * multiplier;
-      //   }
-      // }
 
       function updateDropdownValues(dropdownId) {
         const dropdown = document.getElementById(dropdownId);
@@ -1009,7 +999,7 @@
           const labelZ = z;
 
           // Adjust the y-coordinate based on label width
-          labelMesh.position.set(-8.75 - labelWidth / 2, labelY, labelZ);
+          labelMesh.position.set(-8.5 - labelWidth / 2, labelY, labelZ);
 
           // Assign userData property to identify y-axis labels
           labelMesh.userData.isYAxisLabel = true;
@@ -1059,7 +1049,7 @@
 
           const labelX = x;
           const labelY = 0;
-          const labelZ = gridSizeY / 2 - cubeSize / 2 + 0.5; // Adjust the Z position to align with the bottom
+          const labelZ = gridSizeY / 2 - cubeSize / 2 + 0.65; // Adjust the Z position to align with the bottom
 
           labelMesh.position.set(labelX, labelY, labelZ);
 
@@ -1117,12 +1107,12 @@
         // Position the labels at the midpoint of the respective axes
         const labelX = -2; // Midpoint of the X-axis
         const labelY = -0.5;
-        const labelZ = 4.6; // Same Z position as the grid labels
+        const labelZ = 4.7; // Same Z position as the grid labels
 
         xAxisLabelMesh.position.set(labelX, labelY, labelZ);
-        const yAxisLabelX = -gridSizeX / 2 - 1.6; // Left side of the X-axis
+        const yAxisLabelX = -gridSizeX / 2 - 1.2; // Left side of the X-axis
         const yAxisLabelY = 0;
-        const yAxisLabelZ = 3; // Same Z position as the grid labels
+        const yAxisLabelZ = 2.9; // Same Z position as the grid labels
         //console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
         yAxisLabelMesh.position.set(yAxisLabelX, yAxisLabelY, yAxisLabelZ);
 
