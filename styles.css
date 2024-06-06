@@ -46,6 +46,15 @@ body {
   justify-content: space-evenly;
 }
 
+#options {
+  position: fixed;
+  top: 180px;
+  left: 2px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 #threedee {
   position: absolute;
   bottom: 60px;

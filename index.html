@@ -139,18 +139,6 @@
             >
           </div>
         </div>
-        <div style="display: flex">
-          <div class="labels">
-            <div id="labelsOn" class="unit label active">Labels On</div>
-            <div>/</div>
-            <div id="labelsOff" class="unit label">Labels Off</div>
-          </div>
-          <div class="units">
-            <div id="english" class="unit active">English</div>
-            <div>/</div>
-            <div id="metric" class="unit">Metric</div>
-          </div>
-        </div>
       </div>
       <div>
         <p class="header">Additional Performance Criteria</p>
@@ -223,6 +211,19 @@
             <label for="formability">Formability</label>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div id="options">
+      <div class="labels">
+        <div id="labelsOn" class="unit label active">Labels On</div>
+        <div>/</div>
+        <div id="labelsOff" class="unit label">Labels Off</div>
+      </div>
+      <div class="units">
+        <div id="english" class="unit active">English</div>
+        <div>/</div>
+        <div id="metric" class="unit">Metric</div>
       </div>
     </div>
 
@@ -471,7 +472,7 @@
 
       function displayNonDefaultPosition() {
         if (!hasRun && camera.position.x === 0) {
-          camera.position.set(1.4, 4.3, 5.86);
+          camera.position.set(1.4, 4.3, 4.0);
           hasRun = true;
         }
       }
@@ -1238,7 +1239,7 @@
       let allCubes = [];
       function createScatterPlot(data) {
         scene = new THREE.Scene();
-        scene.scale.set(0.5, 0.5, 0.5); // Adjust the scale as needed
+        scene.scale.set(0.55, 0.55, 0.55); // Adjust the scale as needed
         camera = new THREE.PerspectiveCamera(
           75,
           window.innerWidth / window.innerHeight,
@@ -1541,11 +1542,6 @@
           });
       }
 
-      //toggle
-      // document
-      //   .getElementById("toggle-units-button")
-      //   .addEventListener("click", toggleUnits);
-
       const chartContainer = document.getElementById("chartContainer");
 
       // Add click event listener to chartContainer
@@ -1570,7 +1566,6 @@
         });
       });
 
-      // drop down
       // Get the dropdown elements
       const minConductivityDropdown =
         document.getElementById("minConductivity");
