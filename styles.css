@@ -27,7 +27,7 @@ body {
 #chartContainer {
   position: relative;
   display: inline-block;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 #cameraPosition {
@@ -90,13 +90,6 @@ body {
   font-weight: 400;
   font-size: 8px;
   transform: scale(1.2); /* Adjust scale factor as needed */
-}
-
-.cube-label .initial-content {
-  /* max-width: 100px; */
-  /* overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; */
 }
 
 .font-base {
