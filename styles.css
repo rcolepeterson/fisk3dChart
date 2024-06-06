@@ -27,7 +27,7 @@ body {
 #chartContainer {
   position: relative;
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 #cameraPosition {
@@ -40,7 +40,6 @@ body {
 #dd {
   position: absolute;
   top: 10px;
-  right: 10px;
   display: flex;
   width: 100%;
   justify-content: space-evenly;
@@ -49,7 +48,7 @@ body {
 #options {
   position: fixed;
   top: 180px;
-  left: 2px;
+  left: 10px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -58,10 +57,10 @@ body {
 #threedee {
   position: absolute;
   bottom: 60px;
-  right: 8.5%;
+  display: none;
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-evenly;
 }
 
 .navItemHolder {

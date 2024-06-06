@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- https://fiskalloy.com/products/alloy-explorer/ -->
-<!-- https://github.com/rcolepeterson/testmechart/blob/labels/index.html#L140 -->
+
 <html>
   <head>
     <title>FISK</title>
@@ -21,7 +20,7 @@
       <div id="loader" class="loader"></div>
       <p>Loading...</p>
     </div>
-    <!-- <div id="label"></div> -->
+
     <div id="dd">
       <div>
         <p class="header">Alloy Selection</p>
@@ -345,7 +344,6 @@
 
       // Call this function when the button is clicked
       function toggleUnits() {
-        //isMetric = !isMetric; // Toggle the unit
         const multiplier = isMetric ? 5 : 1 / 5;
         updateDropdownValues("minConductivity", multiplier);
         updateDropdownValues("minTensileStrength", multiplier);
@@ -1153,6 +1151,7 @@
       };
 
       function createLabel(cube, i, labelContent) {
+        console.log("createLabel");
         // Create a label for the cube
         let labelElement = document.createElement("div");
         labelElement.id = `label-${i}`;
@@ -1232,6 +1231,7 @@
           // Navigate to product page
           window.location.href = "https://fiskalloy.com/";
         });
+        labelElement.style.display = labelsVisible ? "block" : "none";
       }
 
       // Define an array to store your cubes
