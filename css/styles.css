@@ -1,15 +1,14 @@
 @font-face {
   font-family: "Gotham Rounded Medium";
-  src: url("GothamRounded-Medium.woff2") format("woff2");
+  src: url("../fonts/GothamRounded-Medium.woff2") format("woff2");
 }
 @font-face {
   font-family: "Gotham Book";
-  src: url("Gotham-Book.woff2") format("woff2");
+  src: url("../fonts/Gotham-Book.woff2") format("woff2");
 }
 
-body {
+#fisk-component {
   margin: 0;
-  /* font-family: "Trebuchet MS", Arial, Helvetica, sans-serif !important; */
   font-family: "Gotham Rounded Medium", sans-serif;
   font-size: 16px;
   margin: 0;
@@ -22,22 +21,23 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
+  position: relative;
 }
 
-#chartContainer {
+#fisk-component #chartContainer {
   position: relative;
   display: inline-block;
   margin-top: 40px;
 }
 
-#cameraPosition {
+#fisk-component #cameraPosition {
   position: absolute;
   top: 50px;
   left: 10px;
   display: none;
 }
 
-#dd {
+#fisk-component #dd {
   position: absolute;
   top: 10px;
   display: flex;
@@ -45,8 +45,8 @@ body {
   justify-content: space-evenly;
 }
 
-#options {
-  position: fixed;
+#fisk-component #options {
+  position: absolute;
   top: 180px;
   left: 10px;
   display: flex;
@@ -54,16 +54,18 @@ body {
   justify-content: center;
 }
 
-#threedee {
+#fisk-component #threedee {
   position: absolute;
   bottom: 60px;
   display: none;
   display: flex;
   width: 100%;
   justify-content: space-evenly;
+  height: 50px;
+  z-index: 999999;
 }
 
-.navItemHolder {
+#fisk-component .navItemHolder {
   gap: 10px;
 }
 
@@ -73,13 +75,14 @@ body {
   left: 20px;
 }
 
-#label {
+#fisk-component #label {
   position: absolute;
   padding: 14px;
   background-color: #ccc;
 }
 
-.cube-label {
+#fisk-component .cube-label {
+  font-family: "Gotham Rounded Medium", sans-serif;
   position: absolute;
   background-color: #d5d5d5;
   padding-top: 3px;
@@ -89,16 +92,14 @@ body {
   border-radius: 6px;
   font-weight: 400;
   font-size: 9px;
-  /* Add any other styles you want */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.cube-label {
-  /* Other styles... */
+#fisk-component .cube-label {
   transition: transform 0.3s ease;
 }
 
-.cube-label:hover {
+#fisk-component .cube-label:hover {
   z-index: 999;
   padding: 10px;
   padding-left: 10px;
@@ -109,37 +110,36 @@ body {
   transform: scale(1.2); /* Adjust scale factor as needed */
 }
 
-.font-base {
+#fisk-component .font-base {
   font-weight: 400;
   font-family: "Gotham Book";
 }
 
-.content {
+#fisk-component .content {
   cursor: pointer;
 }
 
-.center-text {
+#fisk-component .center-text {
   text-align: center;
 }
 
-.click {
+#fisk-component .click {
   margin-top: 10px;
   color: #d87520;
 }
 
-.form-group {
+#fisk-component .form-group {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  /* margin: 10px; */
   width: 120px;
 }
 
-.performanceGroup {
+#fisk-component .performanceGroup {
   display: flex;
 }
 
-.form-control:focus {
+#fisk-component .form-control:focus {
   color: #495057;
   background-color: #fff;
   border-color: #80bdff;
@@ -147,14 +147,13 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-label {
+#fisk-component label {
   display: inline-block;
   margin-bottom: 0.5rem;
   font-size: 12px;
-  /* max-width: 78px; */
 }
 
-select {
+#fisk-component select {
   background-color: white;
   border: thin solid gray;
   border-radius: 4px;
@@ -170,7 +169,7 @@ select {
   -moz-appearance: none;
 }
 
-select.minimal {
+#fisk-component select.minimal {
   background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
     linear-gradient(to right, #ccc, #ccc);
@@ -181,20 +180,19 @@ select.minimal {
   margin-bottom: 0.5rem;
 }
 
-select:-moz-focusring {
+#fisk-component select:-moz-focusring {
   color: transparent;
   text-shadow: 0 0 0 #000;
 }
 
 /* radio buttons */
 
-.form-group-filters {
+#fisk-component .form-group-filters {
   display: flex;
   margin-top: 8px;
-  /* gap: 10px; */
 }
 
-.custom-checkbox {
+#fisk-component .custom-checkbox {
   display: block;
   position: relative;
   cursor: pointer;
@@ -206,7 +204,7 @@ select:-moz-focusring {
   border-radius: 4px; /* Added border-radius */
 }
 
-.custom-checkbox input {
+#fisk-component .custom-checkbox input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -214,31 +212,31 @@ select:-moz-focusring {
   width: 0;
 }
 
-.custom-checkbox:hover input ~ .checkmark {
+#fisk-component .custom-checkbox:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-.custom-checkbox input:checked ~ .checkmark {
+#fisk-component .custom-checkbox input:checked ~ .checkmark {
   background-color: #2196f3;
 }
 
-.checkmark:after {
+#fisk-component .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-.custom-checkbox input:checked ~ .checkmark:after {
+#fisk-component .custom-checkbox input:checked ~ .checkmark:after {
   display: block;
 }
 
-.custom-checkbox input:checked ~ .checkmark:after {
+#fisk-component .custom-checkbox input:checked ~ .checkmark:after {
   display: block;
   background-color: black; /* Added background color */
   border-radius: 50%; /* Added border radius */
 }
 
-.custom-checkbox .checkmark:after {
+#fisk-component .custom-checkbox .checkmark:after {
   left: 9px;
   top: 15px;
   width: 10px; /* Adjusted width */
@@ -246,27 +244,27 @@ select:-moz-focusring {
   border: none; /* Removed border */
 }
 
-.flex-life {
+#fisk-component .flex-life {
   background-color: #bece71;
 }
 
-.soft-resistance {
+#fisk-component .soft-resistance {
   background-color: #697ba6;
 }
 
-.stress-relaxation {
+#fisk-component .stress-relaxation {
   background-color: #bece71;
 }
 
-.spring-properties {
+#fisk-component .spring-properties {
   background-color: #6cb2c4;
 }
 
-.formability {
+#fisk-component .formability {
   background-color: #cfc250;
 }
 
-.custom-radio {
+#fisk-component .custom-radio {
   display: block;
   position: relative;
   cursor: pointer;
@@ -275,20 +273,19 @@ select:-moz-focusring {
   width: 80px; /* Adjusted width */
   height: 39px; /* Adjusted height */
   background: #cb792d;
-
   border-radius: 4px; /* Added border-radius */
 }
-.custom-radio.toggle-conductors {
+#fisk-component .custom-radio.toggle-conductors {
   background: #aa934d;
 }
-.custom-radio.toggle-wire {
+#fisk-component .custom-radio.toggle-wire {
   background: #133153;
 }
-.custom-radio.toggle-fine-wire {
+#fisk-component .custom-radio.toggle-fine-wire {
   background: #44827d;
 }
 
-.custom-radio input {
+#fisk-component .custom-radio input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -296,15 +293,15 @@ select:-moz-focusring {
   width: 0;
 }
 
-.custom-radio:hover input ~ .checkmark {
+#fisk-component .custom-radio:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
-.custom-radio input:checked ~ .checkmark {
+#fisk-component .custom-radio input:checked ~ .checkmark {
   background-color: #2196f3;
 }
 
-.checkmark:after {
+#fisk-component .checkmark:after {
   content: "";
   position: absolute;
   display: block; /* Change this to block */
@@ -317,17 +314,17 @@ select:-moz-focusring {
   border: none; /* Removed border */
 }
 
-.custom-radio input:checked ~ .checkmark:after {
+#fisk-component .custom-radio input:checked ~ .checkmark:after {
   display: block;
 }
 
-.custom-radio input:checked ~ .checkmark:after {
+#fisk-component .custom-radio input:checked ~ .checkmark:after {
   display: block;
   background-color: black; /* Added background color */
   border-radius: 50%; /* Added border radius */
 }
 
-.custom-radio .checkmark:after {
+#fisk-component .custom-radio .checkmark:after {
   left: 9px;
   top: 15px;
   width: 10px; /* Adjusted width */
@@ -335,60 +332,54 @@ select:-moz-focusring {
   border: none; /* Removed border */
 }
 
-.disabled {
+#fisk-component .disabled {
   pointer-events: none;
   /* opacity: 0.4; */
 }
 
-.disabled .custom-checkbox {
+#fisk-component .disabled .custom-checkbox {
   background-color: #e3e3e3;
 }
 
-.unit-radio-buttons {
+#fisk-component .unit-radio-buttons {
   display: flex;
   justify-content: flex-start;
   gap: 10px;
   margin-top: 20px;
 }
 
-.unit-radio-buttons .custom-radio {
-  /* width: 50px;
-  height: 25px; */
+#fisk-component .unit-radio-buttons .custom-radio {
   background: #fff;
   border: 1px solid #000;
 }
 
-.unit {
+#fisk-component .unit {
   cursor: pointer;
   color: black;
   font-size: 12px;
 }
 
-.unit.active,
-label.active {
+#fisk-component .unit.active,
+#fisk-component label.active {
   color: #ca792d;
 }
 
-.units {
+#fisk-component .units {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
   flex-direction: row;
-  /* margin-right: 8px; */
-  /* margin-top: 8px; */
   margin-left: 100px;
 }
-.labels {
+#fisk-component .labels {
   display: flex;
   gap: 10px;
   justify-content: flex-start;
   flex-direction: row;
-  /* margin-right: 8px; */
-  /* margin-top: 18px; */
 }
-.loader-container {
+#fisk-component .loader-container {
   display: none;
-  position: fixed; /* Use fixed instead of absolute to center on the page */
+  position: absolute; /* Use fixed instead of absolute to center on the page */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); /* Centers the element */
@@ -398,7 +389,7 @@ label.active {
   gap: 10px; /* Adds some space between the loader and the text */
 }
 
-.loader {
+#fisk-component .loader {
   border: 6px solid #f3f3f3;
   border-top: 6px solid #ca792d;
   border-radius: 50%;
@@ -416,11 +407,11 @@ label.active {
   }
 }
 
-.disable-click {
+#fisk-component .disable-click {
   pointer-events: none;
 }
 
-.header {
+#fisk-component .header {
   font-size: 22px;
   margin-bottom: 15px;
 }

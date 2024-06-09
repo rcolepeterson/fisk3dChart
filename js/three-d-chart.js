@@ -15,7 +15,7 @@ let initialWindowHeight = window.innerHeight;
 const loader = new THREE.FontLoader();
 loader.load(
   // "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
-  "./Gotham Rounded Medium_Regular_3.json",
+  "../fonts/Gotham Rounded Medium_Regular_3.json",
   function (loadedFont) {
     font = loadedFont;
     // Continue with loading JSON data
@@ -1010,6 +1010,8 @@ function createScatterPlot(data) {
   document.getElementById("chartContainer").appendChild(renderer.domElement);
 
   const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // Disable zoom
+  controls.enableZoom = false;
 
   data.forEach((dataPoint, i) => {
     let xValueToMap, yValueToMap;
@@ -1164,9 +1166,6 @@ function createScatterPlot(data) {
     // Get the position of the fisk-component
     const fiskComponent = document.getElementById("fisk-component");
     const fiskComponentRect = fiskComponent.getBoundingClientRect();
-
-    console.log("hello", fiskComponentRect.top);
-    console.log("top", top);
 
     // Update the position of the labels
     cubes.forEach((cube, i) => {
