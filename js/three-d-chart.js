@@ -123,49 +123,6 @@ function toggleUnits() {
   toggleDiv("formabilityDiv", true);
   document.getElementById("toggleAll").checked = true;
   loadJSONData();
-
-  // Create X-axis labels from 0 to 140 with a step of 10
-  xAxisValues = [];
-  if (isMetric) {
-    for (let x = 0; x <= 1000; x += 50) {
-      // You can convert the values to the appropriate metric units here
-      xAxisValues.push({ x, y: 0, label: x.toString() });
-    }
-  } else {
-    for (let x = 0; x <= 140; x += 10) {
-      xAxisValues.push({ x, y: 0, label: x.toString() });
-    }
-  }
-
-  // Call the function to create X-axis labels
-  //createXAxisLabels(xAxisValues);
-
-  // Define your yAxisValues using a loop
-  yAxisValues = [];
-  if (isMetric) {
-    // Metrics: Run from 0 to 120 by 10 increments, but start from 120
-    for (let y = 120; y >= 0; y -= 10) {
-      const labelValue = (y / 120) * 0.6; // Calculate the label value based on the current y value
-      const label = labelValue.toFixed(2); // Format the label value as string
-      yAxisValues.push({
-        x: 0,
-        y,
-        z: -3.3333333333333335,
-        label: label,
-      });
-    }
-  } else {
-    for (let y = 100; y >= 0; y -= 20) {
-      yAxisValues.push({
-        x: 0,
-        y,
-        z: -3.3333333333333335,
-        label: y.toString(),
-      });
-    }
-  }
-
-  //createYAxisLabels(yAxisValues);
 }
 
 function toggleDiv(id, disable) {
@@ -706,6 +663,7 @@ function updateCameraPositionDisplay(camera) {
                      `;
 }
 
+// Create and align Y axis labels!
 function createYAxisLabels(yAxisValues) {
   // Remove existing y-axis labels from the scene
   const yAxisLabelsToRemove = scene.children.filter(
@@ -721,10 +679,7 @@ function createYAxisLabels(yAxisValues) {
     var xValueToMap = yPoint.x; // This value is in the range [0, 140]
     var mappedXValue = mapXValue(xValueToMap, 0, 150, 0, 1);
 
-    // var yValueToMap = Math.max(0, Math.min(yPoint.y - 1.5, 120)); // This value is in the range [0, 120]
-    // console.log("Original yPoint.y:", yPoint.y);
     var yValueToMap = Math.max(0, Math.min(yPoint.y - 1.5, 120)); // Ensure value stays within [0, 120]
-    // console.log("Adjusted yValueToMap:", yValueToMap);
     var mappedYValue;
     if (isMetric) {
       mappedYValue = mapYValue(yValueToMap, 0, 120, 0, 1);
@@ -756,12 +711,18 @@ function createYAxisLabels(yAxisValues) {
     // Rotate the label to be vertical
     labelMesh.rotation.x = -Math.PI / 2;
 
-    const labelX = gridSizeX / 2 - cubeSize / 2 + 1.1; // Adjust the X position to right-align the text
-    const labelY = 0;
-    const labelZ = z;
+    // Adjust the X position to right-align the text
+    let labelX = -8.2 - labelWidth; // Default position, right-align
+    if (yPoint.label === "0") {
+      // Special adjustment for the "0" label
+      labelX += labelWidth - 0.18;
+    }
+    labelMesh.position.set(labelX, 0, z);
 
-    // Adjust the y-coordinate based on label width
-    labelMesh.position.set(-8.5 - labelWidth / 2, labelY, labelZ);
+    if (yPoint.label === "0") {
+      // Special adjustment for the "0" label
+      labelMesh.position.z -= -0.08; // Move the "0" label down by 2 pixels
+    }
 
     // Assign userData property to identify y-axis labels
     labelMesh.userData.isYAxisLabel = true;
@@ -790,7 +751,7 @@ function createXAxisLabels(xAxisValues) {
     }
     var mappedYValue = mapYValue(xPoint.y, 0, 120, 0, 1);
 
-    const x = (mappedXValue - 0.5) * gridSizeX;
+    const x = (mappedXValue - 0.51) * gridSizeX;
     const y = 0; // You can adjust the vertical position if needed
     const z = (mappedYValue - 0.5) * gridSizeY;
 
@@ -814,6 +775,11 @@ function createXAxisLabels(xAxisValues) {
     const labelZ = gridSizeY / 2 - cubeSize / 2 + 0.65; // Adjust the Z position to align with the bottom
 
     labelMesh.position.set(labelX, labelY, labelZ);
+
+    if (xPoint.label === "0") {
+      // Special adjustment for the "0" label
+      labelMesh.position.y -= 0.1; // Move the "0" label down by 2 pixels
+    }
 
     // Assign userData property to identify x-axis labels
     labelMesh.userData.isXAxisLabel = true;
@@ -864,7 +830,7 @@ function createAxisLabels() {
   const labelZ = 4.7; // Same Z position as the grid labels
 
   xAxisLabelMesh.position.set(labelX, labelY, labelZ);
-  const yAxisLabelX = -gridSizeX / 2 - 1.2; // Left side of the X-axis
+  const yAxisLabelX = -gridSizeX / 2 - 1.0; // Left side of the X-axis
   const yAxisLabelY = 0;
   const yAxisLabelZ = 2.9; // Same Z position as the grid labels
   //console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
