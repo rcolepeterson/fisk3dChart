@@ -638,6 +638,7 @@ function createGrid() {
   const floor = new THREE.Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.position.set(0, yPosition, 0);
+
   scene.add(floor);
 }
 
@@ -1143,14 +1144,7 @@ function createScatterPlot(data) {
         // Use the chartContainer size and position to calculate the label positions
         let labelX, labelY;
         let offsetX, offsetY;
-        // if (isMetric) {
-        //   // Calculate the offset based on the camera's position
-        //   offsetX = camera.position.x * 15;
-        //   offsetY = camera.position.y * -3 - fiskComponentRect.top;
-        // } else {
-        //   offsetX = 0;
-        //   offsetY = -fiskComponentRect.top;
-        // }
+
         let factor = 5;
         if (isMetric) {
           // Calculate the offset based on the cube's height in the world space
