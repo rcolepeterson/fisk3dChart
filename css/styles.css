@@ -28,6 +28,7 @@
   position: relative;
   display: inline-block;
   margin-top: 40px;
+  margin-left: 40px;
 }
 
 #fisk-component #cameraPosition {
