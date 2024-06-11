@@ -831,7 +831,12 @@ function createAxisLabels() {
   const labelZ = 4.7; // Same Z position as the grid labels
 
   xAxisLabelMesh.position.set(labelX, labelY, labelZ);
-  const yAxisLabelX = -gridSizeX / 2 - 0.9; // Left side of the X-axis
+  let ml = 0.85;
+  if (isMetric) {
+    ml = 1;
+  }
+  const yAxisLabelX = -gridSizeX / 2 - ml; // Left side of the X-axis
+
   const yAxisLabelY = 0;
   const yAxisLabelZ = 2.9; // Same Z position as the grid labels
   //console.log(gridSizeY / 2 - cubeSize / 2 + 0.5 );
