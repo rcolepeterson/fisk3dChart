@@ -373,9 +373,12 @@
   flex-direction: row;
   margin-left: 100px;
 }
+#fisk-component #reset {
+  color: #ca792d;
+}
 
 #fisk-component #reset:hover {
-  color: #ca792d;
+  color: #000;
 }
 
 #fisk-component .labels {
