@@ -85,7 +85,11 @@ handleButtonClick("labelsOn", "labelsOff", true);
 handleButtonClick("labelsOff", "labelsOn", false);
 
 document.getElementById("reset").addEventListener("click", function () {
-  document.getElementById("toggleAll").click();
+  // document.getElementById("toggleAll").click();
+  var radioButton = document.getElementById("toggleAll");
+  if (!radioButton.checked) {
+    radioButton.click();
+  }
   camera.position.set(0, 6, 0);
 });
 
