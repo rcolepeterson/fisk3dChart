@@ -84,6 +84,11 @@ function toggleLabels() {
 handleButtonClick("labelsOn", "labelsOff", true);
 handleButtonClick("labelsOff", "labelsOn", false);
 
+document.getElementById("reset").addEventListener("click", function () {
+  document.getElementById("toggleAll").click();
+  camera.position.set(0, 6, 0);
+});
+
 document.getElementById("english").addEventListener("click", function () {
   isMetric = false;
   updateUnits();

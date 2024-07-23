@@ -365,13 +365,19 @@
   color: #ca792d;
 }
 
-#fisk-component .units {
+#fisk-component .units,
+#fisk-component .reset {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
   flex-direction: row;
   margin-left: 100px;
 }
+
+#fisk-component #reset:hover {
+  color: #ca792d;
+}
+
 #fisk-component .labels {
   display: flex;
   gap: 10px;
